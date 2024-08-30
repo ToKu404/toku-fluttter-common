@@ -38,8 +38,9 @@ class AdvRow extends StatelessWidget {
       }
     }
 
-    if (newChildren.isNotEmpty && divider != null)
+    if (newChildren.isNotEmpty && divider != null) {
       newChildren.removeAt(newChildren.length - 1);
+    }
 
     return Container(
         padding: padding,
