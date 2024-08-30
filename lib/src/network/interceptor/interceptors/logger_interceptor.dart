@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
-import 'package:kartjis_mobile_common/network.dart';
-import 'package:kartjis_mobile_common/src/core/models/result.dart';
+import 'package:toku_flutter_common/network.dart';
+import 'package:toku_flutter_common/src/core/models/result.dart';
 
 class LoggerInterceptor extends Interceptor {
   const LoggerInterceptor();

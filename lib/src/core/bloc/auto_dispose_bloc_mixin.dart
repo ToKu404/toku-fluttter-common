@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kartjis_mobile_common/core.dart';
-import 'package:kartjis_mobile_common/src/core/utils/disposable_object_store.dart';
+import 'package:toku_flutter_common/core.dart';
+import 'package:toku_flutter_common/src/core/utils/disposable_object_store.dart';
 
 mixin AutoDisposeBlocMixin<BlocState> on BlocBase<BlocState> {
   final DisposableObjectStore _store = DisposableObjectStore();

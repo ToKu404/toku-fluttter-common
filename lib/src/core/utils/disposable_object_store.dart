@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kartjis_mobile_common/src/core/utils/change_notifier_listener.dart';
-import 'package:kartjis_mobile_common/src/core/utils/debouncer.dart';
-import 'package:kartjis_mobile_common/src/core/utils/releasable_operation.dart';
+import 'package:toku_flutter_common/src/core/utils/change_notifier_listener.dart';
+import 'package:toku_flutter_common/src/core/utils/debouncer.dart';
+import 'package:toku_flutter_common/src/core/utils/releasable_operation.dart';
 
 class DisposableObjectStore {
   List<Object> _disposables = <Object>[];

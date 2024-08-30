@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:kartjis_mobile_common/core.dart';
+import 'package:toku_flutter_common/core.dart';
 
 mixin AutoDisposeStateMixin<S extends StatefulWidget> on State<S> {
   final DisposableObjectStore _store = DisposableObjectStore();

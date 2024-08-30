@@ -1,4 +1,4 @@
-import 'package:kartjis_mobile_common/core.dart';
+import 'package:toku_flutter_common/core.dart';
 
 part 'validated_string.freezed.dart';
 

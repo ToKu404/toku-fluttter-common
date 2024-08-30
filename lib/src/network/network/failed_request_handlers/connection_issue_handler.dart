@@ -1,6 +1,6 @@
-import 'package:kartjis_mobile_common/network.dart';
-import 'package:kartjis_mobile_common/src/core/anotations/_annotations.dart';
-import 'package:kartjis_mobile_common/src/core/exceptions/_exceptions.dart';
+import 'package:toku_flutter_common/network.dart';
+import 'package:toku_flutter_common/src/core/anotations/_annotations.dart';
+import 'package:toku_flutter_common/src/core/exceptions/_exceptions.dart';
 
 typedef ConnectionIssueCallback = void Function(FailedRequestResolver resolver);
 

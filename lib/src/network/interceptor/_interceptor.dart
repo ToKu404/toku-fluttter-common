@@ -1,9 +1,9 @@
 library interceptor;
 
-import 'package:kartjis_mobile_common/core.dart';
-import 'package:kartjis_mobile_common/src/core/models/result.dart';
-import 'package:kartjis_mobile_common/src/network/http/_http.dart';
-import 'package:kartjis_mobile_common/src/network/network/network.dart';
+import 'package:toku_flutter_common/core.dart';
+import 'package:toku_flutter_common/src/core/models/result.dart';
+import 'package:toku_flutter_common/src/network/http/_http.dart';
+import 'package:toku_flutter_common/src/network/network/network.dart';
 import 'package:meta/meta.dart';
 
 part 'interceptor.dart';

@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:kartjis_mobile_common/network.dart';
-import 'package:kartjis_mobile_common/src/core/anotations/_annotations.dart';
-import 'package:kartjis_mobile_common/src/network/network/failed_request_handlers/_failed_request_handlers.dart';
+import 'package:toku_flutter_common/network.dart';
+import 'package:toku_flutter_common/src/core/anotations/_annotations.dart';
+import 'package:toku_flutter_common/src/network/network/failed_request_handlers/_failed_request_handlers.dart';
 
 @internal
 @module

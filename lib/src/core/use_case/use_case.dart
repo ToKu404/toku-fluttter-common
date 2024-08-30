@@ -1,4 +1,4 @@
-import 'package:kartjis_mobile_common/src/core/models/result.dart';
+import 'package:toku_flutter_common/src/core/models/result.dart';
 
 abstract class UseCase<I, O> {
   O call(I input);

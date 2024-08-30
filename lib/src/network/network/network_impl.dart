@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
-import 'package:kartjis_mobile_common/src/network/http/_http.dart';
-import 'package:kartjis_mobile_common/src/network/network/exposed_stream_multipart_file.dart';
-import 'package:kartjis_mobile_common/src/network/network/network.dart';
+import 'package:toku_flutter_common/src/network/http/_http.dart';
+import 'package:toku_flutter_common/src/network/network/exposed_stream_multipart_file.dart';
+import 'package:toku_flutter_common/src/network/network/network.dart';
 import 'package:meta/meta.dart';
-
 
 class NetworkImpl implements Network {
   @internal
@@ -47,7 +46,9 @@ class NetworkImpl implements Network {
         if (file == null) continue;
         final stream = ByteStream(file.openRead());
         final length = await file.length();
-        final multipartFile = ExposedStreamMultipartFile(fieldName, stream, length, filename: file.path);
+        final multipartFile = ExposedStreamMultipartFile(
+            fieldName, stream, length,
+            filename: file.path);
         request.files.add(multipartFile);
       }
     }

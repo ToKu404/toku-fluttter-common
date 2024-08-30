@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:kartjis_mobile_common/src/core/extensions/object_extensions.dart';
-import 'package:kartjis_mobile_common/src/core/extensions/stream_extensions.dart';
-import 'package:kartjis_mobile_common/src/network/raw_http/raw_http_client.dart';
-
-
+import 'package:toku_flutter_common/src/core/extensions/object_extensions.dart';
+import 'package:toku_flutter_common/src/core/extensions/stream_extensions.dart';
+import 'package:toku_flutter_common/src/network/raw_http/raw_http_client.dart';
 
 RawHttpClient createClient() => RawIOHttpClient();
 
@@ -24,11 +22,13 @@ final class RawIOHttpClient implements RawHttpClient {
     RawHttpProgressCallback? onReceiveProgress,
   }) async {
     if (_inner == null) {
-      throw ClientException('HTTP request failed. Client is already closed.', request.url);
+      throw ClientException(
+          'HTTP request failed. Client is already closed.', request.url);
     }
 
     final stream = request.finalize();
-    final (supportsSendCallback, supportsReceiveCallback) = getSupportedMethodProgressCallbacks(request.method);
+    final (supportsSendCallback, supportsReceiveCallback) =
+        getSupportedMethodProgressCallbacks(request.method);
 
     try {
       final ioRequest = (await _inner!.openUrl(request.method, request.url))
@@ -82,7 +82,8 @@ final class RawIOHttpClient implements RawHttpClient {
         if (supportsReceiveCallback && onReceiveProgress != null) {
           return source.count((count, data) {
             final cnt = count + data.length;
-            onReceiveProgress(cnt, response.contentLength == -1 ? null : response.contentLength);
+            onReceiveProgress(cnt,
+                response.contentLength == -1 ? null : response.contentLength);
             return cnt;
           });
         }
@@ -93,9 +94,11 @@ final class RawIOHttpClient implements RawHttpClient {
         response.handleError((Object error) {
           final httpException = error as HttpException;
           throw ClientException(httpException.message, httpException.uri);
-        }, test: (error) => error is HttpException).let(maybeCountReceiveProgress),
+        }, test: (error) => error is HttpException).let(
+            maybeCountReceiveProgress),
         response.statusCode,
-        contentLength: response.contentLength == -1 ? null : response.contentLength,
+        contentLength:
+            response.contentLength == -1 ? null : response.contentLength,
         request: request,
         headers: headers,
         isRedirect: response.isRedirect,

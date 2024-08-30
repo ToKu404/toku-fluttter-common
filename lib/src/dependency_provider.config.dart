@@ -11,24 +11,24 @@
 import 'package:connectivity_plus/connectivity_plus.dart' as _i5;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:kartjis_mobile_common/network.dart' as _i3;
-import 'package:kartjis_mobile_common/src/core/utils/releasable_operation.dart'
+import 'package:toku_flutter_common/network.dart' as _i3;
+import 'package:toku_flutter_common/src/core/utils/releasable_operation.dart'
     as _i8;
-import 'package:kartjis_mobile_common/src/core/utils/string_validator.dart'
+import 'package:toku_flutter_common/src/core/utils/string_validator.dart'
     as _i9;
-import 'package:kartjis_mobile_common/src/network/http/_http.dart' as _i13;
-import 'package:kartjis_mobile_common/src/network/interceptor/interceptors/connection_checker_interceptor.dart'
+import 'package:toku_flutter_common/src/network/http/_http.dart' as _i13;
+import 'package:toku_flutter_common/src/network/interceptor/interceptors/connection_checker_interceptor.dart'
     as _i10;
-import 'package:kartjis_mobile_common/src/network/interceptor/interceptors/failed_request_handler_interceptor.dart'
+import 'package:toku_flutter_common/src/network/interceptor/interceptors/failed_request_handler_interceptor.dart'
     as _i12;
-import 'package:kartjis_mobile_common/src/network/network/connection_checker.dart'
+import 'package:toku_flutter_common/src/network/network/connection_checker.dart'
     as _i11;
-import 'package:kartjis_mobile_common/src/network/network/failed_request_handlers/_failed_request_handlers.dart'
+import 'package:toku_flutter_common/src/network/network/failed_request_handlers/_failed_request_handlers.dart'
     as _i6;
-import 'package:kartjis_mobile_common/src/network/network/failed_request_handlers/connection_issue_handler.dart'
+import 'package:toku_flutter_common/src/network/network/failed_request_handlers/connection_issue_handler.dart'
     as _i4;
-import 'package:kartjis_mobile_common/src/network/network/network.dart' as _i7;
-import 'package:kartjis_mobile_common/src/network/network_dependency_provider.dart'
+import 'package:toku_flutter_common/src/network/network/network.dart' as _i7;
+import 'package:toku_flutter_common/src/network/network_dependency_provider.dart'
     as _i14;
 
 // initializes the registration of main-scope dependencies inside of GetIt

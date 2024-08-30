@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 
-import 'package:kartjis_mobile_common/network.dart' show NoConnectionException;
+import 'package:toku_flutter_common/network.dart' show NoConnectionException;
 
 abstract class IsValid {
   static const IsValid empty = _IntValueIsValid._(0, 'empty');
@@ -8,24 +8,32 @@ abstract class IsValid {
   static const IsValid tooHigh = _IntValueIsValid._(2, 'tooHigh');
   static const IsValid tooShort = _IntValueIsValid._(3, 'tooShort');
   static const IsValid tooLong = _IntValueIsValid._(4, 'tooLong');
-  static const IsValid containsWhitespace = _IntValueIsValid._(5, 'containsWhitespace');
+  static const IsValid containsWhitespace =
+      _IntValueIsValid._(5, 'containsWhitespace');
   static const IsValid notEqual = _IntValueIsValid._(6, 'notEqual');
   static const IsValid notEmail = _IntValueIsValid._(7, 'notEmail');
   static const IsValid notPhoneNumber = _IntValueIsValid._(8, 'notPhoneNumber');
   static const IsValid notUsername = _IntValueIsValid._(9, 'notUsername');
-  static const IsValid notUsernameChar = _IntValueIsValid._(10, 'notUsernameChar');
-  static const IsValid notDecimalNumbersOnly = _IntValueIsValid._(11, 'notDecimalNumbersOnly');
+  static const IsValid notUsernameChar =
+      _IntValueIsValid._(10, 'notUsernameChar');
+  static const IsValid notDecimalNumbersOnly =
+      _IntValueIsValid._(11, 'notDecimalNumbersOnly');
   static const IsValid notAsciiOnly = _IntValueIsValid._(12, 'notAsciiOnly');
-  static const IsValid notLettersOnly = _IntValueIsValid._(13, 'notLettersOnly');
-  static const IsValid notNumbersOnly = _IntValueIsValid._(14, 'notNumbersOnly');
-  static const IsValid noInternetConnection = _IntValueIsValid._(15, 'noInternetConnection');
+  static const IsValid notLettersOnly =
+      _IntValueIsValid._(13, 'notLettersOnly');
+  static const IsValid notNumbersOnly =
+      _IntValueIsValid._(14, 'notNumbersOnly');
+  static const IsValid noInternetConnection =
+      _IntValueIsValid._(15, 'noInternetConnection');
 
   static IsValid string(String value) => StringValueIsValid._(value);
 
   /// Returns [IsValid.noInternetConnection] when [error] is [NoConnectionException],
   /// otherwise returns [IsValid.string] with the [Object.toString] from the error.
   static IsValid fromError(Exception error) {
-    return error is NoConnectionException ? IsValid.noInternetConnection : IsValid.string(error.toString());
+    return error is NoConnectionException
+        ? IsValid.noInternetConnection
+        : IsValid.string(error.toString());
   }
 }
 
@@ -135,7 +143,8 @@ class StringValidator {
   /// Validator for minimum and maximum length of string. [min] and [max] must be greater than 0.
   ///
   /// [withLength] cannot be added more than once, otherwise it will throw [AssertionError] on debug mode.
-  StringValidator withLength({required int min, required int max}) => minLength(min).maxLength(max);
+  StringValidator withLength({required int min, required int max}) =>
+      minLength(min).maxLength(max);
 
   StringValidator withEither(
     StringValidatorCallback first, {
@@ -284,8 +293,10 @@ IsValid? _isWithoutWhitespace(String value) {
   return null;
 }
 
-final RegExp _emailRegEx1 = RegExp(r"""^[a-zA-Z0-9!#$%&'*+\-\/=?^_`{|}~]+(?:[.]?[a-zA-Z0-9!#$%&'*+\-\/=?^_`{|}~]+)*""");
-final RegExp _emailRegEx2 = RegExp(r'''@{1}[a-zA-Z0-9]*(?:[-]*[.]?[a-zA-Z0-9])*[.][a-zA-Z0-9]+$''');
+final RegExp _emailRegEx1 = RegExp(
+    r"""^[a-zA-Z0-9!#$%&'*+\-\/=?^_`{|}~]+(?:[.]?[a-zA-Z0-9!#$%&'*+\-\/=?^_`{|}~]+)*""");
+final RegExp _emailRegEx2 =
+    RegExp(r'''@{1}[a-zA-Z0-9]*(?:[-]*[.]?[a-zA-Z0-9])*[.][a-zA-Z0-9]+$''');
 
 /// based on https://en.wikipedia.org/wiki/Email_address#:~:text=The%20format%20of%20an%20email,3696%20and%20the%20associated%20errata
 IsValid? _isValidEmail(String value) {
@@ -302,9 +313,12 @@ IsValid? _isValidEmail(String value) {
   ///The domain name part of an email address has to conform to strict guidelines:
   ///it must match the requirements for a hostname, a list of dot-separated DNS labels,
   ///each label being limited to a length of 63 characters
-  if (localBytes.length > 64 || domainPartString.length > 64) return IsValid.notEmail;
+  if (localBytes.length > 64 || domainPartString.length > 64)
+    return IsValid.notEmail;
 
-  return (localPartString + domainPartString) != value ? IsValid.notEmail : null;
+  return (localPartString + domainPartString) != value
+      ? IsValid.notEmail
+      : null;
 }
 
 final RegExp _phoneNumberRegExp = RegExp(r'^9\d{9}$');

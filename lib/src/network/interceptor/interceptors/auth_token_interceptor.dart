@@ -1,12 +1,13 @@
-import 'package:kartjis_mobile_common/src/core/models/result.dart';
-import 'package:kartjis_mobile_common/src/network/http/_http.dart';
-import 'package:kartjis_mobile_common/src/network/interceptor/_interceptor.dart';
+import 'package:toku_flutter_common/src/core/models/result.dart';
+import 'package:toku_flutter_common/src/network/http/_http.dart';
+import 'package:toku_flutter_common/src/network/interceptor/_interceptor.dart';
 
 abstract class AuthTokenInterceptor extends Interceptor {
   @override
   bool canIntercept(HttpEndpointBase endpoint, BaseRequest request) {
     if (endpoint.authType == AuthType.none) return false;
-    if (endpoint.authType == AuthType.session && (accessToken == null || accessToken!.isEmpty)) {
+    if (endpoint.authType == AuthType.session &&
+        (accessToken == null || accessToken!.isEmpty)) {
       return false;
     }
     return true;

@@ -1,6 +1,6 @@
 import 'dart:async' show Completer, StreamController, StreamSubscription;
 
-import 'package:kartjis_mobile_common/core.dart';
+import 'package:toku_flutter_common/core.dart';
 
 /// A class that can be used to run a single [Stream] operation and release it when needed
 /// or when a new operation is run.

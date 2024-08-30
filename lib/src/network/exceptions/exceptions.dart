@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:kartjis_mobile_common/src/core/anotations/_annotations.dart';
-import 'package:kartjis_mobile_common/src/core/exceptions/_exceptions.dart';
+import 'package:toku_flutter_common/src/core/anotations/_annotations.dart';
+import 'package:toku_flutter_common/src/core/exceptions/_exceptions.dart';
 
 part 'exceptions.g.dart';
 
