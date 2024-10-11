@@ -1,0 +1,20 @@
+part of '{{name.snakeCase()}}_bloc.dart';
+
+enum {{name.pascalCase()}}Step {
+  first,
+  second,
+  third,
+  ;
+}
+
+@freezedBlocState
+class {{name.pascalCase()}}State with _${{name.pascalCase()}}State {
+  const factory {{name.pascalCase()}}State({
+    @Default({{name.pascalCase()}}Step.first) {{name.pascalCase()}}Step currentStep,
+    // TODO: Add properties here, example:
+    // @Default({{name.pascalCase()}}Status.idle) {{name.pascalCase()}}Status status,
+  }) = _{{name.pascalCase()}}State;
+  const {{name.pascalCase()}}State._();
+
+  static const {{name.pascalCase()}}State init = {{name.pascalCase()}}State();
+}

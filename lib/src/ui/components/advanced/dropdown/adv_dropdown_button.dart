@@ -1,20 +1,18 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as m;
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'dart:math' as math;
-
-import 'package:flutter/services.dart';
 import 'package:toku_flutter_common/src/core/extensions/build_context.dart';
 
 ///addition starts
 class AdvDropdownAction {
-  VoidCallback? forceTap;
-  VoidCallback? onTap;
 
   AdvDropdownAction({this.onTap, this.forceTap});
+  VoidCallback? forceTap;
+  VoidCallback? onTap;
 }
 
 /// addition ends
@@ -1381,19 +1379,20 @@ class _AdvDropdownButtonState<T> extends State<AdvDropdownButton<T>> with Widget
       }
       //
       // Get the Scrollable state (in order to retrieve its offset)
+      // ignore: use_build_context_synchronously
       final scrollableState = Scrollable.maybeOf(context);
 
       // Get its offset
       final position = scrollableState?.position;
 
       if (position != null && position.pixels > position.maxScrollExtent) {
-        final _keyboardCompleter = Completer();
+        final keyboardCompleter = Completer();
         position.addListener(() {
           if (position.pixels <= position.maxScrollExtent) {
-            if (!_keyboardCompleter.isCompleted) _keyboardCompleter.complete();
+            if (!keyboardCompleter.isCompleted) keyboardCompleter.complete();
           }
         });
-        await _keyboardCompleter.future;
+        await keyboardCompleter.future;
       }
       // await Future.any([
       //   new Future.delayed(const Duration(milliseconds: 300)),

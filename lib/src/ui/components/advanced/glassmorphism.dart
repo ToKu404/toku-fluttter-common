@@ -2,10 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Glassmorphism extends StatelessWidget {
-  final double blur;
-  final double opacity;
-  final double radius;
-  final Widget child;
 
   const Glassmorphism({
     super.key,
@@ -14,6 +10,10 @@ class Glassmorphism extends StatelessWidget {
     required this.radius,
     required this.child,
   });
+  final double blur;
+  final double opacity;
+  final double radius;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

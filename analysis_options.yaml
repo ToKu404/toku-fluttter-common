@@ -1,4 +1,6 @@
-include: package:flutter_lints/flutter.yaml
+include: package:toku_flutter_common/lints.yaml
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+analyzer:
+  exclude:
+    - bricks/**/__brick__/**
+    - lib/src/aboitiz_ui/l10n/**

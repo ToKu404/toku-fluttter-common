@@ -1,0 +1,69 @@
+{{> bloc_imports.dart}}
+
+// TODO: Don't forget to generate the files using build_runner
+@injectable
+abstract class {{name.pascalCase()}}Bloc extends StateStreamableSource<{{name.pascalCase()}}State> {
+  @factoryMethod
+  factory {{name.pascalCase()}}Bloc(
+    // TODO: Add dependencies here, example:
+    // MyUseCase myUseCase,
+  ) = _{{name.pascalCase()}}BlocImpl;
+
+  void initialize(
+    {{#for_each_bloc_children}}
+    {{name.pascalCase()}}Bloc {{name.camelCase()}}Bloc,
+    {{/for_each_bloc_children}}
+  );
+
+  // TODO: Add methods here, example:
+  // void doSomething();
+}
+
+class _{{name.pascalCase()}}BlocImpl extends Cubit<{{name.pascalCase()}}State>
+    with AutoDisposeBlocMixin<{{name.pascalCase()}}State>
+    implements {{name.pascalCase()}}Bloc {
+  _{{name.pascalCase()}}BlocImpl(
+    // TODO: Add dependencies here, example:
+    // this._myUseCase,
+  ) : super({{name.pascalCase()}}State.init);
+
+  // final MyUseCase _myUseCase;
+
+  {{#for_each_bloc_children}}
+  late final {{name.pascalCase()}}Bloc _{{name.camelCase()}}Bloc;
+  {{/for_each_bloc_children}}
+
+  @override
+  void initialize(
+    {{#for_each_bloc_children}}
+    {{name.pascalCase()}}Bloc {{name.camelCase()}}Bloc,
+    {{/for_each_bloc_children}}
+  ) {
+    {{#for_each_bloc_children}}
+    _{{name.camelCase()}}Bloc = {{name.camelCase()}}Bloc;
+    {{/for_each_bloc_children}}
+    // TODO: add your initialization logic here, if any.
+    _initBlocListeners();
+  }
+
+  void _initBlocListeners() {
+    {{#for_each_bloc_children}}
+    _init{{name.pascalCase()}}BlocListener();
+    {{/for_each_bloc_children}}
+  }
+
+  {{#for_each_bloc_children}}
+  void _init{{name.pascalCase()}}BlocListener() {
+    // TODO: initialize the stream listener here, example:
+    // _{{name.camelCase()}}Bloc.stream
+    //    .startWith(_{{name.camelCase()}}Bloc.state)
+    //    .whenLast2(({{name.pascalCase()}}State previous, {{name.pascalCase()}}State current) => previous.counter != current.counter)
+    //    .listen(_on{{name.pascalCase()}}StateChanged)
+    //    .also(autoDispose); // <- dont forget this to auto dispose the stream subscription
+  }
+
+  // void _on{{name.pascalCase()}}StateChanged({{name.pascalCase()}}State {{name.camelCase()}}State) {
+  //   // TODO: implement what to do when the state changes
+  // }
+  {{/for_each_bloc_children}}
+}

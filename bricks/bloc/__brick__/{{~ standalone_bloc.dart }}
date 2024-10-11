@@ -1,0 +1,32 @@
+{{> bloc_imports.dart}}
+
+// TODO: Annotate the class with either
+// @injectable
+// or
+// @lazySingleton
+// Don't forget to generate the files using build_runner
+abstract class {{name.pascalCase()}}Bloc extends StateStreamableSource<{{name.pascalCase()}}State> {
+  @factoryMethod
+  factory {{name.pascalCase()}}Bloc(
+    // TODO: Add dependencies here, example:
+    // MyUseCase myUseCase,
+  ) = _{{name.pascalCase()}}BlocImpl;
+
+  // TODO: Add methods here, example:
+  // void doSomething();
+}
+
+class _{{name.pascalCase()}}BlocImpl extends Cubit<{{name.pascalCase()}}State> implements {{name.pascalCase()}}Bloc {
+  _{{name.pascalCase()}}BlocImpl(
+    // TODO: Add dependencies here, example:
+    // this._myUseCase,
+  ) : super({{name.pascalCase()}}State.init);
+
+  // final MyUseCase _myUseCase;
+
+  // TODO: Implement the methods here, example:
+  // @override
+  // void doSomething() {
+  //   ...
+  // }
+}

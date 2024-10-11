@@ -58,16 +58,10 @@ abstract class HttpClient {
 
   @optionalTypeArgs
   @visibleForTesting
-  static Result<T> parseSuccessData<T>(
-      HttpEndpointBase<T> endpoint, HttpResponse response) {
+  static Result<T> parseSuccessData<T>(HttpEndpointBase<T> endpoint, HttpResponse response) {
     try {
       final result = endpoint.onResponse(response);
-      if (result is T) {
-        return Result<T>.success(result);
-      } else {
-        return Result.error(
-            HttpException(result, statusCode: response.statusCode));
-      }
+      return Result<T>.success(result);
     } on FormatException {
       return Result.error(BadResponseFormatException());
     } on BadResponseFormatException {

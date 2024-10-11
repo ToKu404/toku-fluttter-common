@@ -1,0 +1,15 @@
+part of '{{name.snakeCase()}}_bloc.dart';
+
+@freezedBlocState
+class {{name.pascalCase()}}State with _${{name.pascalCase()}}State {
+  const factory {{name.pascalCase()}}State(
+    // TODO: Add properties here, example:
+    // {
+    // @Default(false) bool isLoading,
+    // @Default(null) MyOtherState2Item? selectedItem,
+    // }
+  ) = _{{name.pascalCase()}}State;
+  const {{name.pascalCase()}}State._();
+
+  static const {{name.pascalCase()}}State init = {{name.pascalCase()}}State();
+}

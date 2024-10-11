@@ -51,8 +51,7 @@ class HttpResponse extends Response {
     if (_isJsonResponse != null) return _isJsonResponse!;
     final headers = this.headers.toIgnoreCase();
     final contentType = headers['content-type'];
-    return _isJsonResponse =
-        contentType?.toLowerCase().contains('application/json') == true;
+    return _isJsonResponse = contentType?.toLowerCase().contains('application/json') == true;
   }
 
   Map<String, dynamic>? _bodyJson;
@@ -78,8 +77,8 @@ class HttpResponse extends Response {
     if (bodyJson == null || _hasBodyResponse == false) return null;
 
     if (!bodyJson.containsKey('response')) {
-      _hasBodyResponse = true;
-      return bodyJson;
+      _hasBodyResponse = false;
+      return null;
     }
 
     _hasBodyResponse = true;
@@ -91,23 +90,20 @@ class HttpResponse extends Response {
   /// Whether the body json has an "error" key.
   bool get hasBodyError => _hasBodyError ?? bodyError != null;
 
-  String get errorMessage => _errorMessage ?? '';
-  String? _errorMessage;
-
   Map<String, dynamic>? _bodyError;
   Map<String, dynamic>? get bodyError {
     if (_bodyError != null) return _bodyError!;
 
-    final dynamic bodyJson = this.bodyJson;
+    final bodyJson = this.bodyJson;
     if (bodyJson == null || _hasBodyError == false) return null;
 
-    final dynamic error = bodyJson['message'];
-    if (bodyJson is! Map<String, dynamic> && error is! String) {
+    final dynamic error = bodyJson['error'];
+    if (error is! Map<String, dynamic>) {
       _hasBodyError = false;
       return null;
     }
-    _errorMessage = error;
+
     _hasBodyError = true;
-    return bodyJson;
+    return _bodyError = error;
   }
 }

@@ -1,0 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toku_flutter_common/core.dart';
+
+part '{{name.snakeCase()}}_state.dart';
+part '{{name.snakeCase()}}_bloc.freezed.dart';

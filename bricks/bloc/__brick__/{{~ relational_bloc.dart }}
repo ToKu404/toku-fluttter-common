@@ -1,0 +1,68 @@
+{{> bloc_imports.dart}}
+
+// TODO: Don't forget to generate the files using build_runner
+
+// TODO: Add component scope annotation here, if any. Example:
+// @mainMenuScope
+@lazySingleton
+abstract class {{name.pascalCase()}}Bloc extends StateStreamableSource<{{name.pascalCase()}}State> {
+  @factoryMethod
+  factory {{name.pascalCase()}}Bloc(
+    // TODO: Add dependencies here, example:
+    // MyUseCase myUseCase,
+
+    // TODO: Add related blocs here, example:
+    // MyOtherBloc myOtherBloc,
+    // MyOtherBloc2 myOtherBloc2,
+  ) = _{{name.pascalCase()}}BlocImpl;
+
+  // TODO: Add methods here, example:
+  // void doSomething();
+}
+
+class _{{name.pascalCase()}}BlocImpl extends Cubit<{{name.pascalCase()}}State>
+    with AutoDisposeBlocMixin<{{name.pascalCase()}}State>
+    implements {{name.pascalCase()}}Bloc {
+  _{{name.pascalCase()}}BlocImpl(
+    // TODO: Add dependencies here, example:
+    // this._myUseCase,
+    
+    // TODO: Add related blocs here, example:
+    // this._myOtherBloc,
+    // this._myOtherBloc2,
+  ) : super({{name.pascalCase()}}State.init) {
+    _init();
+  }
+
+  void _init() {
+    _initBlocListeners();
+  }
+
+  void _initBlocListeners() {
+    // TODO: Add bloc listeners here, example:
+    // _initMyOtherBlocListener();
+  }
+
+  /// final MyUseCase _myUseCase;
+
+  // TODO: Implement the methods here, example:
+  // @override
+  // void doSomething() {
+  //   ...
+  // }
+
+  // final MyOtherBloc _myOtherBloc;
+  // final MyOtherBloc2 _myOtherBloc2;
+
+  // void _initMyOtherBlocListener() {
+  //   CombineLatestStream.combine2(
+  //     _myOtherBloc.stream.map((it) => it.selectedItemId),
+  //     _myOtherBloc2.stream.when((MyOtherState2 previous, MyOtherState2 current) => previous.items != current.items),
+  //     (String? selectedItemId, MyOtherState2 state) => state.items.firstWhereOrNull((it) => it.id == selectedItemId),
+  //   ).distinct().listen(_onSelectedItemStateChanged).also(autoDispose);
+  // }
+  //
+  // void _onSelectedItemStateChanged(MyOtherState2Item item) {
+  //   ...
+  // }
+}
