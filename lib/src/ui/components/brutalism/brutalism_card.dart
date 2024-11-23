@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 
 class BrutalismCard extends StatefulWidget {
-  final Widget child;
-  final Color primaryColor;
-  final Color layerColor;
-  final Color? borderColor;
-  final double layerSpace;
-  final Color? textColor;
-  final VoidCallback onTap;
-  final bool isEnabled;
   const BrutalismCard(
       {super.key,
       required this.child,
-      required this.onTap,
+      this.onTap,
       this.isEnabled = true,
       required this.primaryColor,
       required this.layerColor,
       this.textColor,
+      this.borderWidth,
       required this.layerSpace,
+      this.padding = const EdgeInsets.all(12),
       this.borderColor});
+  final Widget child;
+  final Color primaryColor;
+  final Color layerColor;
+  final Color? borderColor;
+  final double? borderWidth;
+  final double layerSpace;
+  final Color? textColor;
+  final VoidCallback? onTap;
+  final bool isEnabled;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<BrutalismCard> createState() => _BrutalismCardState();
@@ -39,24 +43,24 @@ class _BrutalismCardState extends State<BrutalismCard> {
         valueListenable: _onHoverNotifier,
         builder: (context, onHover, _) {
           return GestureDetector(
-            onTapDown: widget.isEnabled
+            onTapDown: widget.isEnabled && widget.onTap != null
                 ? (details) {
                     _onHoverNotifier.value = true;
                   }
                 : null,
-            onTapUp: widget.isEnabled
+            onTapUp: widget.isEnabled && widget.onTap != null
                 ? (details) {
                     Future.delayed(const Duration(milliseconds: 200), () {
                       _onHoverNotifier.value = false;
-                      widget.onTap.call();
+                      widget.onTap!.call();
                     });
                   }
                 : null,
-            onTapCancel: widget.isEnabled
+            onTapCancel: widget.isEnabled && widget.onTap != null
                 ? () {
                     Future.delayed(const Duration(milliseconds: 200), () {
                       _onHoverNotifier.value = false;
-                      widget.onTap.call();
+                      widget.onTap!.call();
                     });
                   }
                 : null,
@@ -74,11 +78,11 @@ class _BrutalismCardState extends State<BrutalismCard> {
                       borderRadius: BorderRadius.circular(8),
                       color: widget.layerColor,
                       border: Border.all(
-                        width: 1,
+                        width: widget.borderWidth ?? 1,
                         color: widget.borderColor ?? Colors.black,
                       ),
                     ),
-                    padding: const EdgeInsets.all(12),
+                    padding: widget.padding,
                     child: const SizedBox(),
                   ),
                 ),
@@ -97,13 +101,23 @@ class _BrutalismCardState extends State<BrutalismCard> {
                         ),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: widget.isEnabled ? widget.primaryColor : Colors.white,
+                      color:
+                          widget.isEnabled ? widget.primaryColor : Colors.white,
                       border: Border.all(
-                        width: 1,
-                        color: widget.isEnabled ? widget.borderColor ?? Colors.black : Colors.grey,
+                        width: widget.borderWidth ?? 1,
+                        color: widget.isEnabled
+                            ? widget.borderColor ?? Colors.black
+                            : Colors.grey,
                       )),
-                  padding: const EdgeInsets.all(12),
-                  child: widget.child,
+                  child: ClipRRect(
+                    clipBehavior: Clip.hardEdge,
+                    borderRadius:
+                        BorderRadius.circular(8 - (widget.layerSpace / 2)),
+                    child: Padding(
+                      padding: widget.padding ?? EdgeInsets.zero,
+                      child: widget.child,
+                    ),
+                  ),
                 ),
               ],
             ),
