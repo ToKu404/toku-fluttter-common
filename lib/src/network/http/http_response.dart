@@ -54,11 +54,16 @@ class HttpResponse extends Response {
     return _isJsonResponse = contentType?.toLowerCase().contains('application/json') == true;
   }
 
-  Map<String, dynamic>? _bodyJson;
-  Map<String, dynamic>? get bodyJson {
+  dynamic _bodyJson;
+  dynamic get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
     if (!isJsonResponse) return null;
-    return _bodyJson = jsonDecode(body) as Map<String, dynamic>;
+    final decodeBody = jsonDecode(body);
+    if (decodeBody is List) {
+      return _bodyJson = jsonDecode(body) as List<dynamic>;
+    } else {
+      return _bodyJson = jsonDecode(body) as Map<String, dynamic>;
+    }
   }
 
   bool? _hasBodyResponse;
@@ -73,16 +78,20 @@ class HttpResponse extends Response {
   Object? get bodyResponse {
     if (_bodyResponse != null) return _bodyResponse!;
 
-    final bodyJson = this.bodyJson;
-    if (bodyJson == null || _hasBodyResponse == false) return null;
+    if (_bodyJson is List) {
+      return _bodyJson;
+    } else {
+      final bodyJson = this.bodyJson as Map<String, dynamic>?;
+      if (bodyJson == null || _hasBodyResponse == false) return null;
 
-    if (!bodyJson.containsKey('response')) {
-      _hasBodyResponse = false;
-      return null;
+      if (!bodyJson.containsKey('response')) {
+        _hasBodyResponse = true;
+        return bodyJson;
+      }
+
+      _hasBodyResponse = true;
+      return _bodyResponse = bodyJson['response'];
     }
-
-    _hasBodyResponse = true;
-    return _bodyResponse = bodyJson['response'];
   }
 
   bool? _hasBodyError;
@@ -94,7 +103,7 @@ class HttpResponse extends Response {
   Map<String, dynamic>? get bodyError {
     if (_bodyError != null) return _bodyError!;
 
-    final bodyJson = this.bodyJson;
+    final bodyJson = this.bodyJson as Map<String, dynamic>?;
     if (bodyJson == null || _hasBodyError == false) return null;
 
     final dynamic error = bodyJson['error'];

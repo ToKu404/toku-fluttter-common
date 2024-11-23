@@ -9,12 +9,10 @@ import 'package:toku_flutter_common/src/core/models/result.dart';
 class LoggerInterceptor extends Interceptor {
   const LoggerInterceptor();
 
-  static String _prettyJsonFromMap(Map<String, dynamic> map) =>
-      const JsonEncoder.withIndent('  ').convert(map);
+  static String _prettyJsonFromMap(Map<String, dynamic> map) => const JsonEncoder.withIndent('  ').convert(map);
   static Object _prettyJsonFromString(String json) {
     try {
-      final Map<String, dynamic> decoded =
-          jsonDecode(json) as Map<String, dynamic>;
+      final Map<String, dynamic> decoded = jsonDecode(json) as Map<String, dynamic>;
       return _prettyJsonFromMap(decoded);
     } on FormatException {
       return json;
@@ -25,8 +23,7 @@ class LoggerInterceptor extends Interceptor {
   Future<Result<HttpResponse>> intercept(InterceptorChain chain) async {
     final outgoingLogBuffer = StringBuffer()
       ..writeln('Outgoing [${chain.request.method}] ${chain.request.url}')
-      ..writeln(
-          'Request Headers: ${_prettyJsonFromMap(chain.request.headers)}');
+      ..writeln('Request Headers: ${_prettyJsonFromMap(chain.request.headers)}');
     final request = chain.request;
     if (request is Request && request.bodyBytes.isNotEmpty) {
       outgoingLogBuffer.writeln('Body: ${_prettyJsonFromString(request.body)}');
@@ -47,12 +44,17 @@ class LoggerInterceptor extends Interceptor {
     response.when(
       success: (HttpResponse data) {
         final bodyJson = data.bodyJson;
+        final resultBody = bodyJson != null
+            ? bodyJson is List
+                ? bodyJson
+                : _prettyJsonFromMap(bodyJson)
+            : null;
         log(
           'Incoming [${chain.request.method}] ${chain.request.url}\n'
           'Response Headers: ${_prettyJsonFromMap(data.headers)}\n'
           'Status Code: ${data.statusCode}\n'
           'Reason Phrase: ${data.reasonPhrase}\n'
-          'Body: ${bodyJson != null ? _prettyJsonFromMap(bodyJson) : null}',
+          'Body: $resultBody',
           name: 'LoggerInterceptor',
         );
         _printInConsole(
@@ -61,22 +63,17 @@ class LoggerInterceptor extends Interceptor {
                 'Response Headers: ${_prettyJsonFromMap(data.headers)}\n'
                 'Status Code: ${data.statusCode}\n'
                 'Reason Phrase: ${data.reasonPhrase}\n'
-                'Body: ${bodyJson != null ? _prettyJsonFromMap(bodyJson) : null}');
+                'Body:  $resultBody');
       },
       error: (Exception e) {
         final errorLogBuffer = StringBuffer()
-          ..writeln(
-              'Incoming failure [${chain.request.method}] ${chain.request.url}')
-          ..writeln(
-              'Request Headers: ${_prettyJsonFromMap(chain.request.headers)}');
+          ..writeln('Incoming failure [${chain.request.method}] ${chain.request.url}')
+          ..writeln('Request Headers: ${_prettyJsonFromMap(chain.request.headers)}');
         if (e is ErrorResponseException) {
           errorLogBuffer
-            ..writeln(
-                'Error (${e.statusCode}): ${_prettyJsonFromMap(e.errorResponse.toJson())}')
-            ..writeln(
-                'Response Headers: ${_prettyJsonFromMap(e.responseHeaders!)}')
-            ..writeln(
-                'Response Body: ${_prettyJsonFromMap(e.responseRawJson!)}');
+            ..writeln('Error (${e.statusCode}): ${_prettyJsonFromMap(e.errorResponse.toJson())}')
+            ..writeln('Response Headers: ${_prettyJsonFromMap(e.responseHeaders!)}')
+            ..writeln('Response Body: ${_prettyJsonFromMap(e.responseRawJson!)}');
         }
         log(
           errorLogBuffer.toString(),
