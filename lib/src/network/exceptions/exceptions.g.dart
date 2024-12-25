@@ -22,7 +22,7 @@ Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
 
 ErrorResponseDetail _$ErrorResponseDetailFromJson(Map<String, dynamic> json) =>
     ErrorResponseDetail(
-      userId: json['userId'] as int?,
+      userId: (json['userId'] as num?)?.toInt(),
       username: json['username'] as String? ?? '',
     );
 

@@ -32,6 +32,7 @@ class AdvTextField extends AdvValueTextField<String> {
     super.bordered,
     super.canError,
     super.withValidator,
+    super.border,
   }) : super(valueConverter: const _StringTextConverter());
 }
 

@@ -47,11 +47,11 @@ class _$ValidatedValueCopyWithImpl<T extends Object, $Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = null,
+    Object? value = freezed,
     Object? isValid = freezed,
   }) {
     return _then(_value.copyWith(
-      value: null == value
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as T?,
@@ -85,11 +85,11 @@ class __$$ValidatedValueImplCopyWithImpl<T extends Object, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = null,
+    Object? value = freezed,
     Object? isValid = freezed,
   }) {
     return _then(_$ValidatedValueImpl<T>(
-      value: null == value
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as T?,

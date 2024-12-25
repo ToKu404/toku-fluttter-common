@@ -1,0 +1,71 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "[Windows] Run build runner in root",
+      "type": "shell",
+      "command": "dart run build_runner build --delete-conflicting-outputs",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "[Windows] Run build runner in `end_user`",
+      "type": "shell",
+      "command": "dart run build_runner build --delete-conflicting-outputs",
+      "options": {
+        "cwd": "${workspaceFolder}\\apps\\end_user"
+      }
+    },
+    {
+      "label": "[Windows] Generate localization using Flutter Gen-L10n CLI in root",
+      "type": "shell",
+      "command": "flutter gen-l10n --arb-dir=lib\\src\\ui\\l10n --template-arb-file=aboitiz_common_en.arb --output-localization-file=aboitiz_common_localizations.dart --output-class=AboitizCommonLocalizations --no-synthetic-package --use-escaping",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "[Windows] Generate localization using Flutter Gen-L10n CLI in `end_user`",
+      "type": "shell",
+      "command": "flutter gen-l10n --arb-dir=apps\\end_user\\lib\\src\\ui\\l10n --template-arb-file=mobileap_end_user_common_en.arb --output-localization-file=mobileap_end_user_common_localizations.dart --output-class=MobileApEndUserCommonLocalizations --no-synthetic-package --use-escaping",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "[Linux/Mac] Run build runner in root",
+      "type": "shell",
+      "command": "dart run build_runner build --delete-conflicting-outputs",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "[Linux/Mac] Run build runner in `end_user`",
+      "type": "shell",
+      "command": "dart run build_runner build --delete-conflicting-outputs",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/end_user"
+      }
+    },
+    {
+      "label": "[Linux/Mac] Generate localization using Flutter Gen-L10n CLI in root",
+      "type": "shell",
+      "command": "flutter gen-l10n --arb-dir=lib/src/ui/l10n --template-arb-file=aboitiz_common_en.arb --output-localization-file=aboitiz_common_localizations.dart --output-class=AboitizCommonLocalizations --no-synthetic-package --use-escaping",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "[Linux/Mac] Generate localization using Flutter Gen-L10n CLI in `end_user`",
+      "type": "shell",
+      "command": "flutter gen-l10n --arb-dir=apps/end_user/lib/src/ui/l10n --template-arb-file=mobileap_end_user_common_en.arb --output-localization-file=mobileap_end_user_common_localizations.dart --output-class=MobileApEndUserCommonLocalizations --no-synthetic-package --use-escaping",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}

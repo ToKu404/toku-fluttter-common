@@ -42,6 +42,7 @@ class AdvValueTextField<T extends Object?> extends StatefulWidget {
     this.bordered = true,
     this.canError = true,
     this.withValidator = true,
+    this.border,
   });
 
   final T? value;
@@ -71,6 +72,7 @@ class AdvValueTextField<T extends Object?> extends StatefulWidget {
   final bool bordered;
   final bool canError;
   final bool withValidator;
+  final InputBorder? border;
 
   /// Whether to show the validation state of the text field.
   ///
@@ -88,7 +90,8 @@ class AdvValueTextField<T extends Object?> extends StatefulWidget {
   _AdvValueTextFieldState<T> createState() => _AdvValueTextFieldState<T>();
 }
 
-class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField<T>>
+class _AdvValueTextFieldState<T extends Object?>
+    extends State<AdvValueTextField<T>>
     with AutoDisposeStateMixin<AdvValueTextField<T>> {
   @override
   Widget build(BuildContext context) {
@@ -96,29 +99,34 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
     final decoration = widget.decoration;
     final validationText = decoration?.validationText;
     final suffix = decoration?.suffix;
-    final effectiveStyle = widget.style?.copyWith(height: 1.25) ?? const TextStyle(height: 1.25);
+    final effectiveStyle =
+        widget.style?.copyWith(height: 1.25) ?? const TextStyle(height: 1.25);
     final effectiveHintStyle = widget.style?.copyWith(color: Colors.grey);
-    TextStyle effectiveErrorStyle = widget.style?.copyWith(height: 0.3) ?? const TextStyle(height: 0.4);
+    TextStyle effectiveErrorStyle =
+        widget.style?.copyWith(height: 0.3) ?? const TextStyle(height: 0.4);
     final String? effectiveErrorText;
     final InputBorder? errorBorder;
     if (hasValidationState) {
       effectiveErrorText = validationText?.text ??
-          (validationText?.status == FieldValidationStatus.pending ? 'Pending Verification' : null);
-      effectiveErrorStyle = validationText?.status == FieldValidationStatus.pending
-          ? effectiveErrorStyle.copyWith(color: Colors.red)
-          : effectiveErrorStyle;
+          (validationText?.status == FieldValidationStatus.pending
+              ? 'Pending Verification'
+              : null);
+      effectiveErrorStyle =
+          validationText?.status == FieldValidationStatus.pending
+              ? effectiveErrorStyle.copyWith(color: Colors.red)
+              : effectiveErrorStyle;
       switch (validationText?.status) {
         case null:
         case FieldValidationStatus.error:
           errorBorder = null;
           break;
         case FieldValidationStatus.pending:
-          errorBorder = OutlineInputBorder(
+          errorBorder = const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
           );
           break;
         case FieldValidationStatus.success:
-          errorBorder = OutlineInputBorder(
+          errorBorder = const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.green),
           );
           break;
@@ -128,14 +136,17 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
       effectiveErrorText = null;
     }
 
-    final defaultInputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: Colors.grey),
-    );
+    final defaultInputBorder = widget.border ??
+        OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Colors.grey),
+        );
 
     Widget result = Padding(
       padding: widget.canError
-          ? (hasValidationState && effectiveErrorText == null && !widget.withCounterText
+          ? (hasValidationState &&
+                  effectiveErrorText == null &&
+                  !widget.withCounterText
               ? const EdgeInsets.only(bottom: 18)
               : const EdgeInsets.only(bottom: 5))
           : EdgeInsets.zero,
@@ -173,17 +184,16 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
                     fillColor: Colors.white,
                     hintText: decoration?.hintText,
                     hintStyle: effectiveHintStyle,
-                    focusedBorder: widget.bordered
-                        ? OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: Colors.grey),
-                          )
-                        : InputBorder.none,
-                    border: widget.bordered ? defaultInputBorder : InputBorder.none,
-                    enabledBorder: widget.bordered ? defaultInputBorder : InputBorder.none,
-                    disabledBorder: widget.bordered ? defaultInputBorder : InputBorder.none,
+                    focusedBorder:
+                        widget.bordered ? defaultInputBorder : InputBorder.none,
+                    border:
+                        widget.bordered ? defaultInputBorder : InputBorder.none,
+                    enabledBorder:
+                        widget.bordered ? defaultInputBorder : InputBorder.none,
+                    disabledBorder:
+                        widget.bordered ? defaultInputBorder : InputBorder.none,
                     counterText: widget.withCounterText ? null : '',
-                    counterStyle: TextStyle(fontSize: 12),
+                    counterStyle: const TextStyle(fontSize: 12),
                     errorText: effectiveErrorText,
                     errorStyle: effectiveErrorStyle,
                     errorMaxLines: 1,
@@ -218,7 +228,8 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
                     suffixIconConstraints: const BoxConstraints(),
                     suffixIcon: ValueListenableSelector<TextEditingValue, bool>(
                       valueListenable: _controller,
-                      selector: (TextEditingValue value) => value.text.isNotEmpty,
+                      selector: (TextEditingValue value) =>
+                          value.text.isNotEmpty,
                       builder: (_, bool isTextNotEmpty, child) {
                         final shouldShowSuffixIcon = isTextNotEmpty ||
                             validationText != null ||
@@ -227,7 +238,9 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
                             widget.obscureText;
 
                         if (!shouldShowSuffixIcon) {
-                          return widget.textAlign != TextAlign.end ? const SizedBox() : const SizedBox(width: 12);
+                          return widget.textAlign != TextAlign.end
+                              ? const SizedBox()
+                              : const SizedBox(width: 12);
                         }
                         return _AdvTextFieldSuffixWidget(
                           isTextNotEmpty: isTextNotEmpty,
@@ -281,8 +294,10 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
   }
 
   late final TextEditingController _controller;
-  late final ValueNotifier<bool> _hasFocusListener = autoDispose(ValueNotifier<bool>(false));
-  late final ValueNotifier<bool> _obscureNotifier = autoDispose(ValueNotifier<bool>(true));
+  late final ValueNotifier<bool> _hasFocusListener =
+      autoDispose(ValueNotifier<bool>(false));
+  late final ValueNotifier<bool> _obscureNotifier =
+      autoDispose(ValueNotifier<bool>(true));
 
   @override
   void initState() {
@@ -317,7 +332,8 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
   }
 
   FocusNode? _focusNode;
-  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= autoDispose(FocusNode()));
+  FocusNode get _effectiveFocusNode =>
+      widget.focusNode ?? (_focusNode ??= autoDispose(FocusNode()));
 
   late ChangeNotifierListener _focusListener;
   void _listenFocusNode() {
@@ -350,7 +366,8 @@ class _AdvValueTextFieldState<T extends Object?> extends State<AdvValueTextField
 
   void _setTextFromValue() {
     _value = widget.value;
-    _valueText = _value is T ? widget.valueConverter.fromValue(_value as T) : '';
+    _valueText =
+        _value is T ? widget.valueConverter.fromValue(_value as T) : '';
   }
 
   TextEditingValue _getFormattedValue([TextEditingValue? oldValue]) {
@@ -390,7 +407,8 @@ class _AdvTextFieldLabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labelStyle = Theme.of(context).inputDecorationTheme.labelStyle;
-    final labelText = isRequired ? '${this.labelText} (Required)' : this.labelText;
+    final labelText =
+        isRequired ? '${this.labelText} (Required)' : this.labelText;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
       child: Text(labelText, style: labelStyle),
@@ -425,7 +443,9 @@ class _AdvTextFieldSuffixWidget extends StatelessWidget {
     return Theme(
       data: ThemeData(useMaterial3: true),
       child: Padding(
-        padding: obscureText || withClearButton ? EdgeInsets.zero : const EdgeInsets.only(right: 12),
+        padding: obscureText || withClearButton
+            ? EdgeInsets.zero
+            : const EdgeInsets.only(right: 12),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -453,7 +473,7 @@ class _AdvTextFieldSuffixWidget extends StatelessWidget {
 
   Icon? get _textFieldStateIcon {
     final validationText = this.validationText;
-    final successIcon = Icon(
+    final successIcon = const Icon(
       Icons.check,
       color: Colors.green,
       size: 18,
@@ -464,7 +484,7 @@ class _AdvTextFieldSuffixWidget extends StatelessWidget {
     }
     switch (validationText.status) {
       case FieldValidationStatus.error:
-        return Icon(
+        return const Icon(
           Icons.error,
           color: Colors.red,
           size: 18,
@@ -472,7 +492,7 @@ class _AdvTextFieldSuffixWidget extends StatelessWidget {
       case FieldValidationStatus.success:
         return successIcon;
       case FieldValidationStatus.pending:
-        return Icon(
+        return const Icon(
           Icons.warning,
           color: Colors.grey,
           size: 18,
@@ -502,8 +522,8 @@ class _ObscureButton extends StatelessWidget {
           hoverColor: Colors.transparent,
           onPressed: () => obscureNotifier.value = !obscureNotifier.value,
           icon: isObscured
-              ? Icon(Icons.visibility_off_rounded, color: Colors.grey)
-              : Icon(Icons.remove_red_eye, color: Colors.grey),
+              ? const Icon(Icons.visibility_off_rounded, color: Colors.grey)
+              : const Icon(Icons.remove_red_eye, color: Colors.grey),
         );
       },
     );
@@ -527,7 +547,7 @@ class _ClearButton extends StatelessWidget {
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
       onPressed: onPressed,
-      icon: Icon(
+      icon: const Icon(
         Icons.close,
         color: Colors.grey,
         size: 24,
