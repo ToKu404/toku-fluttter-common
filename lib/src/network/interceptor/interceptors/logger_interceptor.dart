@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:toku_flutter_common/network.dart';
 import 'package:toku_flutter_common/src/core/models/result.dart';
@@ -37,7 +36,6 @@ class LoggerInterceptor extends Interceptor {
       outgoingLogBuffer.toString(),
       name: 'LoggerInterceptor',
     );
-    _printInConsole('LoggerInterceptor', outgoingLogBuffer.toString());
 
     final response = await chain.proceed(chain.request);
 
@@ -57,13 +55,6 @@ class LoggerInterceptor extends Interceptor {
           'Body: $resultBody',
           name: 'LoggerInterceptor',
         );
-        _printInConsole(
-            'LoggerInterceptor',
-            'Incoming [${chain.request.method}] ${chain.request.url}\n'
-                'Response Headers: ${_prettyJsonFromMap(data.headers)}\n'
-                'Status Code: ${data.statusCode}\n'
-                'Reason Phrase: ${data.reasonPhrase}\n'
-                'Body:  $resultBody');
       },
       error: (Exception e) {
         final errorLogBuffer = StringBuffer()
@@ -81,15 +72,11 @@ class LoggerInterceptor extends Interceptor {
           error: e,
           stackTrace: StackTrace.current,
         );
-        _printInConsole('LoggerInterceptor', errorLogBuffer.toString());
       },
     );
 
     return response;
   }
 
-  void _printInConsole(String title, String message) {
-    debugPrint("Action : $title");
-    debugPrint(message);
-  }
+
 }

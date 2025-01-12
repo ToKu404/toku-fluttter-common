@@ -113,29 +113,32 @@ class _BrutalismCardState extends State<BrutalismCard> {
           ],
         );
         if (widget.gestureType == BrutalismGestureType.clicked) {
-          return GestureDetector(
-            onTapDown: widget.isEnabled && widget.onTap != null
-                ? (details) {
-                    _onHoverNotifier.value = true;
-                  }
-                : null,
-            onTapUp: widget.isEnabled && widget.onTap != null
-                ? (details) {
-                    Future.delayed(const Duration(milliseconds: 200), () {
-                      _onHoverNotifier.value = false;
-                      widget.onTap!.call();
-                    });
-                  }
-                : null,
-            onTapCancel: widget.isEnabled && widget.onTap != null
-                ? () {
-                    Future.delayed(const Duration(milliseconds: 200), () {
-                      _onHoverNotifier.value = false;
-                      widget.onTap!.call();
-                    });
-                  }
-                : null,
-            child: child,
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTapDown: widget.isEnabled && widget.onTap != null
+                  ? (details) {
+                      _onHoverNotifier.value = true;
+                    }
+                  : null,
+              onTapUp: widget.isEnabled && widget.onTap != null
+                  ? (details) {
+                      Future.delayed(const Duration(milliseconds: 200), () {
+                        _onHoverNotifier.value = false;
+                        widget.onTap!.call();
+                      });
+                    }
+                  : null,
+              onTapCancel: widget.isEnabled && widget.onTap != null
+                  ? () {
+                      Future.delayed(const Duration(milliseconds: 200), () {
+                        _onHoverNotifier.value = false;
+                        widget.onTap!.call();
+                      });
+                    }
+                  : null,
+              child: child,
+            ),
           );
         } else {
           return MouseRegion(
