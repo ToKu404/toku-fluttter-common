@@ -19,7 +19,6 @@ class UnexpectedResponseFormatException implements Exception {
   String toString() => 'Unexpected Response Format';
 }
 
-
 class ErrorResponseException implements Exception {
   const ErrorResponseException({
     required this.statusCode,
@@ -47,26 +46,24 @@ class ErrorResponseException implements Exception {
   // bool get isInvalidToken => errorResponse.message == 'invalid_token';
 
   @override
-  String toString() => errorResponse.error;
+  String toString() => errorResponse.message;
 }
-
 
 //! disini
 @jsonable
 class ErrorResponse extends Equatable {
   const ErrorResponse({
     // this.code = '',
-    this.error = '',
+    this.message = '',
     // this.detail,
   });
 
-  factory ErrorResponse.fromJson(Map<String, dynamic> json) =>
-      _$ErrorResponseFromJson(json);
+  factory ErrorResponse.fromJson(Map<String, dynamic> json) => _$ErrorResponseFromJson(json);
 
   static const ErrorResponse empty = ErrorResponse();
 
   // final String code;
-  final String error;
+  final String message;
 
   // @JsonKey(
   //   fromJson: _detailFromJson,
@@ -89,8 +86,8 @@ class ErrorResponse extends Equatable {
   // @override
   // List<Object?> get props => [code, message, detail];
 
-    @override
-  List<Object?> get props => [error];
+  @override
+  List<Object?> get props => [message];
 }
 
 @jsonable
@@ -100,8 +97,7 @@ class ErrorResponseDetail extends Equatable {
     this.username = '',
   });
 
-  factory ErrorResponseDetail.fromJson(Map<String, dynamic> json) =>
-      _$ErrorResponseDetailFromJson(json);
+  factory ErrorResponseDetail.fromJson(Map<String, dynamic> json) => _$ErrorResponseDetailFromJson(json);
 
   static const ErrorResponseDetail empty = ErrorResponseDetail();
 

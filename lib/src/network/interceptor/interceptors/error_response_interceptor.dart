@@ -18,6 +18,8 @@ class ErrorResponseInterceptor extends Interceptor {
         );
         return Result<HttpResponse>.error(errorResponseException);
       } else if (data.statusCode != 200) {
+        debugPrint("this2");
+
         return Result.error(HttpCodeException(
           statusCode: data.statusCode,
           reasonPhrase: data.reasonPhrase,

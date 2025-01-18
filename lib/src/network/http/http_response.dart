@@ -79,13 +79,16 @@ class HttpResponse extends Response {
     final bodyJson = this.bodyJson;
     if (bodyJson == null || _hasBodyResponse == false) return null;
 
-    if (!bodyJson.containsKey('data')) {
-      _hasBodyResponse = false;
-      return null;
-    }
+    // if (bodyJson.containsKey('content')) {
+    //   _hasBodyResponse = true;
+    //   return _bodyResponse = bodyJson['content'];
+    // }
 
     _hasBodyResponse = true;
-    return _bodyResponse = bodyJson['data'];
+    return _bodyResponse = bodyJson;
+
+    // _hasBodyResponse = true;
+    // return _bodyResponse = bodyJson['data'];
   }
 
   bool? _hasBodyError;
@@ -100,9 +103,9 @@ class HttpResponse extends Response {
     final bodyJson = this.bodyJson;
     if (bodyJson == null || _hasBodyError == false) return null;
 
-    final dynamic error = bodyJson['error'];
+    final dynamic error = bodyJson;
 
-    if (error is! Map<String, dynamic>) {
+    if (error is! Map<String, dynamic> || !error.containsKey('message')) {
       _hasBodyError = false;
       return null;
     }
