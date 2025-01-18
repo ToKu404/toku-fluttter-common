@@ -54,17 +54,14 @@ class HttpResponse extends Response {
     return _isJsonResponse = contentType?.toLowerCase().contains('application/json') == true;
   }
 
-  dynamic _bodyJson;
-  dynamic get bodyJson {
-    // 
+  Map<String, dynamic>? _bodyJson;
+  Map<String, dynamic>? get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
+
     if (!isJsonResponse) return null;
-    final decodeBody = jsonDecode(body);
-    if (decodeBody is List) {
-      return _bodyJson = jsonDecode(body) as List<dynamic>;
-    } else {
-      return _bodyJson = jsonDecode(body) as Map<String, dynamic>;
-    }
+    final d = jsonDecode(body) as Map<String, dynamic>;
+
+    return d;
   }
 
   bool? _hasBodyResponse;
@@ -79,20 +76,16 @@ class HttpResponse extends Response {
   Object? get bodyResponse {
     if (_bodyResponse != null) return _bodyResponse!;
 
-    if (_bodyJson is List) {
-      return _bodyJson;
-    } else {
-      final bodyJson = this.bodyJson as Map<String, dynamic>?;
-      if (bodyJson == null || _hasBodyResponse == false) return null;
+    final bodyJson = this.bodyJson;
+    if (bodyJson == null || _hasBodyResponse == false) return null;
 
-      if (!bodyJson.containsKey('response')) {
-        _hasBodyResponse = true;
-        return bodyJson;
-      }
-
-      _hasBodyResponse = true;
-      return _bodyResponse = bodyJson['response'];
+    if (!bodyJson.containsKey('data')) {
+      _hasBodyResponse = false;
+      return null;
     }
+
+    _hasBodyResponse = true;
+    return _bodyResponse = bodyJson['data'];
   }
 
   bool? _hasBodyError;
@@ -104,16 +97,17 @@ class HttpResponse extends Response {
   Map<String, dynamic>? get bodyError {
     if (_bodyError != null) return _bodyError!;
 
-    final bodyJson = this.bodyJson as Map<String, dynamic>?;
+    final bodyJson = this.bodyJson;
     if (bodyJson == null || _hasBodyError == false) return null;
 
     final dynamic error = bodyJson['error'];
+
     if (error is! Map<String, dynamic>) {
       _hasBodyError = false;
       return null;
     }
 
     _hasBodyError = true;
-    return _bodyError = error;
+    return _bodyError = bodyJson;
   }
 }

@@ -19,6 +19,7 @@ class UnexpectedResponseFormatException implements Exception {
   String toString() => 'Unexpected Response Format';
 }
 
+
 class ErrorResponseException implements Exception {
   const ErrorResponseException({
     required this.statusCode,
@@ -41,20 +42,22 @@ class ErrorResponseException implements Exception {
 
   final ErrorResponse errorResponse;
 
-  bool get isInvalidGrant => errorResponse.message == 'invalid_grant';
+  // bool get isInvalidGrant => errorResponse.message == 'invalid_grant';
 
-  bool get isInvalidToken => errorResponse.message == 'invalid_token';
+  // bool get isInvalidToken => errorResponse.message == 'invalid_token';
 
   @override
-  String toString() => errorResponse.message;
+  String toString() => errorResponse.error;
 }
 
+
+//! disini
 @jsonable
 class ErrorResponse extends Equatable {
   const ErrorResponse({
-    this.code = '',
-    this.message = '',
-    this.detail,
+    // this.code = '',
+    this.error = '',
+    // this.detail,
   });
 
   factory ErrorResponse.fromJson(Map<String, dynamic> json) =>
@@ -62,29 +65,32 @@ class ErrorResponse extends Equatable {
 
   static const ErrorResponse empty = ErrorResponse();
 
-  final String code;
-  final String message;
+  // final String code;
+  final String error;
 
-  @JsonKey(
-    fromJson: _detailFromJson,
-    toJson: _detailToJson,
-  )
-  final Object? detail;
-  static Object? _detailToJson(Object? detail) =>
-      detail is ErrorResponseDetail ? detail.toJson() : detail;
-  static Object? _detailFromJson(Object? detail) {
-    if (detail is Map<String, dynamic>) {
-      return ErrorResponseDetail.fromJson(detail);
-    }
-    return detail;
-  }
+  // @JsonKey(
+  //   fromJson: _detailFromJson,
+  //   toJson: _detailToJson,
+  // )
+  // final Object? detail;
+  // static Object? _detailToJson(Object? detail) =>
+  //     detail is ErrorResponseDetail ? detail.toJson() : detail;
+  // static Object? _detailFromJson(Object? detail) {
+  //   if (detail is Map<String, dynamic>) {
+  //     return ErrorResponseDetail.fromJson(detail);
+  //   }
+  //   return detail;
+  // }
 
   Map<String, dynamic> toJson() => _$ErrorResponseToJson(this);
 
   bool get isEmpty => this == empty;
 
-  @override
-  List<Object?> get props => [code, message, detail];
+  // @override
+  // List<Object?> get props => [code, message, detail];
+
+    @override
+  List<Object?> get props => [error];
 }
 
 @jsonable

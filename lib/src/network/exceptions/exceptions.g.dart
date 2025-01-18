@@ -8,16 +8,12 @@ part of 'exceptions.dart';
 
 ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) =>
     ErrorResponse(
-      code: json['code'] as String? ?? '',
-      message: json['message'] as String? ?? '',
-      detail: ErrorResponse._detailFromJson(json['detail']),
+      error: json['error'] as String? ?? '',
     );
 
 Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
     <String, dynamic>{
-      'code': instance.code,
-      'message': instance.message,
-      'detail': ErrorResponse._detailToJson(instance.detail),
+      'error': instance.error,
     };
 
 ErrorResponseDetail _$ErrorResponseDetailFromJson(Map<String, dynamic> json) =>

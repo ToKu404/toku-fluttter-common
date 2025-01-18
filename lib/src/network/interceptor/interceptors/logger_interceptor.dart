@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:toku_flutter_common/network.dart';
 import 'package:toku_flutter_common/src/core/models/result.dart';
@@ -63,8 +64,8 @@ class LoggerInterceptor extends Interceptor {
         if (e is ErrorResponseException) {
           errorLogBuffer
             ..writeln('Error (${e.statusCode}): ${_prettyJsonFromMap(e.errorResponse.toJson())}')
-            ..writeln('Response Headers: ${_prettyJsonFromMap(e.responseHeaders!)}')
-            ..writeln('Response Body: ${_prettyJsonFromMap(e.responseRawJson!)}');
+            ..writeln('Response Headers: ${_prettyJsonFromMap(e.responseHeaders!)}');
+          // ..writeln('Response Body: ${_prettyJsonFromMap(e.responseRawJson!)}');
         }
         log(
           errorLogBuffer.toString(),
@@ -77,6 +78,4 @@ class LoggerInterceptor extends Interceptor {
 
     return response;
   }
-
-
 }

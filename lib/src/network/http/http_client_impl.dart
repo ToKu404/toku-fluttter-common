@@ -104,7 +104,7 @@ class _HttpClientImpl implements HttpClient {
       if (response.statusCode != 200) {
         return Result.error(ErrorResponseException(
           statusCode: response.statusCode,
-          errorResponse: ErrorResponse(message: response.reasonPhrase ?? ''),
+          errorResponse: ErrorResponse(error: response.reasonPhrase ?? ''),
         ));
       }
       final body = await response.stream.toBytes();

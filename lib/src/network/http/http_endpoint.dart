@@ -81,8 +81,9 @@ class HttpListEndpoint<T> implements HttpEndpointBase<List<T>> {
   @override
   List<T> onResponse(HttpResponse response) {
     if (HttpEndpointBase.isValidResponseFor<List<dynamic>>(response) && _onDataFn != null) {
-      final bodyResponse = response.bodyResponse! as List<dynamic>;
-      return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn(it)).toList();
+    debugPrint("toku ${response.bodyResponse}");
+    final bodyResponse = response.bodyResponse! as List<dynamic>;
+    return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn!(it)).toList();
     }
     return response.bodyResponse! as List<T>;
   }
