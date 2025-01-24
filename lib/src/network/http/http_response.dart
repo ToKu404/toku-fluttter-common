@@ -51,7 +51,8 @@ class HttpResponse extends Response {
     if (_isJsonResponse != null) return _isJsonResponse!;
     final headers = this.headers.toIgnoreCase();
     final contentType = headers['content-type'];
-    return _isJsonResponse = contentType?.toLowerCase().contains('text/plain') == true;
+    return _isJsonResponse = contentType?.toLowerCase().contains('text/plain') == true ||
+        contentType?.toLowerCase().contains('application/json') == true;
   }
 
   Map<String, dynamic>? _bodyJson;
