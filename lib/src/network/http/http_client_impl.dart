@@ -101,7 +101,7 @@ class _HttpClientImpl implements HttpClient {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      if (response.statusCode != 200) {
+      if (response.statusCode != 200 && response.statusCode!=201) {
         return Result.error(ErrorResponseException(
           statusCode: response.statusCode,
           errorResponse: ErrorResponse(message: response.reasonPhrase ?? ''),
