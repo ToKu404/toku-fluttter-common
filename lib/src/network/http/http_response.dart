@@ -58,7 +58,7 @@ class HttpResponse extends Response {
   Map<String, dynamic>? get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
 
-    if (!isJsonResponse) return null;
+    if (!isJsonResponse) return {'data': true};
     final d = jsonDecode(body) as Map<String, dynamic>;
 
     return d;

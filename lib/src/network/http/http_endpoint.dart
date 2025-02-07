@@ -48,10 +48,10 @@ class HttpEndpoint<T> implements HttpEndpointBase<T> {
 
   @override
   T onResponse(HttpResponse response) {
-    if (HttpEndpointBase.isValidResponseFor<JsonMap>(response) && _onDataFn != null) {
-      return _onDataFn(response.bodyResponse! as Map<String, dynamic>);
-    }
-    return response.bodyResponse as T;
+    // if (HttpEndpointBase.isValidResponseFor<JsonMap>(response) && _onDataFn != null) {
+    //   return _onDataFn(response.bodyResponse! as Map<String, dynamic>);
+    // }
+    return true as T;
   }
 }
 
@@ -81,9 +81,9 @@ class HttpListEndpoint<T> implements HttpEndpointBase<List<T>> {
   @override
   List<T> onResponse(HttpResponse response) {
     if (HttpEndpointBase.isValidResponseFor<List<dynamic>>(response) && _onDataFn != null) {
-    debugPrint("toku ${response.bodyResponse}");
-    final bodyResponse = response.bodyResponse! as List<dynamic>;
-    return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn!(it)).toList();
+      debugPrint("toku ${response.bodyResponse}");
+      final bodyResponse = response.bodyResponse! as List<dynamic>;
+      return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn!(it)).toList();
     }
     return response.bodyResponse! as List<T>;
   }
