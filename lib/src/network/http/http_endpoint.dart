@@ -48,9 +48,9 @@ class HttpEndpoint<T> implements HttpEndpointBase<T> {
 
   @override
   T onResponse(HttpResponse response) {
-    // if (HttpEndpointBase.isValidResponseFor<JsonMap>(response) && _onDataFn != null) {
-    //   return _onDataFn(response.bodyResponse! as Map<String, dynamic>);
-    // }
+    if (HttpEndpointBase.isValidResponseFor<JsonMap>(response) && _onDataFn != null) {
+      return _onDataFn(response.bodyResponse! as Map<String, dynamic>);
+    }
     return true as T;
   }
 }
