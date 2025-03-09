@@ -20,6 +20,8 @@ import 'package:toku_flutter_common/src/core/utils/releasable_operation.dart'
 import 'package:toku_flutter_common/src/core/utils/string_validator.dart'
     as _i673;
 import 'package:toku_flutter_common/src/network/http/_http.dart' as _i462;
+import 'package:toku_flutter_common/src/network/interceptor/interceptors/auth_token_interceptor.dart'
+    as _i1002;
 import 'package:toku_flutter_common/src/network/interceptor/interceptors/connection_checker_interceptor.dart'
     as _i614;
 import 'package:toku_flutter_common/src/network/interceptor/interceptors/failed_request_handler_interceptor.dart'
@@ -57,6 +59,8 @@ Future<_i174.GetIt> initKartjisMobileCommonDependencies(
   gh.lazySingleton<_i25.Client>(() => networkDependencyProvider.provideClient);
   gh.lazySingleton<_i25.RawHttpClient>(
       () => networkDependencyProvider.provideDio);
+  gh.lazySingleton<_i1002.AuthTokenInterceptor>(
+      () => _i1002.AuthTokenInterceptor());
   await gh.singletonAsync<_i25.ConnectionChecker>(
     () => networkDependencyProvider
         .provideConnectionChecker(gh<_i895.Connectivity>()),
