@@ -59,7 +59,9 @@ class HttpResponse extends Response {
   Map<String, dynamic>? get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
 
-    if (!isJsonResponse) return {'data': true};
+    if (!isJsonResponse) {
+      return {'data': true};
+    }
 
     final decoded = jsonDecode(body);
 
@@ -82,6 +84,7 @@ class HttpResponse extends Response {
   /// The value of the "response" key in the body json.
   /// This can be a [Map<String, dynamic>] or a primitive-type value (e.g. [bool], [String], etc.).
   Object? get bodyResponse {
+    
     if (_bodyResponse != null) return _bodyResponse!;
 
     final bodyJson = this.bodyJson;

@@ -5,11 +5,13 @@ part 'token.g.dart';
 @JsonSerializable()
 class TokenModel {
   final String accessToken;
-  // final String refreshToken;
+  final int expiresIn;
+  final String refreshToken;
 
   TokenModel({
     required this.accessToken,
-    // required this.refreshToken,
+    required this.refreshToken,
+    required this.expiresIn,
   });
 
   factory TokenModel.fromJson(Map<String, dynamic> json) => _$TokenModelFromJson(json);

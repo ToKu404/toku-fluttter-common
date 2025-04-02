@@ -66,10 +66,10 @@ class _BrutalismButtonState extends State<BrutalismButton> {
                       top: widget.layerSpace,
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                       color: widget.layerColor,
                       border: Border.all(
-                        width: 1,
+                        width: 1.5,
                         color: widget.borderColor ?? Colors.black,
                       ),
                     ),
@@ -90,10 +90,10 @@ class _BrutalismButtonState extends State<BrutalismButton> {
                           bottom: widget.layerSpace,
                         ),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                       color: widget.isEnabled ? widget.primaryColor : Colors.white,
                       border: Border.all(
-                        width: 1,
+                        width: 1.5,
                         color: widget.isEnabled ? widget.borderColor ?? Colors.black : Colors.grey,
                       )),
                   padding: const EdgeInsets.all(12),
@@ -111,7 +111,7 @@ class _BrutalismButtonState extends State<BrutalismButton> {
                           widget.title,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: widget.isEnabled ? widget.textColor ?? Colors.white : Colors.grey,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w800,
                               ),
                         ),
                       ),

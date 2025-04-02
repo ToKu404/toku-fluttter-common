@@ -60,9 +60,9 @@ class _BrutalismCardState extends State<BrutalismCard> {
       builder: (context, onHover, _) {
         final child = Stack(
           children: [
-            Positioned.fill(
+            Positioned(
               child: Container(
-                width: widget.width ?? double.infinity,
+                width: widget.width,
                 height: widget.height,
                 margin: EdgeInsets.only(
                   left: widget.layerSpace,
@@ -77,11 +77,27 @@ class _BrutalismCardState extends State<BrutalismCard> {
                   ),
                 ),
                 padding: widget.padding,
-                child: const SizedBox(),
+                child: widget.child != null
+                    ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            child: widget.child!,
+                          ),
+                          Positioned.fill(
+                              child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              color: widget.layerColor,
+                            ),
+                          ))
+                        ],
+                      )
+                    : const SizedBox(),
               ),
             ),
             AnimatedContainer(
-              width: widget.width ?? double.infinity,
+              width: widget.width,
               height: widget.height,
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,

@@ -83,9 +83,6 @@ Future<_i174.GetIt> initKartjisMobileCommonDependencies(
   gh.singleton<_i25.FailedRequestHandlerRegistry>(() =>
       networkDependencyProvider.provideFailedRequestHandlerRegistry(
           gh<_i660.ConnectionIssueHandler>()));
-  gh.singleton<_i561.FailedRequestHandlerInterceptor>(() =>
-      _i561.FailedRequestHandlerInterceptor(
-          gh<_i561.FailedRequestHandlerRegistry>()));
   gh.lazySingleton<_i462.HttpClient>(() => _i462.HttpClient(
         client: gh<_i462.Client>(),
         rawClient: gh<_i25.RawHttpClient>(),
@@ -93,6 +90,11 @@ Future<_i174.GetIt> initKartjisMobileCommonDependencies(
         config: gh<_i462.HttpConfig>(),
         interceptorChainFactory: gh<_i25.InterceptorChainFactory>(),
       ));
+  gh.singleton<_i561.FailedRequestHandlerInterceptor>(
+      () => _i561.FailedRequestHandlerInterceptor(
+            gh<_i561.FailedRequestHandlerRegistry>(),
+            gh<_i25.AuthTokenInterceptor>(),
+          ));
   return getIt;
 }
 
