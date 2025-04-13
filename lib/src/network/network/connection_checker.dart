@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 
-
 abstract class ConnectionChecker {
   factory ConnectionChecker(
     Connectivity connectivity,
@@ -25,7 +24,10 @@ class _ConnectionCheckerImpl implements ConnectionChecker {
   bool get isConnected => isResultConnected(_lastConnectivityResult);
 
   @override
-  Stream<bool> get onConnectivityChanged => _connectivity.onConnectivityChanged.map(isResultConnected);
+  Stream<bool> get onConnectivityChanged => _connectivity.onConnectivityChanged.map((results) {
+        final first = results.isNotEmpty ? results.first : ConnectivityResult.none;
+        return isResultConnected(first);
+      });
 
   @visibleForTesting
   static bool isResultConnected(ConnectivityResult result) {
@@ -33,6 +35,12 @@ class _ConnectionCheckerImpl implements ConnectionChecker {
   }
 
   void _subscribeConnectivity() {
-    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) => _lastConnectivityResult = result);
+    _connectivity.onConnectivityChanged.listen(
+      (List<ConnectivityResult> results) {
+        if (results.isNotEmpty) {
+          _lastConnectivityResult = results.first; // Atau pilih yang paling relevan
+        }
+      },
+    );
   }
 }
