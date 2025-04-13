@@ -16,7 +16,7 @@ abstract class NetworkDependencyProvider {
   ) async {
     return ConnectionChecker(
       connectivity,
-      (await connectivity.checkConnectivity()) as ConnectivityResult,
+      (await connectivity.checkConnectivity()).first,
     );
   }
 
