@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toku_flutter_common/core.dart';
 import 'package:toku_flutter_common/src/ui/components/advanced/text_field/field_validation_status.dart';
+import 'package:toku_flutter_common/ui.dart';
 
 part 'adv_value_text_converter.dart';
 part 'adv_value_text_field_decoration.dart';
@@ -388,10 +389,23 @@ class _AdvTextFieldLabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final labelStyle = Theme.of(context).inputDecorationTheme.labelStyle;
-    final labelText = isRequired ? '${this.labelText} (Required)' : this.labelText;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-      child: Text(labelText, style: labelStyle),
+      child: AdvRow(
+        divider: const RowDivider(4),
+        children: [
+          Flexible(
+              child: Text(
+            labelText,
+            style: labelStyle,
+          )),
+          if (isRequired)
+            Text(
+              '*',
+              style: labelStyle?.copyWith(color: Colors.red),
+            )
+        ],
+      ),
     );
   }
 }
