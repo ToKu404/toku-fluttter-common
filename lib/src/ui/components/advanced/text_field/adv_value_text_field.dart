@@ -391,21 +391,17 @@ class _AdvTextFieldLabelWidget extends StatelessWidget {
     final labelStyle = Theme.of(context).inputDecorationTheme.labelStyle;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-      child: AdvRow(
-        divider: const RowDivider(4),
-        children: [
-          Flexible(
-              child: Text(
-            labelText,
-            style: labelStyle,
-          )),
-          if (isRequired)
-            Text(
-              '*',
-              style: labelStyle?.copyWith(color: Colors.red),
-            )
-        ],
-      ),
+      child: RichText(text: TextSpan(children: <TextSpan>[
+        TextSpan(
+          text: labelText,
+          style: labelStyle,
+        ),
+        if (isRequired)
+          const TextSpan(
+            text: ' *',
+            style: TextStyle(color: Colors.red),
+          ),
+      ])),
     );
   }
 }
