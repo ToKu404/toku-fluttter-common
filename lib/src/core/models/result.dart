@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -162,4 +163,45 @@ extension FutureResultExtension<T> on Future<Result<T>> {
       ),
     );
   }
+
+  /// Combines multiple `Future<Result<T>>` into a single `Future<Result<List<dynamic>>>`.
+  /// 
+  /// Example:
+  /// ```dart
+  /// Future<Result<int>> getOne() async => const Result.success(1);
+  /// Future<Result<bool>> getTrue() async => const Result.success(true);
+  /// Future<Result<String>> getHello() async => const Result.success('hello');
+  /// 
+  /// final result = getOne()
+  ///   .andThenCombineAsync(getTrue)
+  ///   .andThenCombineAsync(getHello)
+  ///   .mapAsync((results) => (
+  ///     results[0] as int, // <- from getOne()
+  ///     results[1] as bool, // <- from getTrue()
+  ///     results[2] as String, // <- from getHello()
+  ///   ));
+  /// print(result); // Result<(int, bool, String)>
+  /// print(result.getValue()); // (1, true, 'hello')
+  /// ```
+  Future<Result<List<dynamic>>> andThenCombineAsync<T2>(Future<Result<T2>> Function() next) {
+    return andThenAsync((it) => next().mapAsync((it2) => _CombinedResults.from([it, it2])));
+  }
+}
+
+class _CombinedResults extends UnmodifiableListView<dynamic> {
+  _CombinedResults(this.results) : super(results);
+
+  factory _CombinedResults.from(List<dynamic> results) {
+    if (results is _CombinedResults) return results;
+    if (results.isNotEmpty && results.first is _CombinedResults) {
+      final first = results.first! as _CombinedResults;
+      return _CombinedResults([
+        ...first.results,
+        ...results.skip(1),
+      ]);
+    }
+    return _CombinedResults(results);
+  }
+
+  final List<Object?> results;
 }
