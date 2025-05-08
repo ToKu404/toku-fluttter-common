@@ -8,7 +8,7 @@ class ErrorResponseInterceptor extends Interceptor {
   @override
   Future<Result<HttpResponse>> intercept(InterceptorChain chain) {
     return chain.proceed(chain.request).andThenAsync((HttpResponse data) {
-      if (data.statusCode == 403) {
+      if (data.statusCode == 403 || data.statusCode==401) {
         // final errorResponse = ErrorResponse.fromJson(data.bodyError!);
 
         final errorResponseException = ErrorResponseException(
