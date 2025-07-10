@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 import 'package:toku_flutter_common/src/network/http/_http.dart';
 import 'package:toku_flutter_common/src/network/network/exposed_stream_multipart_file.dart';
 import 'package:toku_flutter_common/src/network/network/network.dart';
+import 'package:meta/meta.dart';
 
 class NetworkImpl implements Network {
   @internal

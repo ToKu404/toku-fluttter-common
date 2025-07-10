@@ -1,13 +1,13 @@
-import 'package:toku_flutter_common/core.dart';
+import 'package:toku_flutter_common/src/core/models/result.dart';
 import 'package:toku_flutter_common/src/network/http/_http.dart';
 import 'package:toku_flutter_common/src/network/interceptor/_interceptor.dart';
 
-@lazySingleton
-class AuthTokenInterceptor extends Interceptor {
+abstract class AuthTokenInterceptor extends Interceptor {
   @override
   bool canIntercept(HttpEndpointBase endpoint, BaseRequest request) {
     if (endpoint.authType == AuthType.none) return false;
-    if (endpoint.authType == AuthType.session && (accessToken == null || accessToken!.isEmpty)) {
+    if (endpoint.authType == AuthType.session &&
+        (accessToken == null || accessToken!.isEmpty)) {
       return false;
     }
     return true;
@@ -20,7 +20,11 @@ class AuthTokenInterceptor extends Interceptor {
         chain.request.headers['Authorization'] = 'Bearer $accessToken';
         break;
       case AuthType.basic:
-        chain.request.headers['Authorization'] = '$basicToken';
+        final body = chain.requestBody;
+        final basicToken = getBasicToken(body['username'], body['password']);
+        if (basicToken != null) {
+          chain.request.headers['Authorization'] = basicToken;
+        }
         break;
       case AuthType.none:
         break;
@@ -28,7 +32,7 @@ class AuthTokenInterceptor extends Interceptor {
     return chain.proceed(chain.request);
   }
 
-  String? basicToken;
+  String? getBasicToken(String username, String password);
 
   String? accessToken;
 }

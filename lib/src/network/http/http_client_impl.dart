@@ -20,21 +20,16 @@ class _HttpClientImpl implements HttpClient {
   Future<Result<T>> send<T>({
     required HttpEndpointBase<T> endpoint,
     required HttpRequest request,
-    String? customRoot,
   }) async {
     final path = HttpClient.maybeReplaceVariablesInEndpoint(
       path: endpoint.path,
       variables: request.queryVariables,
     );
-    final uri = customRoot != null
-        ? Uri.parse(customRoot).replace(
-            path: config.baseUrl.path + path,
-            queryParameters: request.queryParameters,
-          )
-        : config.baseUrl.replace(
-            path: config.baseUrl.path + path,
-            queryParameters: request.queryParameters,
-          );
+
+    final uri = config.baseUrl.replace(
+      path: config.baseUrl.path + path,
+      queryParameters: request.queryParameters,
+    );
 
     final httpRequest = await _createBaseRequest(uri, endpoint, request);
     final requestBody = await _createRequestBody(request);
@@ -46,9 +41,8 @@ class _HttpClientImpl implements HttpClient {
       requestBody: requestBody,
     );
 
-    debugPrint("toku ${response.isError}");
-
-    return response.andThen((HttpResponse data) => HttpClient.parseSuccessData(endpoint, data));
+    return response.andThen(
+        (HttpResponse data) => HttpClient.parseSuccessData(endpoint, data));
   }
 
   FutureOr<JsonMap> _createRequestBody(HttpRequest request) {
@@ -58,7 +52,8 @@ class _HttpClientImpl implements HttpClient {
     );
   }
 
-  FutureOr<BaseRequest> _createBaseRequest(Uri uri, HttpEndpointBase<dynamic> endpoint, HttpRequest request) {
+  FutureOr<BaseRequest> _createBaseRequest(
+      Uri uri, HttpEndpointBase<dynamic> endpoint, HttpRequest request) {
     return request.body.when<FutureOr<BaseRequest>>(
       basic: (Map<String, dynamic>? body) => network.createRequest(
         method: endpoint.method._value,
@@ -66,7 +61,8 @@ class _HttpClientImpl implements HttpClient {
         headers: _concatHeaders(request.contentType, request.headers),
         body: body,
       ),
-      multipart: (Map<String, String>? fields, Map<String, XFile>? files) => network.createMultipartRequest(
+      multipart: (Map<String, String>? fields, Map<String, XFile>? files) =>
+          network.createMultipartRequest(
         method: endpoint.method._value,
         url: uri,
         headers: _concatHeaders(request.contentType, request.headers),
@@ -76,7 +72,8 @@ class _HttpClientImpl implements HttpClient {
     );
   }
 
-  Map<String, String> _concatHeaders(HttpContentType? contentType, Map<String, String>? other) {
+  Map<String, String> _concatHeaders(
+      HttpContentType? contentType, Map<String, String>? other) {
     if (other == null) {
       if (contentType != null) {
         return <String, String>{
@@ -104,10 +101,10 @@ class _HttpClientImpl implements HttpClient {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode != 200) {
         return Result.error(ErrorResponseException(
           statusCode: response.statusCode,
-          errorResponse: ErrorResponse(message: response.reasonPhrase ?? ''),
+          errorResponse: ErrorResponse(error: response.reasonPhrase ?? ''),
         ));
       }
       final body = await response.stream.toBytes();

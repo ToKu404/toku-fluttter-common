@@ -51,27 +51,18 @@ class HttpResponse extends Response {
     if (_isJsonResponse != null) return _isJsonResponse!;
     final headers = this.headers.toIgnoreCase();
     final contentType = headers['content-type'];
-
-    return _isJsonResponse = contentType?.toLowerCase().contains('application/json') == true;
+    return _isJsonResponse = contentType?.toLowerCase().contains('text/plain') == true ||
+        contentType?.toLowerCase().contains('application/json') == true;
   }
 
   Map<String, dynamic>? _bodyJson;
   Map<String, dynamic>? get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
 
-    if (!isJsonResponse) {
-      return {'data': true};
-    }
+    if (!isJsonResponse) return null;
+    final d = jsonDecode(body) as Map<String, dynamic>;
 
-    final decoded = jsonDecode(body);
-
-    if (decoded is Map<String, dynamic>) {
-      return decoded;
-    } else if (decoded is List) {
-      return {'data': decoded}; // Bungkus dalam Map agar tetap sesuai dengan tipe return
-    }
-
-    return {'data': null}; // Handle jika format tidak sesuai
+    return d;
   }
 
   bool? _hasBodyResponse;
@@ -84,22 +75,18 @@ class HttpResponse extends Response {
   /// The value of the "response" key in the body json.
   /// This can be a [Map<String, dynamic>] or a primitive-type value (e.g. [bool], [String], etc.).
   Object? get bodyResponse {
-    
     if (_bodyResponse != null) return _bodyResponse!;
 
     final bodyJson = this.bodyJson;
     if (bodyJson == null || _hasBodyResponse == false) return null;
 
-    // if (bodyJson.containsKey('content')) {
-    //   _hasBodyResponse = true;
-    //   return _bodyResponse = bodyJson['content'];
-    // }
+    if (!bodyJson.containsKey('data')) {
+      _hasBodyResponse = false;
+      return null;
+    }
 
     _hasBodyResponse = true;
-    return _bodyResponse = bodyJson;
-
-    // _hasBodyResponse = true;
-    // return _bodyResponse = bodyJson['data'];
+    return _bodyResponse = bodyJson['data'];
   }
 
   bool? _hasBodyError;
@@ -114,9 +101,9 @@ class HttpResponse extends Response {
     final bodyJson = this.bodyJson;
     if (bodyJson == null || _hasBodyError == false) return null;
 
-    final dynamic error = bodyJson;
+    final dynamic error = bodyJson['error'];
 
-    if (error is! Map<String, dynamic> || !error.containsKey('message')) {
+    if (error is! Map<String, dynamic>) {
       _hasBodyError = false;
       return null;
     }

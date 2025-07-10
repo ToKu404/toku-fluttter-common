@@ -17,7 +17,7 @@ abstract class HttpEndpointBase<T> {
 
   @visibleForTesting
   static bool isValidResponseFor<T>(HttpResponse response) {
-    // if (!response.isJsonResponse) throw BadResponseFormatException();
+    if (!response.isJsonResponse) throw BadResponseFormatException();
     return response.hasBodyResponse && response.bodyResponse is T;
   }
 }
@@ -51,7 +51,7 @@ class HttpEndpoint<T> implements HttpEndpointBase<T> {
     if (HttpEndpointBase.isValidResponseFor<JsonMap>(response) && _onDataFn != null) {
       return _onDataFn(response.bodyResponse! as Map<String, dynamic>);
     }
-    return true as T;
+    return response.bodyResponse as T;
   }
 }
 
@@ -80,9 +80,10 @@ class HttpListEndpoint<T> implements HttpEndpointBase<List<T>> {
 
   @override
   List<T> onResponse(HttpResponse response) {
-    if (response.bodyJson != null && _onDataFn != null) {
-      final bodyResponse = response.bodyJson!['data']! as List<dynamic>;
-      return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn(it)).toList();
+    if (HttpEndpointBase.isValidResponseFor<List<dynamic>>(response) && _onDataFn != null) {
+    debugPrint("toku ${response.bodyResponse}");
+    final bodyResponse = response.bodyResponse! as List<dynamic>;
+    return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn!(it)).toList();
     }
     return response.bodyResponse! as List<T>;
   }

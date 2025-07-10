@@ -18,7 +18,6 @@ abstract class HttpClient {
   Future<Result<T>> send<T>({
     required HttpEndpointBase<T> endpoint,
     required HttpRequest request,
-    String? customRoot,
   });
 
   /// Sends a GET request to the provided [url] and returns the response as a complete chunk
@@ -61,7 +60,6 @@ abstract class HttpClient {
   @visibleForTesting
   static Result<T> parseSuccessData<T>(HttpEndpointBase<T> endpoint, HttpResponse response) {
     try {
-      debugPrint("toku A1 ${response.bodyJson}");
       final result = endpoint.onResponse(response);
       return Result<T>.success(result);
     } on FormatException {
