@@ -17,7 +17,7 @@ abstract class HttpEndpointBase<T> {
 
   @visibleForTesting
   static bool isValidResponseFor<T>(HttpResponse response) {
-    // if (!response.isJsonResponse) throw BadResponseFormatException();
+    if (!response.isJsonResponse) throw BadResponseFormatException();
     return response.hasBodyResponse && response.bodyResponse is T;
   }
 }
@@ -48,10 +48,11 @@ class HttpEndpoint<T> implements HttpEndpointBase<T> {
 
   @override
   T onResponse(HttpResponse response) {
-    if (HttpEndpointBase.isValidResponseFor<JsonMap>(response) && _onDataFn != null) {
+    if (_onDataFn != null && HttpEndpointBase.isValidResponseFor<JsonMap>(response)) {
       return _onDataFn(response.bodyResponse! as Map<String, dynamic>);
     }
-    return true as T;
+    if (response.bodyResponse is! T) throw BadResponseFormatException();
+    return response.bodyResponse as T;
   }
 }
 
@@ -80,22 +81,25 @@ class HttpListEndpoint<T> implements HttpEndpointBase<List<T>> {
 
   @override
   List<T> onResponse(HttpResponse response) {
-    if (response.bodyJson != null && _onDataFn != null) {
-      final bodyResponse = response.bodyJson!['data']! as List<dynamic>;
-      return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn(it)).toList();
+    debugPrint(response.body);
+    debugPrint((_onDataFn!=null).toString());
+
+    if (_onDataFn != null && HttpEndpointBase.isValidResponseFor<List<dynamic>>(response)) {
+      final bodyResponse = response.bodyResponse! as List<dynamic>;
+      return bodyResponse.whereType<JsonMap>().map((it) => _onDataFn!(it)).toList();
     }
-    return response.bodyResponse! as List<T>;
+    if (response.bodyResponse is! List<dynamic>) throw BadResponseFormatException();
+    return (response.bodyResponse! as List<dynamic>).cast<T>();
   }
 }
 
-class HttpExternalEndpoint<T> implements HttpEndpointBase<T> {
-  const HttpExternalEndpoint({
+class HttpBytesEndpoint implements HttpEndpointBase<Uint8List> {
+  const HttpBytesEndpoint({
     required this.path,
     required this.method,
-    this.authType = AuthType.none,
+    required this.authType,
     this.flags,
-    HttpOnData<T>? onData,
-  }) : _onDataFn = onData;
+  });
 
   @override
   final String path;
@@ -109,11 +113,6 @@ class HttpExternalEndpoint<T> implements HttpEndpointBase<T> {
   @override
   final Map<Object, Object?>? flags;
 
-  final HttpOnData<T>? _onDataFn;
-
   @override
-  T onResponse(HttpResponse response) {
-    if (response.isJsonResponse) return _onDataFn!(response.bodyJson!);
-    return response.bodyJson as T;
-  }
+  Uint8List onResponse(HttpResponse response) => response.bodyBytes;
 }
