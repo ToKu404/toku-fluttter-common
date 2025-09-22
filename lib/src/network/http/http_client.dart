@@ -18,6 +18,7 @@ abstract class HttpClient {
   Future<Result<T>> send<T>({
     required HttpEndpointBase<T> endpoint,
     required HttpRequest request,
+    String? customRoot,
   });
 
   /// Sends a GET request to the provided [url] and returns the response as a complete chunk

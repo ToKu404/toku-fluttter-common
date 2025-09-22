@@ -20,16 +20,22 @@ class _HttpClientImpl implements HttpClient {
   Future<Result<T>> send<T>({
     required HttpEndpointBase<T> endpoint,
     required HttpRequest request,
+    String? customRoot,
   }) async {
     final path = HttpClient.maybeReplaceVariablesInEndpoint(
       path: endpoint.path,
       variables: request.queryVariables,
     );
 
-    final uri = config.baseUrl.replace(
-      path: config.baseUrl.path + path,
-      queryParameters: request.queryParameters,
-    );
+     final uri = customRoot != null
+        ? Uri.parse(customRoot).replace(
+            path: config.baseUrl.path + path,
+            queryParameters: request.queryParameters,
+          )
+        : config.baseUrl.replace(
+            path: config.baseUrl.path + path,
+            queryParameters: request.queryParameters,
+          );
 
     final httpRequest = await _createBaseRequest(uri, endpoint, request);
     final requestBody = await _createRequestBody(request);
