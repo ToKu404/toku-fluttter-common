@@ -1,4 +1,7 @@
-part of http;
+// Salin dan tempel seluruh kode ini ke dalam file HttpResponse Anda.
+// Pastikan nama file sesuai dengan yang Anda 'part' di file utama.
+
+part of http; // <-- Ini tetap ada sesuai permintaan Anda
 
 class HttpResponse extends Response {
   // --- Konstruktor dan factory (tidak ada perubahan) ---
@@ -43,28 +46,30 @@ class HttpResponse extends Response {
     );
   }
 
-  // --- Logika Cerdas (Bagian yang Diubah) ---
+  // --- Logika Final yang Sudah Diperbaiki ---
 
-  bool? _isJsonResponse;
+  /// Helper untuk mengecek apakah status kode menunjukan sukses (2xx).
+  bool get isSuccess => statusCode >= 200 && statusCode < 300;
+
+  /// Helper untuk mengecek apakah content-type adalah JSON.
   bool get isJsonResponse {
-    if (_isJsonResponse != null) return _isJsonResponse!;
-    final headers = this.headers.toIgnoreCase();
     final contentType = headers['content-type'];
-    return _isJsonResponse =
-        contentType?.toLowerCase().contains('application/json') == true;
+    return contentType?.toLowerCase().contains('application/json') == true;
   }
 
+  /// Mem-parsing body menjadi Map<String, dynamic> dengan aman.
+  /// Juga menangani JSON yang berakar pada array `[...]`.
   Map<String, dynamic>? _bodyJson;
   Map<String, dynamic>? get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
-    if (!isJsonResponse) return null;
+    if (!isJsonResponse || body.isEmpty) return null;
 
     try {
       final decoded = jsonDecode(body);
       if (decoded is Map<String, dynamic>) {
         return _bodyJson = decoded;
       }
-      // Penanganan Array: bungkus dalam map agar konsisten
+      // Jika root JSON adalah array, bungkus dalam map agar konsisten
       if (decoded is List) {
         return _bodyJson = {'data': decoded};
       }
@@ -75,58 +80,41 @@ class HttpResponse extends Response {
     return null;
   }
 
-  bool? _hasBodyResponse;
-  bool get hasBodyResponse => _hasBodyResponse ?? bodyResponse != null;
-
+  /// Mengembalikan data HANYA JIKA status kode sukses.
+  /// Prioritas: mencari kunci 'data', jika tidak ada, kembalikan seluruh body.
   Object? _bodyResponse;
-  /// Mengembalikan nilai dari kunci "data" jika ada.
-  /// Jika tidak, mengembalikan seluruh body JSON.
   Object? get bodyResponse {
     if (_bodyResponse != null) return _bodyResponse!;
-    final json = this.bodyJson;
+    // Data hanya valid jika request sukses
+    if (!isSuccess) return null;
+
+    final json = bodyJson;
     if (json == null) return null;
 
-    // Prioritas 1: Cek apakah ada kunci 'data'
+    // Prioritas 1: Cek kunci 'data'
     if (json.containsKey('data')) {
-      _hasBodyResponse = true;
       return _bodyResponse = json['data'];
     }
 
-    // Prioritas 2: Jika tidak ada 'data', kembalikan seluruh body,
-    // asalkan itu bukan format error.
-    if (!json.containsKey('error') && !json.containsKey('message')) {
-      _hasBodyResponse = true;
-      return _bodyResponse = json;
-    }
-
-    _hasBodyResponse = false;
-    return null;
+    // Prioritas 2: Kembalikan seluruh body jika tidak ada 'data'
+    return _bodyResponse = json;
   }
 
-  bool? _hasBodyError;
-  bool get hasBodyError => _hasBodyError ?? bodyError != null;
+  /// Mengecek apakah ada data sukses yang valid.
+  bool get hasBodyResponse => bodyResponse != null;
 
+  /// Mengembalikan error HANYA JIKA status kode GAGAL.
+  /// Mengembalikan seluruh body JSON sebagai detail error.
   Map<String, dynamic>? _bodyError;
-  /// Mengembalikan nilai dari kunci "error" jika ada.
-  /// Jika tidak, mengembalikan seluruh body JSON jika ada kunci "message".
   Map<String, dynamic>? get bodyError {
     if (_bodyError != null) return _bodyError!;
-    final json = this.bodyJson;
-    if (json == null) return null;
+    // Error hanya valid jika request gagal
+    if (isSuccess) return null;
 
-    // Prioritas 1: Cek apakah ada kunci 'error' dan nilainya adalah Map
-    if (json.containsKey('error') && json['error'] is Map<String, dynamic>) {
-      _hasBodyError = true;
-      return _bodyError = json['error'] as Map<String, dynamic>;
-    }
-
-    // Prioritas 2: Jika tidak ada, cek apakah ada kunci 'message' di level atas
-    if (json.containsKey('message')) {
-      _hasBodyError = true;
-      return _bodyError = json;
-    }
-
-    _hasBodyError = false;
-    return null;
+    // Untuk error, kembalikan saja seluruh body JSON
+    return _bodyError = bodyJson;
   }
+
+  /// Mengecek apakah ada data error yang valid.
+  bool get hasBodyError => bodyError != null;
 }
