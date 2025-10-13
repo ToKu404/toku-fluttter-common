@@ -1,7 +1,7 @@
 part of http;
 
 class HttpResponse extends Response {
-  /// Creates a new HTTP response with a string body.
+  // --- Konstruktor dan factory (tidak ada perubahan) ---
   HttpResponse(
     super.body,
     super.statusCode, {
@@ -12,7 +12,6 @@ class HttpResponse extends Response {
     super.reasonPhrase,
   });
 
-  /// Create a new HTTP response with a byte array body.
   HttpResponse.bytes(
     List<int> bodyBytes,
     int statusCode, {
@@ -31,8 +30,6 @@ class HttpResponse extends Response {
           reasonPhrase: reasonPhrase,
         );
 
-  /// Creates a new HTTP response by waiting for the full body to become
-  /// available from a [StreamedResponse].
   static Future<HttpResponse> fromStream(StreamedResponse response) async {
     final body = await response.stream.toBytes();
     return HttpResponse.bytes(
@@ -46,82 +43,90 @@ class HttpResponse extends Response {
     );
   }
 
+  // --- Logika Cerdas (Bagian yang Diubah) ---
+
   bool? _isJsonResponse;
   bool get isJsonResponse {
     if (_isJsonResponse != null) return _isJsonResponse!;
     final headers = this.headers.toIgnoreCase();
     final contentType = headers['content-type'];
-
-    return _isJsonResponse = contentType?.toLowerCase().contains('application/json') == true;
+    return _isJsonResponse =
+        contentType?.toLowerCase().contains('application/json') == true;
   }
 
   Map<String, dynamic>? _bodyJson;
   Map<String, dynamic>? get bodyJson {
     if (_bodyJson != null) return _bodyJson!;
+    if (!isJsonResponse) return null;
 
-    if (!isJsonResponse) {
-      return {'data': true};
+    try {
+      final decoded = jsonDecode(body);
+      if (decoded is Map<String, dynamic>) {
+        return _bodyJson = decoded;
+      }
+      // Penanganan Array: bungkus dalam map agar konsisten
+      if (decoded is List) {
+        return _bodyJson = {'data': decoded};
+      }
+    } catch (e) {
+      // Jika JSON tidak valid, anggap tidak ada body
+      return null;
     }
-
-    final decoded = jsonDecode(body);
-
-    if (decoded is Map<String, dynamic>) {
-      return decoded;
-    } else if (decoded is List) {
-      return {'data': decoded}; // Bungkus dalam Map agar tetap sesuai dengan tipe return
-    }
-
-    return {'data': null}; // Handle jika format tidak sesuai
+    return null;
   }
 
   bool? _hasBodyResponse;
-
-  /// Whether the body json has a "response" key.
   bool get hasBodyResponse => _hasBodyResponse ?? bodyResponse != null;
 
   Object? _bodyResponse;
-
-  /// The value of the "response" key in the body json.
-  /// This can be a [Map<String, dynamic>] or a primitive-type value (e.g. [bool], [String], etc.).
+  /// Mengembalikan nilai dari kunci "data" jika ada.
+  /// Jika tidak, mengembalikan seluruh body JSON.
   Object? get bodyResponse {
-    
     if (_bodyResponse != null) return _bodyResponse!;
+    final json = this.bodyJson;
+    if (json == null) return null;
 
-    final bodyJson = this.bodyJson;
-    if (bodyJson == null || _hasBodyResponse == false) return null;
+    // Prioritas 1: Cek apakah ada kunci 'data'
+    if (json.containsKey('data')) {
+      _hasBodyResponse = true;
+      return _bodyResponse = json['data'];
+    }
 
-    // if (bodyJson.containsKey('content')) {
-    //   _hasBodyResponse = true;
-    //   return _bodyResponse = bodyJson['content'];
-    // }
+    // Prioritas 2: Jika tidak ada 'data', kembalikan seluruh body,
+    // asalkan itu bukan format error.
+    if (!json.containsKey('error') && !json.containsKey('message')) {
+      _hasBodyResponse = true;
+      return _bodyResponse = json;
+    }
 
-    _hasBodyResponse = true;
-    return _bodyResponse = bodyJson;
-
-    // _hasBodyResponse = true;
-    // return _bodyResponse = bodyJson['data'];
+    _hasBodyResponse = false;
+    return null;
   }
 
   bool? _hasBodyError;
-
-  /// Whether the body json has an "error" key.
   bool get hasBodyError => _hasBodyError ?? bodyError != null;
 
   Map<String, dynamic>? _bodyError;
+  /// Mengembalikan nilai dari kunci "error" jika ada.
+  /// Jika tidak, mengembalikan seluruh body JSON jika ada kunci "message".
   Map<String, dynamic>? get bodyError {
     if (_bodyError != null) return _bodyError!;
+    final json = this.bodyJson;
+    if (json == null) return null;
 
-    final bodyJson = this.bodyJson;
-    if (bodyJson == null || _hasBodyError == false) return null;
-
-    final dynamic error = bodyJson;
-
-    if (error is! Map<String, dynamic> || !error.containsKey('message')) {
-      _hasBodyError = false;
-      return null;
+    // Prioritas 1: Cek apakah ada kunci 'error' dan nilainya adalah Map
+    if (json.containsKey('error') && json['error'] is Map<String, dynamic>) {
+      _hasBodyError = true;
+      return _bodyError = json['error'] as Map<String, dynamic>;
     }
 
-    _hasBodyError = true;
-    return _bodyError = bodyJson;
+    // Prioritas 2: Jika tidak ada, cek apakah ada kunci 'message' di level atas
+    if (json.containsKey('message')) {
+      _hasBodyError = true;
+      return _bodyError = json;
+    }
+
+    _hasBodyError = false;
+    return null;
   }
 }
