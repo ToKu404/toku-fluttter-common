@@ -3,7 +3,7 @@ import 'package:toku_flutter_common/src/network/http/_http.dart';
 import 'package:toku_flutter_common/src/network/interceptor/_interceptor.dart';
 
 @InjectableInit(
-    initializerName: 'initKartjisMobileCommonDependencies',
+    initializerName: 'initDependencies',
     generateForDir: <String>['lib/src'],
     asExtension: false,
     includeMicroPackages: false,

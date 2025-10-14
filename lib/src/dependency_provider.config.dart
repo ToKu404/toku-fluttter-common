@@ -37,7 +37,7 @@ import 'package:toku_flutter_common/src/network/network_dependency_provider.dart
     as _i54;
 
 // initializes the registration of main-scope dependencies inside of GetIt
-Future<_i174.GetIt> initKartjisMobileCommonDependencies(
+Future<_i174.GetIt> initDependencies(
   _i174.GetIt getIt, {
   String? environment,
   _i526.EnvironmentFilter? environmentFilter,
