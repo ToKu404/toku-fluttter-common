@@ -117,3 +117,85 @@ class HttpExternalEndpoint<T> implements HttpEndpointBase<T> {
     return response.bodyJson as T;
   }
 }
+
+class HttpFileResponse {
+  const HttpFileResponse({
+    required this.bytes,
+    required this.headers,
+    this.filename,
+    this.contentType,
+  });
+
+  /// Raw file bytes (Excel, PDF, dll).
+  final Uint8List bytes;
+
+  /// Nama file yang diambil dari `Content-Disposition`, kalau ada.
+  final String? filename;
+
+  /// MIME-type dari header `Content-Type`.
+  final String? contentType;
+
+  /// Semua response headers, kalau mau dipakai lagi di atas.
+  final Map<String, String> headers;
+}
+
+class HttpFileEndpoint extends HttpEndpointBase<HttpFileResponse> {
+  HttpFileEndpoint({
+    required this.path,
+    required this.method,
+    required this.authType,
+    this.flags,
+  });
+
+  @override
+  final String path;
+
+  @override
+  final HttpMethod method;
+
+  @override
+  final AuthType authType;
+
+  @override
+  final Map<Object, Object?>? flags;
+
+  @override
+  HttpFileResponse onResponse(HttpResponse response) {
+    final headers = response.headers;
+    final contentDisposition = headers['content-disposition'];
+    final contentType = headers['content-type'];
+
+    final filename = _extractFilenameFromContentDisposition(contentDisposition);
+
+    return HttpFileResponse(
+      bytes: response.bodyBytes,
+      headers: headers,
+      filename: filename,
+      contentType: contentType,
+    );
+  }
+
+  String? _extractFilenameFromContentDisposition(String? cd) {
+    if (cd == null) return null;
+
+    // contoh header: attachment; filename=customers-20251105-175715.xlsx
+    // atau: attachment; filename="customers-20251105-175715.xlsx"
+    final lower = cd.toLowerCase();
+    final idx = lower.indexOf('filename=');
+    if (idx == -1) return null;
+
+    var value = cd.substring(idx + 'filename='.length).trim();
+
+    // buang titik koma sisa, kalau ada
+    final semicolonIndex = value.indexOf(';');
+    if (semicolonIndex != -1) {
+      value = value.substring(0, semicolonIndex).trim();
+    }
+
+    if (value.startsWith('"') && value.endsWith('"') && value.length >= 2) {
+      value = value.substring(1, value.length - 1);
+    }
+
+    return value;
+  }
+}
