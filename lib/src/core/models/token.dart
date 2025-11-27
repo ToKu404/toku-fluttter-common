@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'token.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class TokenModel {
   final String accessToken;
   final String refreshToken;
@@ -12,7 +12,8 @@ class TokenModel {
     required this.refreshToken,
   });
 
-  factory TokenModel.fromJson(Map<String, dynamic> json) => _$TokenModelFromJson(json);
+  factory TokenModel.fromJson(Map<String, dynamic> json) =>
+      _$TokenModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TokenModelToJson(this);
 }
