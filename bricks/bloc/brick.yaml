@@ -9,7 +9,7 @@ version: 0.0.1
 # The following defines the environment for the current brick.
 # It includes the version of mason that the brick requires.
 environment:
-  mason: ">=0.1.0-dev.41 <0.1.0"
+  mason: ">=0.1.0-dev.41 <=0.1.2"
 
 # Variables specify dynamic values that your brick depends on.
 # Zero or more variables can be specified for a given brick.
@@ -26,12 +26,7 @@ vars:
     prompt: Name for the Bloc?
   bloc_type:
     type: enum
-    values:
-      [
-        'Relational Bloc',
-        'Family Bloc',
-        'Standalone Bloc',
-      ]
+    values: ["Relational Bloc", "Family Bloc", "Standalone Bloc"]
     prompt: Type of the Bloc?
   bloc_children:
     type: string
