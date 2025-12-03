@@ -29,6 +29,8 @@ migrate_working_dir/
 .packages
 build/
 
-
 .mason
 mason-lock.json
+
+# FVM Version Cache
+.fvm/
