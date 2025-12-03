@@ -1,8 +1,10 @@
 {
   "dart.lineLength": 120,
   "[dart]": {
-    "editor.rulers": [120]
+    "editor.rulers": [
+      120
+    ]
   },
   "workbench.editor.showTabs": "none",
-  // "workbench.activityBar.location": "hidden"
+  "dart.flutterSdkPath": ".fvm/versions/3.32.8"
 }
