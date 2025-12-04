@@ -42,7 +42,9 @@ vars:
     type: string
     description: Use case input type
     prompt: Type of the use case input?
+    default: "void"
   output_type:
     type: string
     description: Use case output type
     prompt: Type of the use case output?
+    default: "void"
