@@ -5,6 +5,5 @@
       120
     ]
   },
-  // "workbench.editor.showTabs": "none",
-  "dart.flutterSdkPath": ".fvm/versions/3.32.8"
+  "dart.flutterSdkPath": "~/fvm/versions/3.32.8"
 }

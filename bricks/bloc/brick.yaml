@@ -36,4 +36,4 @@ vars:
   bloc_children:
     type: string
     prompt: Children of the Bloc? E.g. BlocA,BlocB,BlocC (Only for Family Bloc)
-    default: ""
+    # default: ""

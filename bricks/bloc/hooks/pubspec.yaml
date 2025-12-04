@@ -4,4 +4,4 @@ environment:
   sdk: '>=3.4.4 <4.0.0'
 
 dependencies:
-  mason: ^0.1.0-dev.54
+  mason: ^0.1.2
