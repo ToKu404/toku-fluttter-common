@@ -46,9 +46,18 @@ class NetworkImpl implements Network {
         if (file == null) continue;
         final stream = ByteStream(file.openRead());
         final length = await file.length();
+
+        // Use file.name instead of file.path for filename
+        // Parse mimeType from XFile.mimeType
+        final contentType = file.mimeType != null ? MediaType.parse(file.mimeType!) : null;
+
         final multipartFile = ExposedStreamMultipartFile(
-            fieldName, stream, length,
-            filename: file.path);
+          fieldName,
+          stream,
+          length,
+          filename: file.name,
+          contentType: contentType,
+        );
         request.files.add(multipartFile);
       }
     }
