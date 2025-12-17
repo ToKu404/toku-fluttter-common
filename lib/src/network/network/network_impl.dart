@@ -4,7 +4,6 @@ import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:toku_flutter_common/src/network/http/_http.dart';
-import 'package:toku_flutter_common/src/network/network/exposed_stream_multipart_file.dart';
 import 'package:toku_flutter_common/src/network/network/network.dart';
 
 class NetworkImpl implements Network {
@@ -46,18 +45,21 @@ class NetworkImpl implements Network {
         if (file == null) continue;
         final stream = ByteStream(file.openRead());
         final length = await file.length();
+        
+        // Extract only the filename from the full path
+        final filename = file.path.split('/').last.split('\\').last;
 
-        // Use file.name instead of file.path for filename
-        // Parse mimeType from XFile.mimeType
+        // Get content type from mime type
         final contentType = file.mimeType != null ? MediaType.parse(file.mimeType!) : null;
 
-        final multipartFile = ExposedStreamMultipartFile(
+        final multipartFile = MultipartFile(
           fieldName,
           stream,
           length,
-          filename: file.name,
+          filename: filename,
           contentType: contentType,
         );
+
         request.files.add(multipartFile);
       }
     }

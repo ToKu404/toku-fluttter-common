@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -49,18 +50,18 @@ Future<_i174.GetIt> initDependencies(
   );
   final networkDependencyProvider = _$NetworkDependencyProvider();
   final coreDependencyProvider = _$CoreDependencyProvider();
-  gh.factory<_i673.StringValidator>(() => _i673.StringValidator());
   gh.factory<_i851.ReleasableOperation>(() => _i851.ReleasableOperation());
+  gh.factory<_i673.StringValidator>(() => _i673.StringValidator());
   gh.singleton<_i324.ConnectionIssueHandler>(
       () => _i324.ConnectionIssueHandler());
   gh.singleton<_i895.Connectivity>(
       () => networkDependencyProvider.provideConnectivity);
+  gh.lazySingleton<_i1002.AuthTokenInterceptor>(
+      () => _i1002.AuthTokenInterceptor());
   gh.lazySingleton<_i148.Network>(() => const _i148.Network());
   gh.lazySingleton<_i25.Client>(() => networkDependencyProvider.provideClient);
   gh.lazySingleton<_i25.RawHttpClient>(
       () => networkDependencyProvider.provideDio);
-  gh.lazySingleton<_i1002.AuthTokenInterceptor>(
-      () => _i1002.AuthTokenInterceptor());
   await gh.singletonAsync<_i25.ConnectionChecker>(
     () => networkDependencyProvider
         .provideConnectionChecker(gh<_i895.Connectivity>()),

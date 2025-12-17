@@ -69,7 +69,7 @@ class _HttpClientImpl implements HttpClient {
       multipart: (Map<String, String>? fields, Map<String, XFile>? files) => network.createMultipartRequest(
         method: endpoint.method._value,
         url: uri,
-        headers: _concatHeaders(request.contentType, request.headers),
+        headers: _concatHeaders(null, request.headers),
         fields: fields,
         files: files,
       ),

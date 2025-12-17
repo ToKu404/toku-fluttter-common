@@ -19,7 +19,9 @@ mixin _$ValidatedValue<T extends Object> {
   T? get value => throw _privateConstructorUsedError;
   IsValid? get isValid => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ValidatedValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ValidatedValueCopyWith<T, ValidatedValue<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$ValidatedValueCopyWithImpl<T extends Object, $Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ValidatedValue
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -82,6 +86,8 @@ class __$$ValidatedValueImplCopyWithImpl<T extends Object, $Res>
       $Res Function(_$ValidatedValueImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of ValidatedValue
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -132,7 +138,9 @@ class _$ValidatedValueImpl<T extends Object> extends _ValidatedValue<T> {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(value), isValid);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ValidatedValue
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ValidatedValueImplCopyWith<T, _$ValidatedValueImpl<T>> get copyWith =>
@@ -149,8 +157,11 @@ abstract class _ValidatedValue<T extends Object> extends ValidatedValue<T> {
   T? get value;
   @override
   IsValid? get isValid;
+
+  /// Create a copy of ValidatedValue
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ValidatedValueImplCopyWith<T, _$ValidatedValueImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -160,7 +171,9 @@ mixin _$ValidatedString {
   String get value => throw _privateConstructorUsedError;
   IsValid? get isValid => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ValidatedString
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ValidatedStringCopyWith<ValidatedString> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -184,6 +197,8 @@ class _$ValidatedStringCopyWithImpl<$Res, $Val extends ValidatedString>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ValidatedString
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -222,6 +237,8 @@ class __$$ValidatedStringImplCopyWithImpl<$Res>
       _$ValidatedStringImpl _value, $Res Function(_$ValidatedStringImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ValidatedString
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -271,7 +288,9 @@ class _$ValidatedStringImpl extends _ValidatedString {
   @override
   int get hashCode => Object.hash(runtimeType, value, isValid);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ValidatedString
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ValidatedStringImplCopyWith<_$ValidatedStringImpl> get copyWith =>
@@ -288,8 +307,11 @@ abstract class _ValidatedString extends ValidatedString {
   String get value;
   @override
   IsValid? get isValid;
+
+  /// Create a copy of ValidatedString
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ValidatedStringImplCopyWith<_$ValidatedStringImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -300,7 +322,9 @@ mixin _$AsyncValidatedString {
   String get value => throw _privateConstructorUsedError;
   IsValid? get isValid => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AsyncValidatedString
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AsyncValidatedStringCopyWith<AsyncValidatedString> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -325,6 +349,8 @@ class _$AsyncValidatedStringCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AsyncValidatedString
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -368,6 +394,8 @@ class __$$AsyncValidatedStringImplCopyWithImpl<$Res>
       $Res Function(_$AsyncValidatedStringImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AsyncValidatedString
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -428,7 +456,9 @@ class _$AsyncValidatedStringImpl extends _AsyncValidatedString {
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, value, isValid);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AsyncValidatedString
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AsyncValidatedStringImplCopyWith<_$AsyncValidatedStringImpl>
@@ -450,8 +480,11 @@ abstract class _AsyncValidatedString extends AsyncValidatedString {
   String get value;
   @override
   IsValid? get isValid;
+
+  /// Create a copy of AsyncValidatedString
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AsyncValidatedStringImplCopyWith<_$AsyncValidatedStringImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
