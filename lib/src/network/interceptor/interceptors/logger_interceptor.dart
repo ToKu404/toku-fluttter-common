@@ -29,7 +29,16 @@ class LoggerInterceptor extends Interceptor {
     } else if (request is MultipartRequest) {
       outgoingLogBuffer
         ..writeln('Fields: ${_prettyJsonFromMap(request.fields)}')
-        ..writeln('Files: ${request.files}');
+        ..writeln('Files (${request.files.length}): [');
+      for (final file in request.files) {
+        outgoingLogBuffer.writeln('  {');
+        outgoingLogBuffer.writeln('    field: "${file.field}",');
+        outgoingLogBuffer.writeln('    filename: "${file.filename}",');
+        outgoingLogBuffer.writeln('    contentType: ${file.contentType},');
+        outgoingLogBuffer.writeln('    length: ${file.length}');
+        outgoingLogBuffer.writeln('  }');
+      }
+      outgoingLogBuffer.writeln(']');
     }
 
     log(

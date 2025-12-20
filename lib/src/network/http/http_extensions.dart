@@ -47,10 +47,6 @@ extension MultipartRequestExtensions on MultipartRequest {
       ..persistentConnection = persistentConnection
       ..maxRedirects = maxRedirects
       ..fields.addAll(fields)
-      ..files.addAll(files.whereType<ExposedStreamMultipartFile>().map((it) => ExposedStreamMultipartFile(
-            it.field,
-            it.byteStream,
-            it.length,
-          )));
+      ..files.addAll(files);
   }
 }
