@@ -77,17 +77,27 @@ class _HttpClientImpl implements HttpClient {
   }
 
   Map<String, String> _concatHeaders(HttpContentType? contentType, Map<String, String>? other) {
+    final Map<String, String> baseHeaders;
+
+    if (contentType == null) {
+      baseHeaders = Map<String, String>.from(config.defaultHeaders)..remove('Content-Type');
+    } else {
+      baseHeaders = config.defaultHeaders;
+    }
+
     if (other == null) {
       if (contentType != null) {
-        return <String, String>{
-          ...config.defaultHeaders,
+        return {
+          ...baseHeaders,
           'Content-Type': contentType._headerValue,
         };
       }
-      return config.defaultHeaders;
+
+      return baseHeaders;
     }
-    return <String, String>{
-      ...config.defaultHeaders,
+
+    return {
+      ...baseHeaders,
       ...other,
     };
   }
