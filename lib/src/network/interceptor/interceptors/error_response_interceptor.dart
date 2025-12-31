@@ -8,7 +8,7 @@ class ErrorResponseInterceptor extends Interceptor {
   @override
   Future<Result<HttpResponse>> intercept(InterceptorChain chain) {
     return chain.proceed(chain.request).andThenAsync((HttpResponse data) {
-      if (data.statusCode == 403 || data.statusCode==401) {
+      if (data.statusCode == 403 || data.statusCode == 401) {
         // final errorResponse = ErrorResponse.fromJson(data.bodyError!);
 
         final errorResponseException = ErrorResponseException(
@@ -17,7 +17,7 @@ class ErrorResponseInterceptor extends Interceptor {
           errorResponse: const ErrorResponse(message: 'Session Expired'),
         );
         return Result<HttpResponse>.error(errorResponseException);
-      } else if (data.statusCode != 200 && data.statusCode != 201) {
+      } else if (!data.isSuccess) {
         debugPrint('toku ${data.statusCode.toString()}');
         debugPrint('toku ${data.bodyError.toString()}');
 
