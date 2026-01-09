@@ -19,8 +19,8 @@ mixin _$HttpRequestBody {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic>? body) basic,
-    required TResult Function(
-            Map<String, String>? fields, Map<String, XFile>? files)
+    required TResult Function(Map<String, String>? fields,
+            Map<String, XFile>? files, Map<String, List<XFile>>? multifiles)
         multipart,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,8 +38,8 @@ class _$BasicHttpRequestBodyImpl implements _BasicHttpRequestBody {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic>? body) basic,
-    required TResult Function(
-            Map<String, String>? fields, Map<String, XFile>? files)
+    required TResult Function(Map<String, String>? fields,
+            Map<String, XFile>? files, Map<String, List<XFile>>? multifiles)
         multipart,
   }) {
     return basic(body);
@@ -56,7 +56,8 @@ abstract class _BasicHttpRequestBody implements HttpRequestBody {
 /// @nodoc
 
 class _$MultipartHttpRequestBodyImpl implements _MultipartHttpRequestBody {
-  const _$MultipartHttpRequestBodyImpl({this.fields, this.files});
+  const _$MultipartHttpRequestBodyImpl(
+      {this.fields, this.files, this.multifiles});
 
   @override
   final Map<String, String>? fields;
@@ -67,22 +68,31 @@ class _$MultipartHttpRequestBodyImpl implements _MultipartHttpRequestBody {
   @override
   final Map<String, XFile>? files;
 
+  /// The key is the name of the file field, the value is a list of files to be uploaded.
+  ///
+  /// Use this when you need to upload multiple files with the same field name.
+  /// We use [XFile] here instead of `File` because it is not supported on web.
+  @override
+  final Map<String, List<XFile>>? multifiles;
+
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Map<String, dynamic>? body) basic,
-    required TResult Function(
-            Map<String, String>? fields, Map<String, XFile>? files)
+    required TResult Function(Map<String, String>? fields,
+            Map<String, XFile>? files, Map<String, List<XFile>>? multifiles)
         multipart,
   }) {
-    return multipart(fields, files);
+    return multipart(fields, files, multifiles);
   }
 }
 
 abstract class _MultipartHttpRequestBody implements HttpRequestBody {
   const factory _MultipartHttpRequestBody(
-      {final Map<String, String>? fields,
-      final Map<String, XFile>? files}) = _$MultipartHttpRequestBodyImpl;
+          {final Map<String, String>? fields,
+          final Map<String, XFile>? files,
+          final Map<String, List<XFile>>? multifiles}) =
+      _$MultipartHttpRequestBodyImpl;
 
   Map<String, String>? get fields;
 
@@ -90,4 +100,10 @@ abstract class _MultipartHttpRequestBody implements HttpRequestBody {
   ///
   /// We use [XFile] here instead of `File` because it is not supported on web.
   Map<String, XFile>? get files;
+
+  /// The key is the name of the file field, the value is a list of files to be uploaded.
+  ///
+  /// Use this when you need to upload multiple files with the same field name.
+  /// We use [XFile] here instead of `File` because it is not supported on web.
+  Map<String, List<XFile>>? get multifiles;
 }

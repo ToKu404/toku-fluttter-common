@@ -25,6 +25,7 @@ abstract class Network {
     Map<String, String> headers,
     Map<String, String>? fields,
     Map<String, XFile>? files,
+    Map<String, List<XFile>>? multifiles,
   });
 
   Future<HttpResponse> getResponseFromStream(StreamedResponse response);

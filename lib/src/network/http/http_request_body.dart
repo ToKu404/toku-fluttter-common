@@ -24,6 +24,12 @@ class HttpRequestBody with _$HttpRequestBody {
     ///
     /// We use [XFile] here instead of `File` because it is not supported on web.
     Map<String, XFile>? files,
+
+    /// The key is the name of the file field, the value is a list of files to be uploaded.
+    ///
+    /// Use this when you need to upload multiple files with the same field name.
+    /// We use [XFile] here instead of `File` because it is not supported on web.
+    Map<String, List<XFile>>? multifiles,
   }) = _MultipartHttpRequestBody;
 
   static const HttpRequestBody empty = HttpRequestBody.basic();

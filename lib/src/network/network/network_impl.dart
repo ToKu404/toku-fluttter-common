@@ -34,18 +34,23 @@ class NetworkImpl implements Network {
     Map<String, String> headers = const <String, String>{},
     Map<String, String>? fields,
     Map<String, XFile>? files,
+    Map<String, List<XFile>>? multifiles,
   }) async {
     final request = MultipartRequest(method, url)..headers.addAll(headers);
+
     if (fields != null && fields.isNotEmpty) {
       request.fields.addAll(fields);
     }
+
     if (files != null && files.isNotEmpty) {
       for (final fieldName in files.keys) {
         final file = files[fieldName];
+
         if (file == null) continue;
+
         final stream = ByteStream(file.openRead());
         final length = await file.length();
-        
+
         // Extract only the filename from the full path
         final filename = file.path.split('/').last.split('\\').last;
 
@@ -63,6 +68,36 @@ class NetworkImpl implements Network {
         request.files.add(multipartFile);
       }
     }
+
+    if (multifiles != null && multifiles.isNotEmpty) {
+      for (final fieldName in multifiles.keys) {
+        final fileList = multifiles[fieldName];
+
+        if (fileList == null || fileList.isEmpty) continue;
+
+        for (final file in fileList) {
+          final stream = ByteStream(file.openRead());
+          final length = await file.length();
+
+          // Extract only the filename from the full path
+          final filename = file.path.split('/').last.split('\\').last;
+
+          // Get content type from mime type
+          final contentType = file.mimeType != null ? MediaType.parse(file.mimeType!) : null;
+
+          final multipartFile = MultipartFile(
+            fieldName,
+            stream,
+            length,
+            filename: filename,
+            contentType: contentType,
+          );
+
+          request.files.add(multipartFile);
+        }
+      }
+    }
+
     return request;
   }
 

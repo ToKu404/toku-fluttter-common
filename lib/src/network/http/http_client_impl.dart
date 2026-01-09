@@ -54,7 +54,7 @@ class _HttpClientImpl implements HttpClient {
   FutureOr<JsonMap> _createRequestBody(HttpRequest request) {
     return request.body.when<JsonMap>(
       basic: (body) => body ?? <String, dynamic>{},
-      multipart: (fields, files) => <String, dynamic>{},
+      multipart: (fields, files, multifiles) => <String, dynamic>{},
     );
   }
 
@@ -66,12 +66,14 @@ class _HttpClientImpl implements HttpClient {
         headers: _concatHeaders(request.contentType, request.headers),
         body: body,
       ),
-      multipart: (Map<String, String>? fields, Map<String, XFile>? files) => network.createMultipartRequest(
+      multipart: (Map<String, String>? fields, Map<String, XFile>? files, Map<String, List<XFile>>? multifiles) =>
+          network.createMultipartRequest(
         method: endpoint.method._value,
         url: uri,
         headers: _concatHeaders(null, request.headers),
         fields: fields,
         files: files,
+        multifiles: multifiles,
       ),
     );
   }
