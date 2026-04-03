@@ -1,4 +1,5 @@
 import 'package:toku_flutter_common/core.dart';
+import 'package:toku_flutter_common/network.dart';
 
 // TODO: don't forget to generate the files using build_runner
 @lazySingleton

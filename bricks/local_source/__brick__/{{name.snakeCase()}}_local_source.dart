@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:toku_flutter_common/core.dart';
 
 // TODO: don't forget to generate the files using build_runner
