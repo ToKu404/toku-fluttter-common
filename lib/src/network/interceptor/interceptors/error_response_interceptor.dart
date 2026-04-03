@@ -18,13 +18,15 @@ class ErrorResponseInterceptor extends Interceptor {
         );
         return Result<HttpResponse>.error(errorResponseException);
       } else if (!data.isSuccess) {
-        debugPrint('toku ${data.statusCode.toString()}');
-        debugPrint('toku ${data.bodyError.toString()}');
+        debugPrint('toku ${data.statusCode}');
+        debugPrint('toku ${data.bodyError}');
 
-        return Result.error(HttpCodeException(
-          statusCode: data.statusCode,
-          reasonPhrase: data.bodyError?['message'] ?? data.reasonPhrase,
-        ));
+        return Result.error(
+          HttpCodeException(
+            statusCode: data.statusCode,
+            reasonPhrase: data.bodyError?['message'] ?? data.reasonPhrase,
+          ),
+        );
       }
       return Result<HttpResponse>.success(data);
     });

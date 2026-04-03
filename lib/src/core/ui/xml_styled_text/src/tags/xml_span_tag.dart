@@ -1,7 +1,6 @@
 part of xml_tag;
 
-abstract class XmlSpanTag extends XmlTag
-    implements XmlStylableTag, XmlClickableTag {
+abstract class XmlSpanTag extends XmlTag implements XmlStylableTag, XmlClickableTag {
   const XmlSpanTag({Object? id}) : super(id: id);
 
   @override
@@ -47,22 +46,25 @@ class _XmlSpanTag extends XmlSpanTag {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<TextStyle>('style', style, defaultValue: null))
-      ..add(DiagnosticsProperty<VoidCallback>(
-        'onTap',
-        onTap,
-        defaultValue: null,
-      ))
-      ..add(DiagnosticsProperty<GestureRecognizer>(
-        'recognizer',
-        _recognizer,
-        defaultValue: null,
-      ));
+      ..add(
+        DiagnosticsProperty<VoidCallback>(
+          'onTap',
+          onTap,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<GestureRecognizer>(
+          'recognizer',
+          _recognizer,
+          defaultValue: null,
+        ),
+      );
   }
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        other is _XmlSpanTag && other.id == id && other.style == style;
+    return identical(this, other) || other is _XmlSpanTag && other.id == id && other.style == style;
   }
 
   @override

@@ -4,3 +4,7 @@ analyzer:
   exclude:
     - bricks/**/__brick__/**
     - lib/src/aboitiz_ui/l10n/**
+
+formatter:
+  trailing_commas: preserve
+  page_width: 120

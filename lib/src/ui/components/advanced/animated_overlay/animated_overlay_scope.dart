@@ -9,7 +9,8 @@ class AnimatedOverlayScope extends StatefulWidget {
   final Widget child;
 
   static _AnimatedOverlayScopeState of(BuildContext context) {
-    final result = _checkContext(context) ??
+    final result =
+        _checkContext(context) ??
         _findBelowContext(context) ??
         context.findAncestorStateOfType<_AnimatedOverlayScopeState>();
     assert(result != null, 'No AnimatedOverlayScope found in context');

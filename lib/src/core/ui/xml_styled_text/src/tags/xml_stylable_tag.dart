@@ -31,8 +31,7 @@ class _XmlStylableTag extends XmlStylableTag {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        other is _XmlStylableTag && other.id == id && other.style == style;
+    return identical(this, other) || other is _XmlStylableTag && other.id == id && other.style == style;
   }
 
   @override

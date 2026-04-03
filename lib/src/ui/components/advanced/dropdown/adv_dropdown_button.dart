@@ -9,7 +9,6 @@ import 'package:toku_flutter_common/src/core/extensions/build_context.dart';
 
 ///addition starts
 class AdvDropdownAction {
-
   AdvDropdownAction({this.onTap, this.forceTap});
   VoidCallback? forceTap;
   VoidCallback? onTap;
@@ -42,15 +41,15 @@ class _DropdownMenuPainter extends CustomPainter {
     this.menuLimits,
 
     /// addition ends
-  })  : _painter = BoxDecoration(
-          // If you add an image here, you must provide a real
-          // configuration in the paint() function and you must provide some sort
-          // of onChanged callback here.
-          color: color,
-          borderRadius: BorderRadius.circular(2.0),
-          boxShadow: kElevationToShadow[elevation],
-        ).createBoxPainter(),
-        super(repaint: resize);
+  }) : _painter = BoxDecoration(
+         // If you add an image here, you must provide a real
+         // configuration in the paint() function and you must provide some sort
+         // of onChanged callback here.
+         color: color,
+         borderRadius: BorderRadius.circular(2.0),
+         boxShadow: kElevationToShadow[elevation],
+       ).createBoxPainter(),
+       super(repaint: resize);
 
   final Color? color;
   final int? elevation;
@@ -169,9 +168,7 @@ class _DropdownMenuItemButtonState<T> extends State<_DropdownMenuItemButton<T>> 
   void _handleOnTap() {
     final dropdownMenuItem = widget.route.items[widget.itemIndex].item!;
 
-    if (dropdownMenuItem.onTap != null) {
-      dropdownMenuItem.onTap!();
-    }
+    dropdownMenuItem.onTap?.call();
 
     Navigator.pop(
       context,
@@ -213,16 +210,16 @@ class _DropdownMenuItemButtonState<T> extends State<_DropdownMenuItemButton<T>> 
 
     /// change end
 
-    Widget child = FadeTransition(
+    final Widget child = FadeTransition(
       opacity: opacity,
       child: InkWell(
         autofocus: widget.itemIndex == widget.route.selectedIndex,
+        onTap: _handleOnTap,
+        onFocusChange: _handleFocusChange,
         child: Container(
           padding: widget.padding,
           child: widget.route.items[widget.itemIndex],
         ),
-        onTap: _handleOnTap,
-        onFocusChange: _handleFocusChange,
       ),
     );
 
@@ -349,8 +346,9 @@ class _DropdownMenuState<T> extends State<_DropdownMenu<T>> {
                 controller: widget.route.scrollController!,
                 child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    final menuTotalHeight =
-                        widget.route.itemHeights.reduce((double total, double height) => total + height);
+                    final menuTotalHeight = widget.route.itemHeights.reduce(
+                      (double total, double height) => total + height,
+                    );
                     final isScrollable = kMaterialListPadding.vertical + menuTotalHeight > constraints.maxHeight;
                     return Scrollbar(
                       thumbVisibility: isScrollable,
@@ -400,7 +398,6 @@ class _DropdownMenuRouteLayout<T> extends SingleChildLayoutDelegate {
     return BoxConstraints(
       minWidth: width,
       maxWidth: width,
-      minHeight: 0.0,
       maxHeight: maxHeight,
     );
   }
@@ -989,21 +986,21 @@ class AdvDropdownButton<T> extends StatefulWidget {
     ///change end
     // When adding new arguments, consider adding similar arguments to
     // DropdownButtonFormField.
-  })  : assert(
-          items == null ||
-              items.isEmpty ||
-              value == null ||
-              items.where((AdvDropdownMenuItem<T> item) {
-                    return item.value == value;
-                  }).length ==
-                  1,
-          "There should be exactly one item with [DropdownButton]'s value: "
-          '$value. \n'
-          'Either zero or 2 or more [DropdownMenuItem]s were detected '
-          'with the same value',
-        ),
-        assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
-        super(key: key);
+  }) : assert(
+         items == null ||
+             items.isEmpty ||
+             value == null ||
+             items.where((AdvDropdownMenuItem<T> item) {
+                   return item.value == value;
+                 }).length ==
+                 1,
+         "There should be exactly one item with [DropdownButton]'s value: "
+         '$value. \n'
+         'Either zero or 2 or more [DropdownMenuItem]s were detected '
+         'with the same value',
+       ),
+       assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
+       super(key: key);
 
   /// addition starts
   final AdvDropdownAction? outerActions;
@@ -1435,7 +1432,7 @@ class _AdvDropdownButtonState<T> extends State<AdvDropdownButton<T>> with Widget
 
               _dropdownRoute!.itemHeights[index] = size.height;
             },
-          )
+          ),
       ];
 
       final navigator = Navigator.of(context);
@@ -1462,14 +1459,12 @@ class _AdvDropdownButtonState<T> extends State<AdvDropdownButton<T>> with Widget
       navigator.push(_dropdownRoute!).then<void>((_DropdownRouteResult<T>? newValue) {
         _removeDropdownRoute();
         if (!mounted || newValue == null) return;
-        if (widget.onChanged != null) widget.onChanged!(newValue.result);
+        if (widget.onChanged != null) widget.onChanged?.call(newValue.result);
       });
 
-      if (widget.onTap != null) {
-        widget.onTap!();
-      }
+      widget.onTap?.call();
     } catch (e) {
-      debugPrint("Dropdown error => $e");
+      debugPrint('Dropdown error => $e');
     }
   }
 
@@ -1553,13 +1548,15 @@ class _AdvDropdownButtonState<T> extends State<AdvDropdownButton<T>> with Widget
       if (widget.selectedItemBuilder == null) displayedHint = _DropdownMenuItemContainer(child: displayedHint);
 
       hintIndex = items.length;
-      items.add(DefaultTextStyle(
-        style: _textStyle!.copyWith(color: Theme.of(context).hintColor),
-        child: IgnorePointer(
-          ignoringSemantics: false,
-          child: displayedHint,
+      items.add(
+        DefaultTextStyle(
+          style: _textStyle!.copyWith(color: Theme.of(context).hintColor),
+          child: IgnorePointer(
+            ignoringSemantics: false,
+            child: displayedHint,
+          ),
         ),
-      ));
+      );
     }
 
     final padding = ButtonTheme.of(context).alignedDropdown ? _kAlignedButtonPadding : _kUnalignedButtonPadding;
@@ -1622,7 +1619,8 @@ class _AdvDropdownButtonState<T> extends State<AdvDropdownButton<T>> with Widget
             left: 0.0,
             right: 0.0,
             bottom: bottom,
-            child: widget.underline ??
+            child:
+                widget.underline ??
                 Container(
                   height: 1.0,
                   decoration: const BoxDecoration(
@@ -1700,82 +1698,88 @@ class AdvDropdownButtonFormField<T> extends FormField<T> {
     InputDecoration? decoration,
     FormFieldSetter<T>? onSaved,
     FormFieldValidator<T>? validator,
-    @Deprecated('Use autovalidateMode parameter which provide more specific '
-        'behaviour related to auto validation. '
-        'This feature was deprecated after v1.19.0.')
+    @Deprecated(
+      'Use autovalidateMode parameter which provide more specific '
+      'behaviour related to auto validation. '
+      'This feature was deprecated after v1.19.0.',
+    )
     bool autovalidate = false,
     AutovalidateMode? autovalidateMode,
-  })  : assert(
-          items == null ||
-              items.isEmpty ||
-              value == null ||
-              items.where((AdvDropdownMenuItem<T> item) {
-                    return item.value == value;
-                  }).length ==
-                  1,
-          "There should be exactly one item with [DropdownButton]'s value: "
-          '$value. \n'
-          'Either zero or 2 or more [DropdownMenuItem]s were detected '
-          'with the same value',
-        ),
-        assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
-        assert(autovalidate == false || autovalidate == true && autovalidateMode == null,
-            'autovalidate and autovalidateMode should not be used together.'),
-        decoration = decoration ?? InputDecoration(focusColor: focusColor),
-        super(
-          key: key,
-          onSaved: onSaved,
-          initialValue: value,
-          validator: validator,
-          autovalidateMode: autovalidate ? AutovalidateMode.always : (autovalidateMode ?? AutovalidateMode.disabled),
-          builder: (FormFieldState<T> field) {
-            final state = field as _DropdownButtonFormFieldState<T>;
-            final decorationArg = decoration ?? InputDecoration(focusColor: focusColor);
-            final effectiveDecoration = decorationArg.applyDefaults(
-              Theme.of(field.context).inputDecorationTheme,
-            );
-            // An unfocusable Focus widget so that this widget can detect if its
-            // descendants have focus or not.
-            return Focus(
-              canRequestFocus: false,
-              skipTraversal: true,
-              child: Builder(builder: (BuildContext context) {
-                return InputDecorator(
-                  decoration: effectiveDecoration.copyWith(errorText: field.errorText),
-                  isEmpty: state.value == null,
-                  isFocused: Focus.of(context).hasFocus,
-                  child: DropdownButtonHideUnderline(
-                    child: AdvDropdownButton<T>(
-                      items: items,
-                      selectedItemBuilder: selectedItemBuilder,
-                      value: state.value,
-                      hint: hint,
-                      disabledHint: disabledHint,
-                      onChanged: onChanged == null ? null : state.didChange,
-                      onTap: onTap,
-                      elevation: elevation,
-                      style: style,
-                      icon: icon,
-                      iconDisabledColor: iconDisabledColor,
-                      iconEnabledColor: iconEnabledColor,
-                      iconSize: iconSize,
-                      isDense: isDense,
-                      isExpanded: isExpanded,
-                      itemHeight: itemHeight,
-                      focusColor: focusColor,
-                      focusNode: focusNode,
-                      autofocus: autofocus,
+  }) : assert(
+         items == null ||
+             items.isEmpty ||
+             value == null ||
+             items.where((AdvDropdownMenuItem<T> item) {
+                   return item.value == value;
+                 }).length ==
+                 1,
+         "There should be exactly one item with [DropdownButton]'s value: "
+         '$value. \n'
+         'Either zero or 2 or more [DropdownMenuItem]s were detected '
+         'with the same value',
+       ),
+       assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
+       assert(
+         autovalidate == false || autovalidate == true && autovalidateMode == null,
+         'autovalidate and autovalidateMode should not be used together.',
+       ),
+       decoration = decoration ?? InputDecoration(focusColor: focusColor),
+       super(
+         key: key,
+         onSaved: onSaved,
+         initialValue: value,
+         validator: validator,
+         autovalidateMode: autovalidate ? AutovalidateMode.always : (autovalidateMode ?? AutovalidateMode.disabled),
+         builder: (FormFieldState<T> field) {
+           final state = field as _DropdownButtonFormFieldState<T>;
+           final decorationArg = decoration ?? InputDecoration(focusColor: focusColor);
+           final effectiveDecoration = decorationArg.applyDefaults(
+             Theme.of(field.context).inputDecorationTheme,
+           );
+           // An unfocusable Focus widget so that this widget can detect if its
+           // descendants have focus or not.
+           return Focus(
+             canRequestFocus: false,
+             skipTraversal: true,
+             child: Builder(
+               builder: (BuildContext context) {
+                 return InputDecorator(
+                   decoration: effectiveDecoration.copyWith(errorText: field.errorText),
+                   isEmpty: state.value == null,
+                   isFocused: Focus.of(context).hasFocus,
+                   child: DropdownButtonHideUnderline(
+                     child: AdvDropdownButton<T>(
+                       items: items,
+                       selectedItemBuilder: selectedItemBuilder,
+                       value: state.value,
+                       hint: hint,
+                       disabledHint: disabledHint,
+                       onChanged: onChanged == null ? null : state.didChange,
+                       onTap: onTap,
+                       elevation: elevation,
+                       style: style,
+                       icon: icon,
+                       iconDisabledColor: iconDisabledColor,
+                       iconEnabledColor: iconEnabledColor,
+                       iconSize: iconSize,
+                       isDense: isDense,
+                       isExpanded: isExpanded,
+                       itemHeight: itemHeight,
+                       focusColor: focusColor,
+                       focusNode: focusNode,
+                       autofocus: autofocus,
 
-                      ///delete starts
-                      // dropdownColor: dropdownColor,
-                      ///delete ends
-                    ),
-                  ),
-                );
-              }),
-            );
-          },
-        );
+                       ///delete starts
+                       // dropdownColor: dropdownColor,
+                       ///delete ends
+                     ),
+                   ),
+                 );
+               },
+             ),
+           );
+         },
+       );
 
   /// {@macro flutter.material.dropdownButton.onChanged}
   final ValueChanged<T?>? onChanged;

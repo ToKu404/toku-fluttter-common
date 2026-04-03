@@ -20,8 +20,8 @@ class MutableHttpConfig implements HttpConfig {
   MutableHttpConfig({
     required String Function() baseUrl,
     Map<String, String> Function()? defaultHeaders,
-  })  : _baseUrl = baseUrl,
-        _defaultHeaders = defaultHeaders;
+  }) : _baseUrl = baseUrl,
+       _defaultHeaders = defaultHeaders;
 
   final String Function() _baseUrl;
   @override

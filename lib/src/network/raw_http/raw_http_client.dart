@@ -57,10 +57,10 @@ final class _RawHttpCancelTokenImpl implements RawHttpCancelToken {
 /// - Others: supports neither send nor receive progress callbacks.
 @internal
 (bool, bool) getSupportedMethodProgressCallbacks(String method) => switch (method) {
-      'GET' => (false, true),
-      'POST' || 'PUT' || 'PATCH' => (true, true),
-      _ => (false, false),
-    };
+  'GET' => (false, true),
+  'POST' || 'PUT' || 'PATCH' => (true, true),
+  _ => (false, false),
+};
 
 extension ClientExceptionExtensions on ClientException {
   bool get isRequestCanceled => message == 'HTTP request canceled';

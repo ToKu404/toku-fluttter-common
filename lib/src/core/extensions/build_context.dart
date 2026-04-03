@@ -32,7 +32,7 @@ extension BuildContextExtension on BuildContext {
   bool get canPop => modalRoute?.canPop ?? false;
 
   Future<bool> maybePop<T extends Object?>([T? result]) async {
-    return await Navigator.of(this).maybePop<T>(result);
+    return Navigator.of(this).maybePop<T>(result);
   }
 
   void popUntil(bool Function(Route route) predicate) {
@@ -81,7 +81,11 @@ class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
 
   @override
   Widget buildTransitions(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return child;
   }
 }

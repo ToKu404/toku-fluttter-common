@@ -4,8 +4,7 @@ import 'package:provider/provider.dart';
 enum AdvRoutePopDisposition {
   willPopNow,
   willPopLater,
-  willNotPop,
-  ;
+  willNotPop;
 
   bool get isWillPopNow => this == AdvRoutePopDisposition.willPopNow;
   bool get isWillPopLater => this == AdvRoutePopDisposition.willPopLater;
@@ -28,7 +27,6 @@ class AdvWillPopScope extends StatefulWidget {
     required this.onWillPop,
     required this.child,
   });
-
 
   final AdvWillPopCallback onWillPop;
 

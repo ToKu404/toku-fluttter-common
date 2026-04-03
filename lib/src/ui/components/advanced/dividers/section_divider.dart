@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SectionDivider extends StatelessWidget {
-  final bool isVertical;
   const SectionDivider({super.key, this.isVertical = false});
+  final bool isVertical;
 
   @override
   Widget build(BuildContext context) {

@@ -53,8 +53,8 @@ class LoggerInterceptor extends Interceptor {
         final bodyJson = data.bodyJson;
         final resultBody = bodyJson != null
             ? bodyJson is List
-                ? bodyJson
-                : _prettyJsonFromMap(bodyJson)
+                  ? bodyJson
+                  : _prettyJsonFromMap(bodyJson)
             : null;
         log(
           'Incoming [${chain.request.method}] ${chain.request.url}\n'

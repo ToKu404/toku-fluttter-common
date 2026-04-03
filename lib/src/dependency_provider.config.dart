@@ -1,5 +1,5 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -43,59 +43,66 @@ Future<_i174.GetIt> initDependencies(
   String? environment,
   _i526.EnvironmentFilter? environmentFilter,
 }) async {
-  final gh = _i526.GetItHelper(
-    getIt,
-    environment,
-    environmentFilter,
-  );
+  final gh = _i526.GetItHelper(getIt, environment, environmentFilter);
   final networkDependencyProvider = _$NetworkDependencyProvider();
   final coreDependencyProvider = _$CoreDependencyProvider();
   gh.factory<_i851.ReleasableOperation>(() => _i851.ReleasableOperation());
   gh.factory<_i673.StringValidator>(() => _i673.StringValidator());
   gh.singleton<_i324.ConnectionIssueHandler>(
-      () => _i324.ConnectionIssueHandler());
+    () => _i324.ConnectionIssueHandler(),
+  );
   gh.singleton<_i895.Connectivity>(
-      () => networkDependencyProvider.provideConnectivity);
+    () => networkDependencyProvider.provideConnectivity,
+  );
   gh.lazySingleton<_i1002.AuthTokenInterceptor>(
-      () => _i1002.AuthTokenInterceptor());
+    () => _i1002.AuthTokenInterceptor(),
+  );
   gh.lazySingleton<_i148.Network>(() => const _i148.Network());
   gh.lazySingleton<_i25.Client>(() => networkDependencyProvider.provideClient);
   gh.lazySingleton<_i25.RawHttpClient>(
-      () => networkDependencyProvider.provideDio);
-  await gh.singletonAsync<_i25.ConnectionChecker>(
-    () => networkDependencyProvider
-        .provideConnectionChecker(gh<_i895.Connectivity>()),
-    preResolve: true,
+    () => networkDependencyProvider.provideDio,
   );
   gh.factory<_i611.StringValidator>(
     () => coreDependencyProvider.provideOptionalStringValidator,
     instanceName: 'optionalStringValidator',
   );
+  await gh.singletonAsync<_i25.ConnectionChecker>(
+    () => networkDependencyProvider.provideConnectionChecker(
+      gh<_i895.Connectivity>(),
+    ),
+    preResolve: true,
+  );
+  gh.lazySingleton<_i462.HttpClient>(
+    () => _i462.HttpClient(
+      client: gh<_i462.Client>(),
+      rawClient: gh<_i25.RawHttpClient>(),
+      network: gh<_i25.Network>(),
+      config: gh<_i462.HttpConfig>(),
+      interceptorChainFactory: gh<_i25.InterceptorChainFactory>(),
+    ),
+  );
+  gh.singleton<_i614.ConnectionCheckerInterceptor>(
+    () => _i614.ConnectionCheckerInterceptor(gh<_i540.ConnectionChecker>()),
+  );
   gh.factory<_i611.Debouncer>(
     () => coreDependencyProvider.provideDebouncer250ms,
     instanceName: 'debouncer250ms',
   );
-  gh.singleton<_i614.ConnectionCheckerInterceptor>(
-      () => _i614.ConnectionCheckerInterceptor(gh<_i540.ConnectionChecker>()));
   gh.factory<_i611.Debouncer>(
     () => coreDependencyProvider.provideDebouncer500ms,
     instanceName: 'debouncer500ms',
   );
-  gh.singleton<_i25.FailedRequestHandlerRegistry>(() =>
-      networkDependencyProvider.provideFailedRequestHandlerRegistry(
-          gh<_i660.ConnectionIssueHandler>()));
-  gh.lazySingleton<_i462.HttpClient>(() => _i462.HttpClient(
-        client: gh<_i462.Client>(),
-        rawClient: gh<_i25.RawHttpClient>(),
-        network: gh<_i25.Network>(),
-        config: gh<_i462.HttpConfig>(),
-        interceptorChainFactory: gh<_i25.InterceptorChainFactory>(),
-      ));
+  gh.singleton<_i25.FailedRequestHandlerRegistry>(
+    () => networkDependencyProvider.provideFailedRequestHandlerRegistry(
+      gh<_i660.ConnectionIssueHandler>(),
+    ),
+  );
   gh.singleton<_i561.FailedRequestHandlerInterceptor>(
-      () => _i561.FailedRequestHandlerInterceptor(
-            gh<_i561.FailedRequestHandlerRegistry>(),
-            gh<_i25.AuthTokenInterceptor>(),
-          ));
+    () => _i561.FailedRequestHandlerInterceptor(
+      gh<_i561.FailedRequestHandlerRegistry>(),
+      gh<_i25.AuthTokenInterceptor>(),
+    ),
+  );
   return getIt;
 }
 

@@ -38,10 +38,12 @@ class _AnimatedOverlayEntry with Diagnosticable {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<AnimatedOverlay>('content', content))
-      ..add(DiagnosticsProperty<VoidCallback?>(
-        '_onRemove',
-        _onRemove,
-        missingIfNull: true,
-      ));
+      ..add(
+        DiagnosticsProperty<VoidCallback?>(
+          '_onRemove',
+          _onRemove,
+          missingIfNull: true,
+        ),
+      );
   }
 }

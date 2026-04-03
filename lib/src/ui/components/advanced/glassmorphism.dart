@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Glassmorphism extends StatelessWidget {
-
   const Glassmorphism({
     super.key,
     required this.blur,
@@ -21,13 +20,13 @@ class Glassmorphism extends StatelessWidget {
       borderRadius: BorderRadius.circular(radius),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(opacity),
+            color: Colors.white.withValues(alpha: opacity),
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             border: Border.all(
               width: 1.5,
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: .2),
             ),
           ),
           child: child,

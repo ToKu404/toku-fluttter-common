@@ -6,7 +6,6 @@ import 'dart:async';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:toku_flutter_common/network.dart';
 import 'package:toku_flutter_common/src/core/models/result.dart';
 

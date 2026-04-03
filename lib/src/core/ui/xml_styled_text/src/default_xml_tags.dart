@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import 'xml_styled_text.dart';
+import 'package:toku_flutter_common/src/core/ui/xml_styled_text/src/xml_styled_text.dart';
 
 class DefaultXmlTags extends InheritedWidget {
   const DefaultXmlTags({

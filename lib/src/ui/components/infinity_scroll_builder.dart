@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:toku_flutter_common/core.dart';
 
@@ -22,9 +21,9 @@ class _InfinityScrollBuilderState extends State<InfinityScrollBuilder>
     with AutoDisposeStateMixin<InfinityScrollBuilder> {
   @override
   Widget build(BuildContext context) => PrimaryScrollController(
-        controller: _scrollController,
-        child: widget.builder(context, _scrollController),
-      );
+    controller: _scrollController,
+    child: widget.builder(context, _scrollController),
+  );
 
   late final ScrollController _scrollController;
 

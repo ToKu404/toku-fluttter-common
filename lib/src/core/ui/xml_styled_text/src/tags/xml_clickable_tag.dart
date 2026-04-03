@@ -41,9 +41,11 @@ class _XmlSingleTapClickableTag extends XmlClickableTag {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<VoidCallback>('onTap', onTap));
-    properties.add(DiagnosticsProperty<GestureRecognizer>(
-      'recognizer',
-      _recognizer,
-    ));
+    properties.add(
+      DiagnosticsProperty<GestureRecognizer>(
+        'recognizer',
+        _recognizer,
+      ),
+    );
   }
 }

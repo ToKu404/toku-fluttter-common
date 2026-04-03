@@ -16,24 +16,24 @@ extension DateTimeFormatting on DateTime {
       'September',
       'Oktober',
       'November',
-      'Desember'
+      'Desember',
     ];
 
     // Get the day name
-    String dayName = days[this.weekday - 1];
+    final String dayName = days[weekday - 1];
     // Get the day number
-    int day = this.day;
+    final int day = this.day;
     // Get the month name
-    String monthName = months[this.month - 1];
+    final String monthName = months[month - 1];
     // Get the year
-    int year = this.year;
+    final int year = this.year;
 
     // Format the date
     return '$dayName $day $monthName $year';
   }
 
   String toTime() {
-    String time = DateFormat('HH.mm').format(this);
+    final String time = DateFormat('HH.mm').format(this);
     return time;
   }
 
@@ -52,20 +52,20 @@ extension DateTimeFormatting on DateTime {
       'September',
       'Oktober',
       'November',
-      'Desember'
+      'Desember',
     ];
 
     // Get the day name
-    String dayName = days[this.weekday - 1];
+    final String dayName = days[weekday - 1];
     // Get the day number
-    int day = this.day;
+    final int day = this.day;
     // Get the month name
-    String monthName = months[this.month - 1];
+    final String monthName = months[month - 1];
     // Get the year
-    int year = this.year;
+    final int year = this.year;
 
     // Get the time in HH.mm format
-    String time = DateFormat('HH.mm').format(this);
+    final String time = DateFormat('HH.mm').format(this);
 
     // Format the date
     return '$dayName, $day $monthName $year • $time';
@@ -73,10 +73,10 @@ extension DateTimeFormatting on DateTime {
 
   int toAge() {
     final now = DateTime.now();
-    int age = now.year - this.year;
+    int age = now.year - year;
 
     // Check if the current date is before the birthday this year; if so, subtract 1 from the age
-    if (now.month < this.month || (now.month == this.month && now.day < this.day)) {
+    if (now.month < month || (now.month == month && now.day < day)) {
       age--;
     }
 

@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:toku_flutter_common/src/core/ui/xml_styled_text/src/default_xml_tags.dart';
 import 'package:toku_flutter_common/src/core/ui/xml_styled_text/src/tags/xml_tag.dart';
 import 'package:xml/xml.dart';
-import 'package:xml/xml_events.dart'
-    show XmlEvent, XmlNodeDecoder, parseEvents;
+import 'package:xml/xml_events.dart' show XmlEvent, XmlNodeDecoder, parseEvents;
 
 typedef XmlTagMap = Map<String, XmlTag>;
 
@@ -46,13 +45,6 @@ class XmlStyledText extends StatefulWidget {
     final Iterable<XmlEvent> events = parseEvents(
       text,
       validateNesting: true,
-      // we explicitly declare these arguments
-      // to avoid potential breaking changes in the future
-      entityMapping: null,
-      validateDocument: false,
-      withBuffer: false,
-      withLocation: false,
-      withParent: false,
     );
     // We can safely ignore this because we just need to copy [XmlDocument.parse]
     // implementation and disable document validation.
@@ -99,43 +91,57 @@ class XmlStyledText extends StatefulWidget {
       ..add(DiagnosticsProperty<XmlTagMap>('tags', tags, defaultValue: null))
       ..add(IntProperty('maxLines', maxLines, defaultValue: null))
       ..add(DiagnosticsProperty<TextStyle>('style', style, defaultValue: null))
-      ..add(DiagnosticsProperty<TextAlign>(
-        'textAlign',
-        textAlign,
-        defaultValue: null,
-      ))
-      ..add(DiagnosticsProperty<TextOverflow>(
-        'overflow',
-        overflow,
-        defaultValue: null,
-      ))
+      ..add(
+        DiagnosticsProperty<TextAlign>(
+          'textAlign',
+          textAlign,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<TextOverflow>(
+          'overflow',
+          overflow,
+          defaultValue: null,
+        ),
+      )
       ..add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null))
-      ..add(FlagProperty(
-        'softWrap',
-        value: softWrap,
-        ifTrue: 'wrapping at box width',
-        ifFalse: 'no wrapping except at line break characters',
-        showName: true,
-      ))
-      ..add(DoubleProperty(
-        'textScaleFactor',
-        textScaleFactor,
-        defaultValue: null,
-      ))
-      ..add(DiagnosticsProperty<TextDirection>(
-        'textDirection',
-        textDirection,
-        defaultValue: null,
-      ))
-      ..add(DiagnosticsProperty<TextHeightBehavior>(
-        'textHeightBehavior',
-        textHeightBehavior,
-        defaultValue: null,
-      ))
-      ..add(DiagnosticsProperty<TextWidthBasis>(
-        'textWidthBasis',
-        textWidthBasis,
-      ))
+      ..add(
+        FlagProperty(
+          'softWrap',
+          value: softWrap,
+          ifTrue: 'wrapping at box width',
+          ifFalse: 'no wrapping except at line break characters',
+          showName: true,
+        ),
+      )
+      ..add(
+        DoubleProperty(
+          'textScaleFactor',
+          textScaleFactor,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<TextDirection>(
+          'textDirection',
+          textDirection,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<TextHeightBehavior>(
+          'textHeightBehavior',
+          textHeightBehavior,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<TextWidthBasis>(
+          'textWidthBasis',
+          textWidthBasis,
+        ),
+      )
       ..add(DiagnosticsProperty<StrutStyle>('strutStyle', strutStyle));
   }
 }
@@ -165,8 +171,7 @@ class _XmlStyledTextState extends State<XmlStyledText> {
   @override
   void didUpdateWidget(covariant XmlStyledText oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.text != widget.text ||
-        !mapEquals(oldWidget._tags, widget._tags)) {
+    if (oldWidget.text != widget.text || !mapEquals(oldWidget._tags, widget._tags)) {
       _updateSpans();
     }
   }
@@ -187,18 +192,14 @@ class _XmlStyledTextState extends State<XmlStyledText> {
       );
     }
 
-    final TextAlign textAlign =
-        widget.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start;
+    final TextAlign textAlign = widget.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start;
 
-    final double textScaleFactor =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+    final double textScaleFactor = widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     return RichText(
       textAlign: textAlign,
       maxLines: widget.maxLines ?? defaultTextStyle.maxLines,
-      overflow: widget.overflow ??
-          effectiveTextStyle?.overflow ??
-          defaultTextStyle.overflow,
+      overflow: widget.overflow ?? effectiveTextStyle?.overflow ?? defaultTextStyle.overflow,
       // RichText uses Localizations.localeOf to obtain a default if this is null
       locale: widget.locale,
       softWrap: widget.softWrap ?? defaultTextStyle.softWrap,
@@ -206,7 +207,8 @@ class _XmlStyledTextState extends State<XmlStyledText> {
       // RichText uses Directionality.of to obtain a default if this is null.
       textDirection: widget.textDirection,
       textWidthBasis: widget.textWidthBasis ?? defaultTextStyle.textWidthBasis,
-      textHeightBehavior: widget.textHeightBehavior ??
+      textHeightBehavior:
+          widget.textHeightBehavior ??
           defaultTextStyle.textHeightBehavior ??
           DefaultTextHeightBehavior.maybeOf(context),
       strutStyle: widget.strutStyle,
@@ -239,17 +241,17 @@ class _XmlStyledTextState extends State<XmlStyledText> {
 
     for (final XmlNode node in document.children) {
       if (node is XmlText) {
-        spans.add(TextSpan(text: node.text));
+        spans.add(TextSpan(text: node.value));
       } else if (node is XmlElement) {
         final String xmlTagName = node.name.local;
         final XmlTag? tag = widgetTags[xmlTagName];
         if (tag != null) {
           tagList.add(tag);
-          spans.add(tag.buildSpan(node.text));
+          spans.add(tag.buildSpan(node.value ?? ''));
         } else {
           final XmlTag? defaultTag = defaultTags[xmlTagName];
           spans.add(
-            defaultTag?.buildSpan(node.text) ?? TextSpan(text: node.text),
+            defaultTag?.buildSpan(node.value ?? '') ?? TextSpan(text: node.value ?? ''),
           );
         }
       }
@@ -276,12 +278,14 @@ class _XmlStyledTextState extends State<XmlStyledText> {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(FlagProperty(
-        '_isInitialized',
-        value: _isInitialized,
-        ifTrue: 'spans initialized',
-        ifFalse: 'didChangeDependencies has not been called',
-      ))
+      ..add(
+        FlagProperty(
+          '_isInitialized',
+          value: _isInitialized,
+          ifTrue: 'spans initialized',
+          ifFalse: 'didChangeDependencies has not been called',
+        ),
+      )
       ..add(DiagnosticsProperty<XmlTagMap>('_defaultTags', _defaultTags))
       ..add(DiagnosticsProperty<List<XmlTag>>('_tagList', _tagList))
       ..add(DiagnosticsProperty<List<InlineSpan>>('_spans', _spans));

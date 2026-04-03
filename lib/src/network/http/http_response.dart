@@ -24,14 +24,14 @@ class HttpResponse extends Response {
     bool persistentConnection = true,
     String? reasonPhrase,
   }) : super.bytes(
-          bodyBytes,
-          statusCode,
-          request: request,
-          headers: headers,
-          isRedirect: isRedirect,
-          persistentConnection: persistentConnection,
-          reasonPhrase: reasonPhrase,
-        );
+         bodyBytes,
+         statusCode,
+         request: request,
+         headers: headers,
+         isRedirect: isRedirect,
+         persistentConnection: persistentConnection,
+         reasonPhrase: reasonPhrase,
+       );
 
   static Future<HttpResponse> fromStream(StreamedResponse response) async {
     final body = await response.stream.toBytes();

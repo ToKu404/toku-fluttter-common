@@ -82,15 +82,16 @@ class _BrutalismCardState extends State<BrutalismCard> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(widget.borderRadius),
-                            child: widget.child!,
+                            child: widget.child,
                           ),
                           Positioned.fill(
-                              child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(widget.borderRadius),
-                              color: widget.layerColor,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(widget.borderRadius),
+                                color: widget.layerColor,
+                              ),
                             ),
-                          ))
+                          ),
                         ],
                       )
                     : const SizedBox(),
@@ -111,12 +112,13 @@ class _BrutalismCardState extends State<BrutalismCard> {
                       bottom: widget.layerSpace,
                     ),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(widget.borderRadius),
-                  color: widget.isEnabled ? widget.primaryColor : Colors.white,
-                  border: Border.all(
-                    width: widget.borderWidth ?? 1,
-                    color: widget.isEnabled ? widget.borderColor ?? Colors.black : Colors.grey,
-                  )),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                color: widget.isEnabled ? widget.primaryColor : Colors.white,
+                border: Border.all(
+                  width: widget.borderWidth ?? 1,
+                  color: widget.isEnabled ? widget.borderColor ?? Colors.black : Colors.grey,
+                ),
+              ),
               child: ClipRRect(
                 clipBehavior: Clip.hardEdge,
                 borderRadius: BorderRadius.circular(widget.borderRadius - (widget.layerSpace / 2)),

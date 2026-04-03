@@ -28,13 +28,12 @@ class ReleasableOperation {
     final completer = Completer<void>();
     final controller = StreamController<T>();
     controller.onListen = () {
-      final sourceSubscription =
-          sourceFn().listen(controller.add, cancelOnError: true)
-            ..onError(completer.completeError)
-            ..onDone(() {
-              completer.maybeComplete();
-              onCompleted?.call();
-            });
+      final sourceSubscription = sourceFn().listen(controller.add, cancelOnError: true)
+        ..onError(completer.completeError)
+        ..onDone(() {
+          completer.maybeComplete();
+          onCompleted?.call();
+        });
       controller.onCancel = () {
         sourceSubscription.cancel();
         completer.maybeComplete();

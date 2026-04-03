@@ -30,9 +30,8 @@ abstract class NetworkDependencyProvider {
   FailedRequestHandlerRegistry provideFailedRequestHandlerRegistry(
     ConnectionIssueHandler connectionIssueHandler,
   ) {
-    return FailedRequestHandlerRegistry()
-      ..addHandlers([
-        connectionIssueHandler,
-      ]);
+    return FailedRequestHandlerRegistry()..addHandlers([
+      connectionIssueHandler,
+    ]);
   }
 }

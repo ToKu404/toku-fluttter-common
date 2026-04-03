@@ -6,7 +6,6 @@ import 'package:http/http.dart';
 import 'package:toku_flutter_common/src/core/extensions/completor_extension.dart';
 import 'package:toku_flutter_common/src/network/raw_http/raw_http_client.dart';
 
-
 RawHttpClient createClient() => RawBrowserHttpClient();
 
 final class RawBrowserHttpClient implements RawHttpClient {
@@ -47,14 +46,16 @@ final class RawBrowserHttpClient implements RawHttpClient {
 
     xhr.onLoad.first.then((_) {
       final body = (xhr.response as ByteBuffer).asUint8List();
-      completer.maybeComplete(StreamedResponse(
-        ByteStream.fromBytes(body),
-        xhr.status!,
-        contentLength: body.length,
-        request: request,
-        headers: xhr.responseHeaders,
-        reasonPhrase: xhr.statusText,
-      ));
+      completer.maybeComplete(
+        StreamedResponse(
+          ByteStream.fromBytes(body),
+          xhr.status!,
+          contentLength: body.length,
+          request: request,
+          headers: xhr.responseHeaders,
+          reasonPhrase: xhr.statusText,
+        ),
+      );
     });
 
     xhr.onError.first.then((_) {
@@ -67,10 +68,12 @@ final class RawBrowserHttpClient implements RawHttpClient {
     });
 
     xhr.onAbort.first.then((_) {
-      completer.maybeCompleteError(ClientException(
-        'HTTP request canceled',
-        request.url,
-      ));
+      completer.maybeCompleteError(
+        ClientException(
+          'HTTP request canceled',
+          request.url,
+        ),
+      );
     });
 
     StreamSubscription? receiveProgressSubscription;

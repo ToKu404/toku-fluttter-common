@@ -153,9 +153,11 @@ class _AnimatedOverlayBuilderState extends State<_AnimatedOverlayBuilder>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<_AnimatedOverlayLifecycle>(
-      '_currentState',
-      _currentState,
-    ));
+    properties.add(
+      DiagnosticsProperty<_AnimatedOverlayLifecycle>(
+        '_currentState',
+        _currentState,
+      ),
+    );
   }
 }

@@ -11,7 +11,7 @@ abstract class CoreDependencyProvider {
 
   @optionalStringValidator
   StringValidator get provideOptionalStringValidator => StringValidator.create(
-        validators: <StringValidatorCallback>[],
-        isOptional: true,
-      );
+    validators: <StringValidatorCallback>[],
+    isOptional: true,
+  );
 }

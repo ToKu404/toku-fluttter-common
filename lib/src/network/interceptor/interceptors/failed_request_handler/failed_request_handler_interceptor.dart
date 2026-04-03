@@ -80,8 +80,9 @@ class FailedRequestHandlerInterceptor extends Interceptor {
     Exception error,
   ) {
     debugPrint('Searching for handler for endpoint: $endpoint');
-    final handler =
-        _registry._handlers.firstWhereOrNull((FailedRequestHandler handler) => handler.canHandle(endpoint, error));
+    final handler = _registry._handlers.firstWhereOrNull(
+      (FailedRequestHandler handler) => handler.canHandle(endpoint, error),
+    );
     if (handler == null) {
       debugPrint('No handler found for error: $error');
       return null;

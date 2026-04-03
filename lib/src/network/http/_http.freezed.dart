@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,101 +9,100 @@ part of '_http.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$HttpRequestBody {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, dynamic>? body) basic,
-    required TResult Function(Map<String, String>? fields,
-            Map<String, XFile>? files, Map<String, List<XFile>>? multifiles)
-        multipart,
-  }) =>
-      throw _privateConstructorUsedError;
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+/// Adds pattern-matching-related methods to [HttpRequestBody].
+extension HttpRequestBodyPatterns on HttpRequestBody {
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Map<String, dynamic>? body)  basic,required TResult Function( Map<String, String>? fields,  Map<String, XFile>? files,  Map<String, List<XFile>>? multifiles)  multipart,}) {final _that = this;
+switch (_that) {
+case _BasicHttpRequestBody():
+return basic(_that.body);case _MultipartHttpRequestBody():
+return multipart(_that.fields,_that.files,_that.multifiles);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+
 }
 
 /// @nodoc
 
-class _$BasicHttpRequestBodyImpl implements _BasicHttpRequestBody {
-  const _$BasicHttpRequestBodyImpl([this.body]);
 
-  @override
-  final Map<String, dynamic>? body;
+class _BasicHttpRequestBody implements HttpRequestBody {
+  const _BasicHttpRequestBody([this.body]);
+  
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, dynamic>? body) basic,
-    required TResult Function(Map<String, String>? fields,
-            Map<String, XFile>? files, Map<String, List<XFile>>? multifiles)
-        multipart,
-  }) {
-    return basic(body);
-  }
+ final  Map<String, dynamic>? body;
+
+
+
+
+
+
+
+
 }
 
-abstract class _BasicHttpRequestBody implements HttpRequestBody {
-  const factory _BasicHttpRequestBody([final Map<String, dynamic>? body]) =
-      _$BasicHttpRequestBodyImpl;
 
-  Map<String, dynamic>? get body;
-}
+
 
 /// @nodoc
 
-class _$MultipartHttpRequestBodyImpl implements _MultipartHttpRequestBody {
-  const _$MultipartHttpRequestBodyImpl(
-      {this.fields, this.files, this.multifiles});
 
-  @override
-  final Map<String, String>? fields;
+class _MultipartHttpRequestBody implements HttpRequestBody {
+  const _MultipartHttpRequestBody({this.fields, this.files, this.multifiles});
+  
 
-  /// The key is the name of the file field, the value is the file to be uploaded.
-  ///
-  /// We use [XFile] here instead of `File` because it is not supported on web.
-  @override
-  final Map<String, XFile>? files;
+ final  Map<String, String>? fields;
+/// The key is the name of the file field, the value is the file to be uploaded.
+///
+/// We use [XFile] here instead of `File` because it is not supported on web.
+ final  Map<String, XFile>? files;
+/// The key is the name of the file field, the value is a list of files to be uploaded.
+///
+/// Use this when you need to upload multiple files with the same field name.
+/// We use [XFile] here instead of `File` because it is not supported on web.
+ final  Map<String, List<XFile>>? multifiles;
 
-  /// The key is the name of the file field, the value is a list of files to be uploaded.
-  ///
-  /// Use this when you need to upload multiple files with the same field name.
-  /// We use [XFile] here instead of `File` because it is not supported on web.
-  @override
-  final Map<String, List<XFile>>? multifiles;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(Map<String, dynamic>? body) basic,
-    required TResult Function(Map<String, String>? fields,
-            Map<String, XFile>? files, Map<String, List<XFile>>? multifiles)
-        multipart,
-  }) {
-    return multipart(fields, files, multifiles);
-  }
+
+
+
+
+
+
 }
 
-abstract class _MultipartHttpRequestBody implements HttpRequestBody {
-  const factory _MultipartHttpRequestBody(
-          {final Map<String, String>? fields,
-          final Map<String, XFile>? files,
-          final Map<String, List<XFile>>? multifiles}) =
-      _$MultipartHttpRequestBodyImpl;
 
-  Map<String, String>? get fields;
 
-  /// The key is the name of the file field, the value is the file to be uploaded.
-  ///
-  /// We use [XFile] here instead of `File` because it is not supported on web.
-  Map<String, XFile>? get files;
 
-  /// The key is the name of the file field, the value is a list of files to be uploaded.
-  ///
-  /// Use this when you need to upload multiple files with the same field name.
-  /// We use [XFile] here instead of `File` because it is not supported on web.
-  Map<String, List<XFile>>? get multifiles;
-}
+// dart format on

@@ -92,10 +92,7 @@ class ErrorResponse extends Equatable {
 
 @jsonable
 class ErrorResponseDetail extends Equatable {
-  const ErrorResponseDetail({
-    this.userId,
-    this.username = '',
-  });
+  const ErrorResponseDetail({this.userId, this.username = ''});
 
   factory ErrorResponseDetail.fromJson(Map<String, dynamic> json) => _$ErrorResponseDetailFromJson(json);
 

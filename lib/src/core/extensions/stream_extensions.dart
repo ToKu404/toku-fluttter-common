@@ -41,7 +41,6 @@ class _CountStream<S> extends ForwardingStream<S, S> {
   }
 }
 
-
 class _MapWhenStream<S, T> extends ForwardingStream<S, T> {
   _MapWhenStream(
     super.source,
@@ -75,9 +74,7 @@ class _MapWhenStream<S, T> extends ForwardingStream<S, T> {
 /// This will also dispose itself when there are no more subscribers.
 abstract class ForwardingStream<S, T> extends Stream<T> {
   /// Creates a [ForwardingStream] that forwards events from [source] to [T] events.
-  ForwardingStream(Stream<S> source)
-      : _source = source,
-        isBroadcast = source.isBroadcast;
+  ForwardingStream(Stream<S> source) : _source = source, isBroadcast = source.isBroadcast;
 
   final Stream<S> _source;
 

@@ -25,9 +25,9 @@ class _ConnectionCheckerImpl implements ConnectionChecker {
 
   @override
   Stream<bool> get onConnectivityChanged => _connectivity.onConnectivityChanged.map((results) {
-        final first = results.isNotEmpty ? results.first : ConnectivityResult.none;
-        return isResultConnected(first);
-      });
+    final first = results.isNotEmpty ? results.first : ConnectivityResult.none;
+    return isResultConnected(first);
+  });
 
   @visibleForTesting
   static bool isResultConnected(ConnectivityResult result) {

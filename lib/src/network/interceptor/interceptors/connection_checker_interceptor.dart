@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:toku_flutter_common/src/core/models/result.dart';
 import 'package:toku_flutter_common/src/network/exceptions/exceptions.dart';
@@ -24,11 +23,13 @@ class ConnectionCheckerInterceptor extends Interceptor {
 
   @override
   Future<Result<HttpResponse>> intercept(InterceptorChain chain) {
-    if (!_connectionChecker.isConnected)
-      return Future.value(Result.error(NoConnectionException()));
-    return chain.proceed(chain.request).mapErrorAsync((error) =>
-        error is ClientException && _isClientExceptionWithConnectionIssue(error)
-            ? NoConnectionException()
-            : error);
+    if (!_connectionChecker.isConnected) return Future.value(Result.error(NoConnectionException()));
+    return chain
+        .proceed(chain.request)
+        .mapErrorAsync(
+          (error) => error is ClientException && _isClientExceptionWithConnectionIssue(error)
+              ? NoConnectionException()
+              : error,
+        );
   }
 }

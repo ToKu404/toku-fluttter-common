@@ -165,13 +165,13 @@ extension FutureResultExtension<T> on Future<Result<T>> {
   }
 
   /// Combines multiple `Future<Result<T>>` into a single `Future<Result<List<dynamic>>>`.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// Future<Result<int>> getOne() async => const Result.success(1);
   /// Future<Result<bool>> getTrue() async => const Result.success(true);
   /// Future<Result<String>> getHello() async => const Result.success('hello');
-  /// 
+  ///
   /// final result = getOne()
   ///   .andThenCombineAsync(getTrue)
   ///   .andThenCombineAsync(getHello)

@@ -61,7 +61,7 @@ abstract class HttpClient {
   @visibleForTesting
   static Result<T> parseSuccessData<T>(HttpEndpointBase<T> endpoint, HttpResponse response) {
     try {
-      debugPrint("toku A1 ${response.bodyJson}");
+      debugPrint('toku A1 ${response.bodyJson}');
       final result = endpoint.onResponse(response);
       return Result<T>.success(result);
     } on FormatException {

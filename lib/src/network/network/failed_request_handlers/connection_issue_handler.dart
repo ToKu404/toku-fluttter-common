@@ -8,8 +8,7 @@ typedef ConnectionIssueCallback = void Function(FailedRequestResolver resolver);
 class ConnectionIssueHandler extends FailedRequestHandler {
   @override
   bool canHandle(HttpEndpointBase<dynamic> endpoint, Exception error) =>
-      endpoint.flags?[ConnectionIssueHandler] == true &&
-      error is NoConnectionException;
+      endpoint.flags?[ConnectionIssueHandler] == true && error is NoConnectionException;
 
   @override
   void onHandle(FailedRequestResolver resolver) {
@@ -27,8 +26,7 @@ class ConnectionIssueHandler extends FailedRequestHandler {
 
   @override
   Exception transformError(Exception error) {
-    assert(error is NoConnectionException,
-        'Mismatched error: ${error.runtimeType}. Expected: NoConnectionException');
+    assert(error is NoConnectionException, 'Mismatched error: ${error.runtimeType}. Expected: NoConnectionException');
     return TaggedException(
       error,
       const {ConnectionIssueHandler: true},

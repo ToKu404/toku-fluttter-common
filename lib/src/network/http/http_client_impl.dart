@@ -46,7 +46,7 @@ class _HttpClientImpl implements HttpClient {
       requestBody: requestBody,
     );
 
-    debugPrint("toku ${response.isError}");
+    debugPrint('toku ${response.isError}');
 
     return response.andThen((HttpResponse data) => HttpClient.parseSuccessData(endpoint, data));
   }
@@ -68,13 +68,13 @@ class _HttpClientImpl implements HttpClient {
       ),
       multipart: (Map<String, String>? fields, Map<String, XFile>? files, Map<String, List<XFile>>? multifiles) =>
           network.createMultipartRequest(
-        method: endpoint.method._value,
-        url: uri,
-        headers: _concatHeaders(null, request.headers),
-        fields: fields,
-        files: files,
-        multifiles: multifiles,
-      ),
+            method: endpoint.method._value,
+            url: uri,
+            headers: _concatHeaders(null, request.headers),
+            fields: fields,
+            files: files,
+            multifiles: multifiles,
+          ),
     );
   }
 
@@ -117,10 +117,12 @@ class _HttpClientImpl implements HttpClient {
         onReceiveProgress: onReceiveProgress,
       );
       if (response.statusCode != 200 && response.statusCode != 201) {
-        return Result.error(ErrorResponseException(
-          statusCode: response.statusCode,
-          errorResponse: ErrorResponse(message: response.reasonPhrase ?? ''),
-        ));
+        return Result.error(
+          ErrorResponseException(
+            statusCode: response.statusCode,
+            errorResponse: ErrorResponse(message: response.reasonPhrase ?? ''),
+          ),
+        );
       }
       final body = await response.stream.toBytes();
       return Result.success(body);

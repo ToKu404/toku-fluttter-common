@@ -1,4 +1,5 @@
 part of http;
+
 extension BaseRequestExtensions on BaseRequest {
   BaseRequest copy({
     String? method,

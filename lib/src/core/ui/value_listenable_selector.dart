@@ -31,12 +31,10 @@ class ValueListenableSelector<V, T> extends StatefulWidget {
   final Widget? child;
 
   @override
-  State<ValueListenableSelector<V, T>> createState() =>
-      _ValueListenableSelectorState<V, T>();
+  State<ValueListenableSelector<V, T>> createState() => _ValueListenableSelectorState<V, T>();
 }
 
-class _ValueListenableSelectorState<V, T>
-    extends State<ValueListenableSelector<V, T>> {
+class _ValueListenableSelectorState<V, T> extends State<ValueListenableSelector<V, T>> {
   late T _value;
 
   @override
@@ -70,10 +68,8 @@ class _ValueListenableSelectorState<V, T>
     setState(() => _value = newValue);
   }
 
-  bool _shouldRebuild(T newValue) =>
-      widget.buildWhen?.call(_value, newValue) ?? newValue != _value;
+  bool _shouldRebuild(T newValue) => widget.buildWhen?.call(_value, newValue) ?? newValue != _value;
 
   @override
-  Widget build(BuildContext context) =>
-      widget.builder(context, _value, widget.child);
+  Widget build(BuildContext context) => widget.builder(context, _value, widget.child);
 }

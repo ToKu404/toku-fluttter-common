@@ -3,7 +3,7 @@ library xml_tag;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import '../xml_styled_text.dart';
+import 'package:toku_flutter_common/src/core/ui/xml_styled_text/src/xml_styled_text.dart';
 
 part 'xml_clickable_tag.dart';
 part 'xml_span_tag.dart';
@@ -61,8 +61,7 @@ abstract class XmlTag with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        other is XmlTag && other.runtimeType == runtimeType && other.id == id;
+    return identical(this, other) || other is XmlTag && other.runtimeType == runtimeType && other.id == id;
   }
 
   @override

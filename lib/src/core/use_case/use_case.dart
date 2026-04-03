@@ -8,8 +8,7 @@ abstract class FutureUseCase<I, O> extends UseCase<I, Future<O>> {}
 
 abstract class ResultUseCase<I, O> extends UseCase<I, Result<O>> {}
 
-abstract class FutureResultUseCase<I, O>
-    extends UseCase<I, Future<Result<O>>> {}
+abstract class FutureResultUseCase<I, O> extends UseCase<I, Future<Result<O>>> {}
 
 abstract class NoInputUseCase<O> {
   O call();
@@ -19,5 +18,4 @@ abstract class NoInputResultUseCase<O> extends NoInputUseCase<Result<O>> {}
 
 abstract class NoInputFutureUseCase<O> extends NoInputUseCase<Future<O>> {}
 
-abstract class NoInputFutureResultUseCase<O>
-    extends NoInputUseCase<Future<Result<O>>> {}
+abstract class NoInputFutureResultUseCase<O> extends NoInputUseCase<Future<Result<O>>> {}

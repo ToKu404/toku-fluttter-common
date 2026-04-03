@@ -64,15 +64,15 @@ const Named optionalStringValidator = Named('optionalStringValidator');
 @injectable
 class StringValidator {
   factory StringValidator() => StringValidator.create(
-        validators: <StringValidatorCallback>[_isNotEmpty],
-        isOptional: false,
-      );
+    validators: <StringValidatorCallback>[_isNotEmpty],
+    isOptional: false,
+  );
 
   StringValidator.create({
     required List<StringValidatorCallback> validators,
     required bool isOptional,
-  })  : _validators = validators,
-        _isOptional = isOptional;
+  }) : _validators = validators,
+       _isOptional = isOptional;
 
   final bool _isOptional;
 

@@ -5,8 +5,7 @@ enum HttpMethod {
   post('POST'),
   put('PUT'),
   delete('DELETE'),
-  patch('PATCH'),
-  ;
+  patch('PATCH');
 
   const HttpMethod(this._value);
 

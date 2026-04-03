@@ -24,17 +24,19 @@ Widget _defaultOverlayTransitionsBuilder(
   );
 }
 
-typedef OverlayTransitionsBuilder = Widget Function(
-  BuildContext context,
-  Animation<double> animation,
-  Animation<double> secondaryAnimation,
-  Widget child,
-);
+typedef OverlayTransitionsBuilder =
+    Widget Function(
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+    );
 
-typedef AnimatedOverlayBuilder = Widget Function(
-  BuildContext context,
-  PopableContent entry,
-);
+typedef AnimatedOverlayBuilder =
+    Widget Function(
+      BuildContext context,
+      PopableContent entry,
+    );
 
 abstract interface class PopableContent {
   void pop();
@@ -43,7 +45,6 @@ abstract interface class PopableContent {
 enum AnimatedOverlayPriority {
   normal,
   high,
-  ;
 }
 
 class AnimatedOverlay extends PopableContent with Diagnosticable {
@@ -100,19 +101,25 @@ class AnimatedOverlay extends PopableContent with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<Duration>(
-        'transitionDuration',
-        transitionDuration,
-      ))
-      ..add(DiagnosticsProperty<Duration>(
-        'reverseTransitionDuration',
-        reverseTransitionDuration,
-      ))
-      ..add(DiagnosticsProperty<VoidCallback?>(
-        '_onPopCallback',
-        _onPopCallback,
-        missingIfNull: true,
-      ));
+      ..add(
+        DiagnosticsProperty<Duration>(
+          'transitionDuration',
+          transitionDuration,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<Duration>(
+          'reverseTransitionDuration',
+          reverseTransitionDuration,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<VoidCallback?>(
+          '_onPopCallback',
+          _onPopCallback,
+          missingIfNull: true,
+        ),
+      );
   }
 }
 

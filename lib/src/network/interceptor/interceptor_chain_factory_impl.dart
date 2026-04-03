@@ -11,7 +11,7 @@ class _InterceptorChainFactoryImpl implements InterceptorChainFactory {
     required HttpEndpointBase<dynamic> endpoint,
     required BaseRequest request,
     required Client client,
-    required JsonMap requestBody
+    required JsonMap requestBody,
   }) {
     return _InterceptorChainImpl(
       network: _network,
@@ -19,7 +19,7 @@ class _InterceptorChainFactoryImpl implements InterceptorChainFactory {
       interceptors: _interceptors,
       endpoint: endpoint,
       request: request,
-      requestBody: requestBody
+      requestBody: requestBody,
     ).start();
   }
 }

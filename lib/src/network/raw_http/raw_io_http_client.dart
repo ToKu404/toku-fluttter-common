@@ -6,7 +6,6 @@ import 'package:toku_flutter_common/src/core/extensions/object_extensions.dart';
 import 'package:toku_flutter_common/src/core/extensions/stream_extensions.dart';
 import 'package:toku_flutter_common/src/network/raw_http/raw_http_client.dart';
 
-
 RawHttpClient createClient() => RawIOHttpClient();
 
 final class RawIOHttpClient implements RawHttpClient {
@@ -89,10 +88,12 @@ final class RawIOHttpClient implements RawHttpClient {
       }
 
       return StreamedResponse(
-        response.handleError((Object error) {
-          final httpException = error as HttpException;
-          throw ClientException(httpException.message, httpException.uri);
-        }, test: (error) => error is HttpException).let(maybeCountReceiveProgress),
+        response
+            .handleError((Object error) {
+              final httpException = error as HttpException;
+              throw ClientException(httpException.message, httpException.uri);
+            }, test: (error) => error is HttpException)
+            .let(maybeCountReceiveProgress),
         response.statusCode,
         contentLength: response.contentLength == -1 ? null : response.contentLength,
         request: request,

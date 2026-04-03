@@ -21,27 +21,6 @@ const Map<ButtonWidthSize, double?> _kButtonWidths = {
 const kDefaultAdvButtonHeight = 40.0;
 
 class AdvButton extends StatefulWidget {
-  final String? text;
-  final Widget? child;
-  final bool _bold;
-  final bool enable;
-  final VoidCallback? onPressed;
-  final double circular;
-  final ButtonSize buttonSize;
-  final bool onlyBorder;
-  final bool reverse;
-  final Color? primaryColor;
-  final Color? accentColor;
-  final Color? splashColor;
-  final Color? highlightColor;
-  final double? width;
-  final double? height;
-  final double? borderWidth;
-  final ButtonWidthSize buttonWidthSize;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
-  final bool dismissKeyboardOnPressed;
-
   const AdvButton._({
     this.text,
     this.child,
@@ -63,9 +42,8 @@ class AdvButton extends StatefulWidget {
     this.margin,
     this.buttonWidthSize = ButtonWidthSize.standard,
     bool? dismissKeyboardOnPressed,
-  })  : _bold = bold,
-        dismissKeyboardOnPressed = dismissKeyboardOnPressed ?? true;
-
+  }) : _bold = bold,
+       dismissKeyboardOnPressed = dismissKeyboardOnPressed ?? true;
   factory AdvButton.text(
     String text, {
     double circular = 8.0,
@@ -119,7 +97,6 @@ class AdvButton extends StatefulWidget {
     bool enable = true,
     bool onlyBorder = false,
     bool reverse = false,
-    bool bold = false,
     VoidCallback? onPressed,
     ButtonSize buttonSize = ButtonSize.small,
     Color? primaryColor,
@@ -135,7 +112,6 @@ class AdvButton extends StatefulWidget {
     bool? dismissKeyboardOnPressed,
   }) {
     return AdvButton._(
-      child: child,
       circular: circular,
       enable: enable,
       onlyBorder: onlyBorder,
@@ -153,8 +129,29 @@ class AdvButton extends StatefulWidget {
       margin: margin,
       buttonWidthSize: buttonWidthSize,
       dismissKeyboardOnPressed: dismissKeyboardOnPressed ?? true,
+      child: child,
     );
   }
+  final String? text;
+  final Widget? child;
+  final bool _bold;
+  final bool enable;
+  final VoidCallback? onPressed;
+  final double circular;
+  final ButtonSize buttonSize;
+  final bool onlyBorder;
+  final bool reverse;
+  final Color? primaryColor;
+  final Color? accentColor;
+  final Color? splashColor;
+  final Color? highlightColor;
+  final double? width;
+  final double? height;
+  final double? borderWidth;
+  final ButtonWidthSize buttonWidthSize;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final bool dismissKeyboardOnPressed;
 
   @override
   _AdvButtonState createState() => _AdvButtonState();
@@ -165,42 +162,55 @@ class _AdvButtonState extends State<AdvButton> {
 
   @override
   Widget build(BuildContext context) {
-    final _primaryColor = !widget.reverse ? widget.primaryColor ?? Colors.orange : widget.accentColor ?? Colors.white;
+    final primaryColor = !widget.reverse ? widget.primaryColor ?? Colors.orange : widget.accentColor ?? Colors.white;
 
-    final _accentColor = !widget.reverse ? widget.accentColor ?? Colors.white : widget.primaryColor ?? Colors.blueGrey;
+    final accentColor = !widget.reverse ? widget.accentColor ?? Colors.white : widget.primaryColor ?? Colors.blueGrey;
 
-    final _borderWidth = widget.onlyBorder ? (widget.borderWidth ?? 1.0) : 0.0;
-    final disableBackgroundColor =
-        Color.lerp(widget.reverse ? Colors.white : Colors.black54, const Color(0xffd9d9df), 0.6)!;
+    final borderWidth = widget.onlyBorder ? (widget.borderWidth ?? 1.0) : 0.0;
+    final disableBackgroundColor = Color.lerp(
+      widget.reverse ? Colors.white : Colors.black54,
+      const Color(0xffd9d9df),
+      0.6,
+    )!;
     final disableTextColor = Color.lerp(!widget.reverse ? Colors.white : Colors.black54, const Color(0xffd9d9df), 0.6)!;
 
     final ShapeBorder border = RoundedRectangleBorder(
-      side: BorderSide(color: widget.enable ? _primaryColor : disableBackgroundColor, width: _borderWidth),
+      side: BorderSide(color: widget.enable ? primaryColor : disableBackgroundColor, width: borderWidth),
       borderRadius: BorderRadius.circular(widget.circular),
     );
 
-    final _color = widget.onlyBorder ? _accentColor : _primaryColor;
-    final _disableColor = widget.onlyBorder ? disableTextColor : disableBackgroundColor;
-    final _disableTextColor = !widget.onlyBorder ? disableTextColor : disableBackgroundColor;
+    final color = widget.onlyBorder ? accentColor : primaryColor;
+    final disableColor = widget.onlyBorder ? disableTextColor : disableBackgroundColor;
+    final disableTextColor0 = !widget.onlyBorder ? disableTextColor : disableBackgroundColor;
 
-    final finalPadding = widget.padding ??
+    final finalPadding =
+        widget.padding ??
         (widget.buttonSize == ButtonSize.large ? const EdgeInsets.all(14.0) : const EdgeInsets.all(8.0));
 
-    var _child = widget.child;
+    var child = widget.child;
 
     if (widget.child == null) {
       final fontSize = widget.buttonSize == ButtonSize.large ? 18.0 : 14.0;
       final fontWeight = widget._bold ? FontWeight.w700 : FontWeight.w500;
-      final disableTextColor =
-          Color.lerp(!widget.reverse ? Colors.white : Colors.black54, const Color(0xffd9d9df), 0.6)!;
-      final disableBackgroundColor =
-          Color.lerp(widget.reverse ? Colors.white : Colors.black54, const Color(0xffd9d9df), 0.6)!;
-      final _textColor = !widget.onlyBorder ? _accentColor : _primaryColor;
-      final _disableTextColor = !widget.onlyBorder ? disableTextColor : disableBackgroundColor;
-      final textStyle =
-          TextStyle(fontSize: fontSize, fontWeight: fontWeight, color: widget.enable ? _textColor : _disableTextColor);
+      final disableTextColor = Color.lerp(
+        !widget.reverse ? Colors.white : Colors.black54,
+        const Color(0xffd9d9df),
+        0.6,
+      )!;
+      final disableBackgroundColor = Color.lerp(
+        widget.reverse ? Colors.white : Colors.black54,
+        const Color(0xffd9d9df),
+        0.6,
+      )!;
+      final textColor = !widget.onlyBorder ? accentColor : primaryColor;
+      final disableTextColor1 = !widget.onlyBorder ? disableTextColor : disableBackgroundColor;
+      final textStyle = TextStyle(
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        color: widget.enable ? textColor : disableTextColor1,
+      );
 
-      _child = Text(widget.text!, style: textStyle);
+      child = Text(widget.text!, style: textStyle);
     }
 
     return ButtonTheme(
@@ -213,17 +223,16 @@ class _AdvButtonState extends State<AdvButton> {
         child: MaterialButton(
           padding: finalPadding.copyWith(top: 5, bottom: 5),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          color: _color,
+          color: color,
           elevation: widget.primaryColor == Colors.transparent ? 0 : 0.1,
           focusElevation: 0,
           disabledElevation: 0,
           highlightElevation: 0,
           hoverElevation: 0,
-          disabledColor: _disableColor,
-          disabledTextColor: _disableTextColor,
-          highlightColor: widget.highlightColor ?? Colors.white.withOpacity(.1),
-          splashColor: widget.splashColor ?? Colors.white.withOpacity(.2),
-          child: _child!,
+          disabledColor: disableColor,
+          disabledTextColor: disableTextColor0,
+          highlightColor: widget.highlightColor ?? Colors.white.withValues(alpha: .1),
+          splashColor: widget.splashColor ?? Colors.white.withValues(alpha: .2),
           onPressed: widget.enable
               ? () {
                   if (_working) {
@@ -239,10 +248,11 @@ class _AdvButtonState extends State<AdvButton> {
                     FocusScope.of(context).requestFocus(FocusNode());
                   }
 
-                  if (widget.onPressed != null) widget.onPressed!();
+                  if (widget.onPressed != null) widget.onPressed?.call();
                 }
               : null,
           shape: border,
+          child: child,
         ),
       ),
     );
