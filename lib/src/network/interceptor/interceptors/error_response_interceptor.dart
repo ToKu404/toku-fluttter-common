@@ -21,10 +21,13 @@ class ErrorResponseInterceptor extends Interceptor {
         debugPrint('toku ${data.statusCode}');
         debugPrint('toku ${data.bodyError}');
 
+        final errorJson = data.bodyError?['error'];
+        final errorMessage = errorJson is Map<String, dynamic> ? errorJson['message'] as String? : null;
+
         return Result.error(
           HttpCodeException(
             statusCode: data.statusCode,
-            reasonPhrase: data.bodyError?['message'] ?? data.reasonPhrase,
+            reasonPhrase: errorMessage ?? data.bodyError?['message'] ?? data.reasonPhrase,
           ),
         );
       }

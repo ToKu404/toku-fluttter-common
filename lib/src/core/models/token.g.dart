@@ -7,11 +7,16 @@ part of 'token.dart';
 // **************************************************************************
 
 TokenModel _$TokenModelFromJson(Map<String, dynamic> json) => TokenModel(
-  accessToken: json['access_token'] as String,
-  refreshToken: json['refresh_token'] as String,
+  accessToken: json['accessToken'] as String?,
+  refreshToken: json['refreshToken'] as String?,
+  isVerified: json['isVerified'] as bool?,
+  userType: json['userType'] as String?,
 );
 
-Map<String, dynamic> _$TokenModelToJson(TokenModel instance) => <String, dynamic>{
-  'access_token': instance.accessToken,
-  'refresh_token': instance.refreshToken,
-};
+Map<String, dynamic> _$TokenModelToJson(TokenModel instance) =>
+    <String, dynamic>{
+      'accessToken': instance.accessToken,
+      'refreshToken': instance.refreshToken,
+      'isVerified': instance.isVerified,
+      'userType': instance.userType,
+    };
