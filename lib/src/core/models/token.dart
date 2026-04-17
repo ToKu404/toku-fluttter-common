@@ -16,6 +16,7 @@ class TokenModel {
   final String? accessToken;
   final String? refreshToken;
   final bool? isVerified;
+  @JsonKey(name: 'role')
   final String? userType;
 
   Map<String, dynamic> toJson() => _$TokenModelToJson(this);

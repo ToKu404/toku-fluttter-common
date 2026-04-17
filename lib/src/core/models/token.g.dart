@@ -10,7 +10,7 @@ TokenModel _$TokenModelFromJson(Map<String, dynamic> json) => TokenModel(
   accessToken: json['accessToken'] as String?,
   refreshToken: json['refreshToken'] as String?,
   isVerified: json['isVerified'] as bool?,
-  userType: json['userType'] as String?,
+  userType: json['role'] as String?,
 );
 
 Map<String, dynamic> _$TokenModelToJson(TokenModel instance) =>
@@ -18,5 +18,5 @@ Map<String, dynamic> _$TokenModelToJson(TokenModel instance) =>
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
       'isVerified': instance.isVerified,
-      'userType': instance.userType,
+      'role': instance.userType,
     };
