@@ -6,7 +6,7 @@ part 'exceptions.g.dart';
 
 class NoConnectionException implements Exception {
   @override
-  String toString() => 'No Connection';
+  String toString() => 'No Internet Connection';
 }
 
 class BadResponseFormatException implements Exception {
