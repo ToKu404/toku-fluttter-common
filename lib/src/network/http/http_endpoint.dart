@@ -88,6 +88,42 @@ class HttpListEndpoint<T> implements HttpEndpointBase<List<T>> {
   }
 }
 
+class HttpListWithMetaEndpoint<T, M> implements HttpEndpointBase<(List<T>, M)> {
+  const HttpListWithMetaEndpoint({
+    required this.path,
+    required this.method,
+    required this.authType,
+    this.flags,
+    required HttpOnData<T> onData,
+    required HttpOnData<M> onMeta,
+  }) : _onDataFn = onData,
+       _onMetaFn = onMeta;
+
+  @override
+  final String path;
+
+  @override
+  final HttpMethod method;
+
+  @override
+  final AuthType authType;
+
+  @override
+  final Map<Object, Object?>? flags;
+
+  final HttpOnData<T> _onDataFn;
+  final HttpOnData<M> _onMetaFn;
+
+  @override
+  (List<T>, M) onResponse(HttpResponse response) {
+    final json = response.bodyJson!;
+    final dataList = (json['data']! as List<dynamic>).whereType<JsonMap>().map((it) => _onDataFn(it)).toList();
+    final meta = _onMetaFn(json['meta']! as JsonMap);
+
+    return (dataList, meta);
+  }
+}
+
 class HttpExternalEndpoint<T> implements HttpEndpointBase<T> {
   const HttpExternalEndpoint({
     required this.path,

@@ -1,44 +1,56 @@
 import 'package:flutter/widgets.dart';
-import 'package:toku_flutter_common/core.dart';
-
-typedef InfinityScrollChildBuilder = Widget Function(BuildContext context, ScrollController controller);
 
 class InfinityScrollBuilder extends StatefulWidget {
   const InfinityScrollBuilder({
     super.key,
-    this.onScrolledToBottom,
     required this.builder,
+    required this.onScrolledToBottom,
+    required this.hasNextPage,
   });
 
-  final VoidCallback? onScrolledToBottom;
-  final InfinityScrollChildBuilder builder;
+  final Widget Function(BuildContext context, ScrollController controller) builder;
+  final Future<void> Function() onScrolledToBottom;
+  final bool hasNextPage;
 
   @override
   State<InfinityScrollBuilder> createState() => _InfinityScrollBuilderState();
 }
 
-class _InfinityScrollBuilderState extends State<InfinityScrollBuilder>
-    with AutoDisposeStateMixin<InfinityScrollBuilder> {
-  @override
-  Widget build(BuildContext context) => PrimaryScrollController(
-    controller: _scrollController,
-    child: widget.builder(context, _scrollController),
-  );
+class _InfinityScrollBuilderState extends State<InfinityScrollBuilder> {
+  late final ScrollController _controller;
 
-  late final ScrollController _scrollController;
+  bool _loading = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = autoDispose(ScrollController())..addListener(_onScroll);
+
+    _controller = ScrollController()..addListener(_onScroll);
   }
 
-  void _onScroll() {
-    if (!_scrollController.hasClients ||
-        _scrollController.position.pixels < (_scrollController.position.maxScrollExtent - 80) ||
-        _scrollController.position.axisDirection != AxisDirection.down) {
-      return;
+  Future<void> _onScroll() async {
+    if (!widget.hasNextPage) return;
+    if (_loading) return;
+    if (!_controller.hasClients) return;
+    if (_controller.position.extentAfter > 80) return;
+
+    setState(() => _loading = true);
+
+    try {
+      await widget.onScrolledToBottom.call();
+    } finally {
+      if (mounted) setState(() => _loading = false);
     }
-    widget.onScrolledToBottom?.call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(context, _controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
