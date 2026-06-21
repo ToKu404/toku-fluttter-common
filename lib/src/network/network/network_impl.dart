@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as path;
 import 'package:toku_flutter_common/src/network/http/_http.dart';
 import 'package:toku_flutter_common/src/network/network/exposed_stream_multipart_file.dart';
 import 'package:toku_flutter_common/src/network/network/network.dart';
@@ -44,11 +46,19 @@ class NetworkImpl implements Network {
       for (final fieldName in files.keys) {
         final file = files[fieldName];
         if (file == null) continue;
+
         final stream = ByteStream(file.openRead());
         final length = await file.length();
+        final filename = await _deriveFilename(file, fieldName);
+        final contentType = await _deriveContentType(file, filename);
+
         final multipartFile = ExposedStreamMultipartFile(
-            fieldName, stream, length,
-            filename: file.path);
+          fieldName,
+          stream,
+          length,
+          filename: filename,
+          contentType: contentType,
+        );
         request.files.add(multipartFile);
       }
     }
@@ -58,5 +68,61 @@ class NetworkImpl implements Network {
   @override
   Future<HttpResponse> getResponseFromStream(StreamedResponse response) {
     return HttpResponse.fromStream(response);
+  }
+
+  Future<String> _deriveFilename(XFile file, String fieldName) async {
+    if (file.name.isNotEmpty) {
+      return file.name;
+    }
+    if (file.path.isNotEmpty) {
+      return path.basename(file.path);
+    }
+
+    try {
+      final first = await file.openRead(0, 12).first;
+      if (first.length >= 2 && first[0] == 0xFF && first[1] == 0xD8) {
+        return '$fieldName.jpg';
+      }
+      if (first.length >= 4 && first[0] == 0x89 && first[1] == 0x50 && first[2] == 0x4E && first[3] == 0x47) {
+        return '$fieldName.png';
+      }
+    } catch (_) {
+      // ignore
+    }
+
+    return '$fieldName.bin';
+  }
+
+  Future<MediaType?> _deriveContentType(XFile file, String filename) async {
+    final rawMimeType = file.mimeType;
+    if (rawMimeType != null && rawMimeType.isNotEmpty) {
+      try {
+        return MediaType.parse(rawMimeType);
+      } catch (_) {
+        // ignore invalid mimeType and fallback to filename-based inference.
+      }
+    }
+
+    final lowerFileName = filename.toLowerCase();
+    if (lowerFileName.endsWith('.jpg') || lowerFileName.endsWith('.jpeg')) {
+      return MediaType('image', 'jpeg');
+    }
+    if (lowerFileName.endsWith('.png')) {
+      return MediaType('image', 'png');
+    }
+
+    try {
+      final first = await file.openRead(0, 12).first;
+      if (first.length >= 2 && first[0] == 0xFF && first[1] == 0xD8) {
+        return MediaType('image', 'jpeg');
+      }
+      if (first.length >= 4 && first[0] == 0x89 && first[1] == 0x50 && first[2] == 0x4E && first[3] == 0x47) {
+        return MediaType('image', 'png');
+      }
+    } catch (_) {
+      // ignore
+    }
+
+    return null;
   }
 }

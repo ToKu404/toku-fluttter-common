@@ -65,7 +65,27 @@ class _InterceptorChainImpl implements InterceptorChain {
   @protected
   Future<Result<HttpResponse>> sendRequest() async {
     try {
-      final streamedResponse = await client.send(request.copy());
+      final StreamedResponse streamedResponse;
+      final req = request;
+      if (req is MultipartRequest) {
+        // IOClient sets socket headers BEFORE calling finalize(), so
+        // MultipartRequest.finalize()'s Content-Type (with boundary) never
+        // reaches the socket if we use client.send(multipartReq) directly.
+        // Fix: finalize first so boundary is in req.headers, collect the body
+        // bytes, then send as a plain Request with the correct Content-Type.
+        final bodyBytes = await req.finalize().toBytes();
+        log('[sendRequest] body: ${bodyBytes.length} bytes, ct: ${req.headers['content-type']}');
+        log('[sendRequest] body prefix: ${String.fromCharCodes(bodyBytes.sublist(0, bodyBytes.length < 400 ? bodyBytes.length : 400))}');
+        final plain = Request(req.method, req.url)
+          ..headers.addAll(req.headers)
+          ..followRedirects = req.followRedirects
+          ..maxRedirects = req.maxRedirects
+          ..persistentConnection = req.persistentConnection
+          ..bodyBytes = bodyBytes;
+        streamedResponse = await client.send(plain);
+      } else {
+        streamedResponse = await client.send(req.copy());
+      }
       final response = await network.getResponseFromStream(streamedResponse);
       return Result<HttpResponse>.success(response);
     } on Exception catch (e) {

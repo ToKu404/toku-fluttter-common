@@ -66,13 +66,17 @@ class _HttpClientImpl implements HttpClient {
         headers: _concatHeaders(request.contentType, request.headers),
         body: body,
       ),
-      multipart: (Map<String, String>? fields, Map<String, XFile>? files) => network.createMultipartRequest(
-        method: endpoint.method._value,
-        url: uri,
-        headers: _concatHeaders(request.contentType, request.headers),
-        fields: fields,
-        files: files,
-      ),
+      multipart: (Map<String, String>? fields, Map<String, XFile>? files) {
+        final headers = Map<String, String>.from(_concatHeaders(null, request.headers))
+          ..removeWhere((key, _) => key.toLowerCase() == 'content-type');
+        return network.createMultipartRequest(
+          method: endpoint.method._value,
+          url: uri,
+          headers: headers,
+          fields: fields,
+          files: files,
+        );
+      },
     );
   }
 

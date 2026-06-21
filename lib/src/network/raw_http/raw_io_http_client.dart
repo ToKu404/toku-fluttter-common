@@ -6,7 +6,6 @@ import 'package:toku_flutter_common/src/core/extensions/object_extensions.dart';
 import 'package:toku_flutter_common/src/core/extensions/stream_extensions.dart';
 import 'package:toku_flutter_common/src/network/raw_http/raw_http_client.dart';
 
-
 RawHttpClient createClient() => RawIOHttpClient();
 
 final class RawIOHttpClient implements RawHttpClient {
@@ -56,15 +55,19 @@ final class RawIOHttpClient implements RawHttpClient {
 
       final HttpClientResponse response;
       if (cancelToken != null) {
-        stream.where((_) => !cancelToken.isCanceled).listen((data) {
+        await for (final data in stream) {
+          if (cancelToken.isCanceled) {
+            ioRequest.abort();
+            throw ClientException('HTTP request canceled', request.url);
+          }
+
           if (supportsSendCallback && onSendProgress != null) {
             onSendProgress(data.length, request.contentLength);
           }
+
           ioRequest.add(data);
-        });
-        if (cancelToken.isCanceled) {
-          throw ClientException('HTTP request canceled', request.url);
         }
+
         response = await ioRequest.close();
       } else {
         response = await stream.pipe(ioRequest) as HttpClientResponse;

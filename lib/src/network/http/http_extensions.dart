@@ -41,16 +41,30 @@ extension MultipartRequestExtensions on MultipartRequest {
     String? method,
     Uri? url,
   }) {
-    return MultipartRequest(method ?? this.method, url ?? this.url)
+    
+    final copiedRequest = MultipartRequest(method ?? this.method, url ?? this.url)
       ..followRedirects = followRedirects
       ..headers.addAll(headers)
       ..persistentConnection = persistentConnection
       ..maxRedirects = maxRedirects
-      ..fields.addAll(fields)
-      ..files.addAll(files.whereType<ExposedStreamMultipartFile>().map((it) => ExposedStreamMultipartFile(
-            it.field,
-            it.byteStream,
-            it.length,
-          )));
+      ..fields.addAll(fields);
+
+    for (final file in files) {
+      if (file is ExposedStreamMultipartFile) {
+        copiedRequest.files.add(
+          ExposedStreamMultipartFile(
+            file.field,
+            file.byteStream,
+            file.length,
+            filename: file.filename,
+            contentType: file.contentType,
+          ),
+        );
+      } else {
+        copiedRequest.files.add(file);
+      }
+    }
+
+    return copiedRequest;
   }
 }
