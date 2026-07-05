@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
+// ignore: unnecessary_import
+import 'package:http_parser/http_parser.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
 import 'package:toku_flutter_common/src/network/http/_http.dart';
