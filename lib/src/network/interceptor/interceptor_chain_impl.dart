@@ -65,7 +65,20 @@ class _InterceptorChainImpl implements InterceptorChain {
   @protected
   Future<Result<HttpResponse>> sendRequest() async {
     try {
-      final streamedResponse = await client.send(request.copy());
+      final StreamedResponse streamedResponse;
+      final req = request;
+      if (req is MultipartRequest) {
+        final bodyBytes = await req.finalize().toBytes();
+        final plain = Request(req.method, req.url)
+          ..headers.addAll(req.headers)
+          ..followRedirects = req.followRedirects
+          ..maxRedirects = req.maxRedirects
+          ..persistentConnection = req.persistentConnection
+          ..bodyBytes = bodyBytes;
+        streamedResponse = await client.send(plain);
+      } else {
+        streamedResponse = await client.send(req.copy());
+      }
       final response = await network.getResponseFromStream(streamedResponse);
       return Result<HttpResponse>.success(response);
     } on Exception catch (e) {
