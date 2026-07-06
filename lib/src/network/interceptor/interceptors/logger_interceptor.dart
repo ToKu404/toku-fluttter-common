@@ -8,8 +8,17 @@ import 'package:toku_flutter_common/src/core/models/result.dart';
 class LoggerInterceptor extends Interceptor {
   const LoggerInterceptor();
 
+  /// Pretty-printing (decode + indented re-encode) and console-logging a
+  /// multi-megabyte body (e.g. a base64 image) blocks the UI thread for
+  /// seconds on web before the request is even sent. Bodies past this size
+  /// are logged as a byte-count placeholder instead.
+  static const _maxLoggedBodyLength = 20000;
+
   static String _prettyJsonFromMap(Map<String, dynamic> map) => const JsonEncoder.withIndent('  ').convert(map);
   static Object _prettyJsonFromString(String json) {
+    if (json.length > _maxLoggedBodyLength) {
+      return '<body omitted: ${json.length} chars>';
+    }
     try {
       final Map<String, dynamic> decoded = jsonDecode(json) as Map<String, dynamic>;
       return _prettyJsonFromMap(decoded);
