@@ -81,7 +81,17 @@ class HttpResponse extends Response {
   }
 
   /// Mengembalikan data HANYA JIKA status kode sukses.
-  /// Prioritas: mencari kunci 'data', jika tidak ada, kembalikan seluruh body.
+  ///
+  /// Backend ini punya dua konvensi envelope yang berbeda:
+  /// - `{success, data, errors}` (V2Body dkk) -> `data` murni berisi payload,
+  ///   jadi di-unwrap.
+  /// - `{status, data, pagination, message}` (Body/PagedBody legacy) ->
+  ///   `data` sejajar dengan `pagination`/`status`, dan model pemanggilnya
+  ///   memang didesain menerima seluruh body ini (bukan cuma isi `data`),
+  ///   jadi TIDAK di-unwrap.
+  ///
+  /// Dibedakan lewat keberadaan kunci `success`: hanya envelope yang
+  /// mendeklarasikan `success` yang di-unwrap ke `data`.
   Object? _bodyResponse;
   Object? get bodyResponse {
     if (_bodyResponse != null) return _bodyResponse!;
@@ -91,12 +101,10 @@ class HttpResponse extends Response {
     final json = bodyJson;
     if (json == null) return null;
 
-    // Prioritas 1: Cek kunci 'data'
-    if (json.containsKey('data')) {
+    if (json.containsKey('success') && json.containsKey('data')) {
       return _bodyResponse = json['data'];
     }
 
-    // Prioritas 2: Kembalikan seluruh body jika tidak ada 'data'
     return _bodyResponse = json;
   }
 
